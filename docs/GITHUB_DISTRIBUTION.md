@@ -1,5 +1,7 @@
 # Distribuição Windows pelo GitHub
 
+O primeiro candidato **0.3.0-alpha.1** foi executado e está nos [Artifacts do Prepare Windows Alpha 43969485511](https://github.com/Gabomgames/Now-assistant/actions/runs/43969485511#artifacts): fonte `cb5204041907139a8fb862e7ff6a557dec53df24`, Windows Server 2022/Python 3.12.10, 101 testes aprovados/um POSIX não aplicável e EXE/GUI/Engine/seis comandos offline reais aprovados. O ZIP portátil inclui Python/Qt; veja `VALIDACAO.md` para hashes, download e limites. Nenhuma GitHub Release foi publicada. `release_eligible` significa que os gates de build passaram; publicar ainda exige aprovação explícita do usuário.
+
 ## Fluxos separados
 
 | Workflow | Disparo | Permissões | Resultado |

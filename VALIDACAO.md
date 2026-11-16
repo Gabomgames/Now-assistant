@@ -1,5 +1,43 @@
 # NOW Assistant — validação incremental
 
+## Candidato Windows 0.3.0-alpha.1 executado — 16/11/2026
+
+**Prepare Windows Alpha concluiu Success:** [run 43969485511](https://github.com/Gabomgames/Now-assistant/actions/runs/43969485511), commit **`cb5204041907139a8fb862e7ff6a557dec53df24`**, branch work. Duração total **3m57s**, incluindo espera; job Windows **2m44s**. Windows Server 2022 x64/Python **3.12.10**, PyInstaller e dependências fixadas. Base `25efee4` preservada, com commits incrementais; nenhum arquivo original ou teste anterior removido.
+
+| Verificação executada | Resultado |
+| --- | --- |
+| Suíte completa no Windows | **102 casos, 101 aprovados, um POSIX não aplicável**, zero falhas/erros. Os 98 anteriores foram mantidos. |
+| EXE empacotado | Abriu janela Qt nativa `windows`, `sys.frozen=true`, carregou logo e ícone multi-resolução e iniciou a Engine empacotada. |
+| Engine/GUI/HTTP reais | Seis respostas offline: `oi`, `horas`, `data`, `hello`, `time`, `date`. Não são gerações Qwen nem respostas simuladas. |
+| Marca oficial | PNG original SHA-256 `9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc`; ICO `a6f4af3370d657e14df8b685176c512980a3549640a0408c8542d26a2db73d59`; recurso PE e imagem/ícone na GUI verificados. |
+| Pacote | Python/Qt embutidos, licenças, inventário SHA-256, CRC e caminhos ZIP verificados; inspeção de arquivos privados passou. Sessão de teste temporária sem cofre pessoal. |
+| Origem da solicitação | Hash observado no Windows **igual aos bytes do commit**: `732f882054badc1077e59b83c6c026c7126251f6ca8d24a6a05c7ee5e6e81518`. `publish_release:false`. |
+
+### Download do candidato para revisão
+
+[Abrir Artifacts do build](https://github.com/Gabomgames/Now-assistant/actions/runs/43969485511#artifacts), entrar no GitHub se necessário e baixar **`now-assistant-windows-0.3.0-alpha.1-cb5204041907139a8fb862e7ff6a557dec53df24-attempt-1`**, aproximadamente **51 MB**, retenção configurada de **30 dias**. O invólucro contém o ZIP portátil, relatório, testes, hashes, notas e capturas reais da janela.
+
+- ZIP portátil: **`NOW-Assistant-0.3.0-alpha.1-Windows-x64.zip`**.
+- SHA-256 do ZIP: **`33de53c1235504e5dc125b44a13ee13bc9ecb77fb22b2d0f8b2755fd6c33efe7`**.
+- SHA-256 do EXE: `de6a4d90dfb8362c0a0a7111dc58a7b3485ed10d1afd792109324dc726072f30`.
+- Digest do invólucro GitHub: `26ede53d4ed3a6970fda2dd7c10b6cae54d4fc6c331a9c1d7c1f9fec8f6ef006`.
+
+Extraia o artifact e depois **toda a pasta do ZIP portátil**; abra `NOW-Assistant.exe`, mantendo `_internal`. O usuário não precisa instalar Python nem VS Code. Leia `LEIA-ME.md` e `CHANGELOG.md` incluídos. Ollama e pesos Qwen não estão incluídos. Para perguntas livres, instale Ollama oficial e execute `ollama pull qwen2.5:0.5b` por rede autorizada; confirme com `ollama list`. Sem modelo, os comandos locais continuam disponíveis.
+
+### Escopo, correção e publicação
+
+O primeiro Prepare Windows Alpha, [43969162346](https://github.com/Gabomgames/Now-assistant/actions/runs/43969162346), também executou os testes/EXE, mas foi **substituído**: a conversão Git LF/CRLF mudou o hash da solicitação. A diferença foi medida tanto pelo filtro Git quanto pelo relatório real do runner. `.gitattributes` passou a preservar os bytes; o candidato acima foi reconstruído e seu hash de origem coincide. A comparação de proveniência não foi relaxada. Ambos os resultados estão em `validation/alpha-candidate-20261116.json`.
+
+Linux/Python 3.12.14: **102 testes aprovados em 23,254 s**, zero falhas/erros/skips, na árvore imediatamente antes do commit final de código; actionlint passou. Os quatro novos casos usam fixtures de solicitação/proveniência e não representam inferência ou aprovação Windows. A prova Windows é o run nativo separado acima.
+
+Status, contagens e hashes foram observados na página pública e nas anotações estruturadas do GitHub. O runner executou CRC/SHA/inventário/renderização nativa; **ZIP/EXE/capturas Windows não foram baixados ou inspecionados localmente**, pois `api.github.com` continua bloqueado nesta instância. Não se afirma revisão visual humana no Windows. O evento nativo de push solicita apenas o build, sem relay de API ou mudança da política cloud.
+
+**Candidato pronto para revisão, não publicado.** `release_eligible:true` e `diagnostic_only:false` são resultados do builder, não autorização de publicação. Publish approved Windows Release permanece exclusivamente manual, exige proprietário e versão/SHA/run/frase exatos e verifica a solicitação no commit de origem. A versão será **Pre-release** se posteriormente autorizada. Nenhuma tag, draft ou GitHub Release foi criada nesta tarefa; o fluxo de publicação está configurado/testado por contratos, **não executado**.
+
+Limitações: sem Authenticode; Windows 10/hardware de 8 GB, acessibilidade, DPI e ACLs manuais pendentes. Inferência Qwen/oito gerações, voz física/STT/TTS, ativação “Now”, bandeja/background, visão e Android não foram aprovados. O modelo continua separado e nenhuma chamada Gemini foi usada na validação desktop/Engine. Instruções: `docs/GITHUB_DISTRIBUTION.md` e `packaging/releases/INSTALL-WINDOWS.md`.
+
+As seções seguintes preservam a cronologia; bloqueios antigos não substituem o resultado atual acima.
+
 ## Preparação explícita do primeiro candidato Windows — 16/11/2026
 
 Base preservada: `25efee4c39f88e8ed72f287ed61092ec3e53a643`, branch work, backup versionado local antes das alterações. A entrada nativa de push de `packaging/releases/alpha-request.json` foi adicionada a Prepare Windows Alpha; a entrada manual permanece. A solicitação vincula versão, revisão da logo e SHA do PNG original e proíbe publicação. O workflow permanece somente de leitura. O publicador manual mantém a aprovação exata por versão/SHA/run e passa a conferir a solicitação no commit de origem de candidatos preparados por push. Não há relay de API, alteração da política de rede, publicação por push ou extração de credenciais.

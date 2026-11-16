@@ -4,7 +4,9 @@ Assistente pessoal de uso geral, com especialidade gamer. A primeira interface d
 
 ## Baixar para Windows
 
-A logo oficial já foi integrada a partir do PNG original, preservando seus bytes, cores, proporções e fundo preto. A versão `0.3.0-alpha.1` está sendo preparada para revisão nos [artefatos do workflow Prepare Windows Alpha](https://github.com/Gabomgames/Now-assistant/actions/workflows/windows-alpha.yml). O resultado atual e o link de cada build estão em [VALIDACAO.md](VALIDACAO.md). Nenhuma GitHub Release será publicada nesta preparação. O download de artifacts pode exigir login no GitHub.
+A versão **`0.3.0-alpha.1`** está disponível para revisão nos [Artifacts do build Windows 43969485511](https://github.com/Gabomgames/Now-assistant/actions/runs/43969485511#artifacts), aproximadamente 51 MB. Windows Server 2022/Python 3.12: 101 testes aprovados, um POSIX não aplicável, EXE/GUI/Engine e seis comandos offline reais aprovados. A logo oficial preserva bytes, cores, proporções e fundo preto. [Resultados, hashes e limitações](VALIDACAO.md). **Nenhuma GitHub Release foi publicada.** O download de artifacts pode exigir login no GitHub e tem retenção de 30 dias.
+
+Baixe o artifact `now-assistant-windows-0.3.0-alpha.1-cb5204041907139a8fb862e7ff6a557dec53df24-attempt-1`, extraia-o e depois extraia toda a pasta de `NOW-Assistant-0.3.0-alpha.1-Windows-x64.zip`. Abra `NOW-Assistant.exe` mantendo `_internal`. Não precisa instalar Python nem VS Code.
 
 Quando uma versão for aprovada, o ZIP ficará em [GitHub Releases](https://github.com/Gabomgames/Now-assistant/releases): extrair a pasta inteira e abrir `NOW-Assistant.exe`, **sem instalar Python ou VS Code**. Python/Qt acompanham a pasta; Ollama/pesos Qwen são separados. [Instalação e requisitos para usuários](packaging/releases/INSTALL-WINDOWS.md).
 

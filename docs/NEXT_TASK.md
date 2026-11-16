@@ -1,5 +1,17 @@
 # Continuar em uma nova tarefa Codex
 
+## Ponto atual — candidato Alpha Windows disponível
+
+**Prepare Windows Alpha [43969485511](https://github.com/Gabomgames/Now-assistant/actions/runs/43969485511)** concluiu Success; fonte **`cb5204041907139a8fb862e7ff6a557dec53df24`**, branch work. Usar HEAD mais recente sem resetar: commits posteriores de relatório não alteram o código desse build. Windows Server 2022/Python 3.12.10: **102 casos, 101 aprovados, um POSIX não aplicável**, zero falhas/erros. EXE PyInstaller abriu Qt `windows`, logo/ICO, Engine própria e seis comandos offline PT-BR/EN reais. ZIP/CRC/SHA/inventário/licenças/inspeção de arquivos privados passaram no runner.
+
+Artifact de revisão, ~51 MB/30 dias: `now-assistant-windows-0.3.0-alpha.1-cb5204041907139a8fb862e7ff6a557dec53df24-attempt-1`. ZIP `NOW-Assistant-0.3.0-alpha.1-Windows-x64.zip`, SHA-256 `33de53c1235504e5dc125b44a13ee13bc9ecb77fb22b2d0f8b2755fd6c33efe7`. É candidato Alpha real, `release_eligible:true`, `diagnostic_only:false`; a autorização de Release continua **ausente**. Nenhuma tag/draft/Release foi criada. Não invocar o publicador sem aprovação explícita posterior para versão/SHA/run.
+
+A nova entrada de build por push é limitada à alteração de `packaging/releases/alpha-request.json`, proprietário e work. Não muda rede nem usa Actions como proxy de API. Conferência de versão, logo e SHA exato da solicitação: `732f882054badc1077e59b83c6c026c7126251f6ca8d24a6a05c7ee5e6e81518`, igual no commit e no relatório Windows. `.gitattributes` evita LF/CRLF; o primeiro run 43969162346 foi substituído por essa correção, sem relaxar a conferência. O modo manual de preparação permanece. Publicação continua manual com frase exata e verifica a solicitação no commit aprovado.
+
+Ler `VALIDACAO.md`, `validation/alpha-candidate-20261116.json`, `docs/GITHUB_DISTRIBUTION.md` e notas/guia em `packaging/releases`. Linux: 102 aprovados/zero skips; os quatro novos casos são fixtures de gates, separados da execução Windows. O Git/site público funcionam, mas `api.github.com` segue bloqueado nesta instância: os artifacts/capturas Windows não foram baixados ou inspecionados localmente. O usuário pode baixá-los com login no site GitHub.
+
+O consumidor extrai a pasta completa e executa sem Python/VS Code. Ollama/Qwen separados; oito gerações e naturalidade não executadas. Authenticode, Windows 10/hardware alvo/DPI/acessibilidade/ACLs manuais, voz física/wake/background/Android continuam pendentes. Próximo passo: revisão do candidato pelo usuário; somente depois de autorização concreta publicar como Pre-release pelo fluxo manual. As seções abaixo são históricas.
+
 ## Preparação por solicitação explícita — 16/11/2026
 
 Foi acrescentada uma entrada de **build**, sem publicação: push na work alterando `packaging/releases/alpha-request.json` executa Prepare Windows Alpha, com validação de proprietário, revisão da logo, versão e SHA dos bytes da solicitação. O modo manual permanece disponível. Git/Actions são usados normalmente; a instância cloud não recebe acesso à API por esse fluxo. O publicador continua manual e exige autorização exata para versão/SHA/run, além de conferir a solicitação no commit de origem quando o candidato veio de push.

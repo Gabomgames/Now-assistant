@@ -1,0 +1,172 @@
+{
+  "schema": "now-alpha-validation-v1",
+  "version": "0.3.0-alpha.1",
+  "baseline_commit": "25efee4c39f88e8ed72f287ed61092ec3e53a643",
+  "branch": "work",
+  "source_sha": "cb5204041907139a8fb862e7ff6a557dec53df24",
+  "windows_alpha": {
+    "schema": "now-alpha-observation-v1",
+    "checked_at_utc": "2026-11-16T22:26:48.445393+00:00",
+    "run_id": "43969485511",
+    "url": "https://github.com/Gabomgames/Now-assistant/actions/runs/43969485511",
+    "conclusion": "success",
+    "duration": "3m 57s",
+    "observed_annotation": {
+      "packaged_build": "actual_windows_smoke_passed",
+      "release_published": false,
+      "source_sha": "cb5204041907139a8fb862e7ff6a557dec53df24",
+      "unit_tests": {
+        "system": "Windows",
+        "python_version": "3.12.10",
+        "tests_run": 102,
+        "passed": 101,
+        "failures": 0,
+        "errors": 0,
+        "skipped": [
+          {
+            "test": "tests.test_memory.MemoryTests.test_vault_permissions_are_owner_only",
+            "reason": "POSIX permission check"
+          }
+        ],
+        "status": "passed"
+      },
+      "failed_tests": [],
+      "error_tests": [],
+      "version": "0.3.0-alpha.1",
+      "release_eligible": true,
+      "diagnostic_only": false,
+      "branding": {
+        "status": "official_original_verified",
+        "verified": true,
+        "original": "original.png",
+        "original_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+        "icon_sha256": "a6f4af3370d657e14df8b685176c512980a3549640a0408c8542d26a2db73d59",
+        "display_sha256": "1595f76e71f34d786941c04b8271299fa4d35382871c316fa20280b3eca116df"
+      },
+      "executable_sha256": "de6a4d90dfb8362c0a0a7111dc58a7b3485ed10d1afd792109324dc726072f30",
+      "frozen_executable": true,
+      "qt_platform": "windows",
+      "actual_offline_commands": 6,
+      "weights_included": false,
+      "model_inference_tested": false,
+      "digital_signature": "not_signed",
+      "preparation_request": {
+        "request_id": "6f8b0545-5ed9-426e-9c52-7d84a44942b0",
+        "sha256": "732f882054badc1077e59b83c6c026c7126251f6ca8d24a6a05c7ee5e6e81518",
+        "publication_authorized": false
+      },
+      "zip_sha256": "33de53c1235504e5dc125b44a13ee13bc9ecb77fb22b2d0f8b2755fd6c33efe7  NOW-Assistant-0.3.0-alpha.1-Windows-x64.zip"
+    },
+    "committed_request_sha256": "732f882054badc1077e59b83c6c026c7126251f6ca8d24a6a05c7ee5e6e81518",
+    "request_matches_committed_bytes": true,
+    "artifact_name": "now-assistant-windows-0.3.0-alpha.1-cb5204041907139a8fb862e7ff6a557dec53df24-attempt-1",
+    "artifact_size_observed": "51 MB",
+    "artifact_wrapper_digest": "26ede53d4ed3a6970fda2dd7c10b6cae54d4fc6c331a9c1d7c1f9fec8f6ef006",
+    "artifact_retention_days": 30,
+    "evidence_scope": "Public native GitHub run status and structured annotations. CRC, SHA, inventory, PE icon and Qt GUI/Engine checks executed by the native Windows builder. Artifact, EXE and Windows screenshots not downloaded or locally inspected. No human Windows visual QA claimed.",
+    "publication_authorized": false,
+    "release_published_by_this_task": false
+  },
+  "linux_tests": {
+    "schema": "now-tests-v1",
+    "checked_at_utc": "2026-11-16T22:22:37.517624+00:00",
+    "system": "Linux",
+    "python_version": "3.12.14",
+    "source_sha": "5a96c7dccc8482fb152e68eee0514592bf3eeb42",
+    "tests_run": 102,
+    "passed": 102,
+    "failures": 0,
+    "errors": 0,
+    "failed_tests": [],
+    "error_tests": [],
+    "skipped": [],
+    "unexpected_skips": [],
+    "real_gui_tests_passed": 10,
+    "real_http_tests_passed": 6,
+    "status": "passed",
+    "scope": "Includes model/audio doubles and synthetic release-gate metadata/ZIP fixtures; native packaged smoke is separate. No model/physical audio approval."
+  },
+  "linux_tests_scope": "Full suite executed in the working tree immediately before cb52040; report records parent HEAD 5a96c7d. Pending changes were the byte-preserving attribute, request ID and docs. Native Windows suite separately tested committed cb52040.",
+  "windows_checkout_filter_check": {
+    "actual_git_filter_check": true,
+    "autocrlf": true,
+    "blob_matches_windows_filter": true,
+    "prior_request_sha256": "ce35f814e2b47143a2c9bc545312a29f38ad99b19d30c1b00703b34b5a6e362d",
+    "new_request_id": "6f8b0545-5ed9-426e-9c52-7d84a44942b0",
+    "new_request_sha256": "732f882054badc1077e59b83c6c026c7126251f6ca8d24a6a05c7ee5e6e81518"
+  },
+  "superseded_first_preparation": {
+    "schema": "now-alpha-observation-v1",
+    "checked_at_utc": "2026-11-16T22:24:44.491604+00:00",
+    "run_id": "43969162346",
+    "url": "https://github.com/Gabomgames/Now-assistant/actions/runs/43969162346",
+    "conclusion": "success",
+    "duration": "3m 8s",
+    "observed_annotation": {
+      "packaged_build": "actual_windows_smoke_passed",
+      "release_published": false,
+      "source_sha": "5a96c7dccc8482fb152e68eee0514592bf3eeb42",
+      "unit_tests": {
+        "system": "Windows",
+        "python_version": "3.12.10",
+        "tests_run": 102,
+        "passed": 101,
+        "failures": 0,
+        "errors": 0,
+        "skipped": [
+          {
+            "test": "tests.test_memory.MemoryTests.test_vault_permissions_are_owner_only",
+            "reason": "POSIX permission check"
+          }
+        ],
+        "status": "passed"
+      },
+      "failed_tests": [],
+      "error_tests": [],
+      "version": "0.3.0-alpha.1",
+      "release_eligible": true,
+      "diagnostic_only": false,
+      "branding": {
+        "status": "official_original_verified",
+        "verified": true,
+        "original": "original.png",
+        "original_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+        "icon_sha256": "a6f4af3370d657e14df8b685176c512980a3549640a0408c8542d26a2db73d59",
+        "display_sha256": "1595f76e71f34d786941c04b8271299fa4d35382871c316fa20280b3eca116df"
+      },
+      "executable_sha256": "51edbfe608aa8a3eb1ba78e16e81db1c5c87c3c4c58f7cef5aa0eef6e222a36b",
+      "frozen_executable": true,
+      "qt_platform": "windows",
+      "actual_offline_commands": 6,
+      "weights_included": false,
+      "model_inference_tested": false,
+      "digital_signature": "not_signed",
+      "preparation_request": {
+        "request_id": "0e844411-a9e2-4eb5-963d-637c7e2de1e2",
+        "sha256": "4a96ae6811fbac7cfdc93164f613e7e97b17274507565b6297bf923920644bab",
+        "publication_authorized": false
+      },
+      "zip_sha256": "64699cac4cbe0b62f58ba54d11067f430272b37f2f4c180cfde4470310be0bdb  NOW-Assistant-0.3.0-alpha.1-Windows-x64.zip"
+    },
+    "committed_request_sha256": "ce35f814e2b47143a2c9bc545312a29f38ad99b19d30c1b00703b34b5a6e362d",
+    "request_matches_committed_bytes": false,
+    "candidate_selection": "superseded_by_cb5204041907139a8fb862e7ff6a557dec53df24",
+    "reason": "Windows autocrlf changed request bytes; publisher provenance would reject this first build. The comparison was preserved and a -text attribute fixed the next build.",
+    "artifact_name": "now-assistant-windows-0.3.0-alpha.1-5a96c7dccc8482fb152e68eee0514592bf3eeb42-attempt-1",
+    "artifact_size_observed": "51 MB",
+    "artifact_wrapper_digest": "1e6d174ecfb70ff37ccd91b65631f7c9d8af7cf447faed212bc88950fd9a06b8",
+    "evidence_scope": "Observed public native GitHub run status and structured annotations. Artifact and Windows screenshots not downloaded or locally inspected.",
+    "publication_authorized": false,
+    "release_published_by_this_task": false
+  },
+  "previous_98_tests_preserved": true,
+  "official_logo_original_preserved": true,
+  "release_publication_workflow": "manual only; exact owner authorization for version/source SHA/run required; not invoked",
+  "tag_or_draft_created_by_this_task": false,
+  "github_release_published_by_this_task": false,
+  "ollama_and_weights_included": false,
+  "model_inference_executed": false,
+  "physical_audio_executed": false,
+  "manual_windows_10_hardware_accessibility_acl": "pending",
+  "digital_signature": "not_signed"
+}
