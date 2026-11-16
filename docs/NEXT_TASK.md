@@ -1,5 +1,31 @@
 # Continuar em uma nova tarefa Codex
 
+## Ponto atual — NOW Assistant V3 desktop
+
+Continuar do HEAD mais recente de `work`, descendente de `6cdb0c72fd2b70af118df1f41dda6f9e260db047`; não voltar a esse SHA nem a `5caadce`. O SHA da entrega e confirmação de push ficam na resposta da tarefa e em `git log`/`git ls-remote`. A especificação integral está em `docs/specs/NOW_ASSISTANT_V3.txt`. Os relatórios anteriores abaixo são históricos.
+
+Entrega de texto: `python -m now_desktop` abre GUI PySide6, inicia uma Engine autenticada própria e usa comandos reais offline PT-BR/EN. `now_history` guarda conversas com senha/consentimento; `now_memory` continua separado. Instalar `requirements-desktop.txt` além das dependências antigas, ou usar o ambiente mínimo sem Google. A suíte atual executou **86 testes**: 55 anteriores e 31 novos. GUI/API/SQLite reais em Linux offscreen; doubles antigos de áudio/modelo continuam identificados e não aprovam inferência/áudio.
+
+```bash
+cd /workspace/Now-assistant
+git status --short
+git branch --show-current
+git log -1 --oneline
+.venv/bin/python -m pip install -r requirements-desktop.txt
+QT_QPA_PLATFORM=offscreen XDG_CACHE_HOME=/workspace/.cache .venv/bin/python -m unittest discover -v
+```
+
+Não criar cofres, senhas, gravações ou permissões no setup. A GUI padrão não cria banco; não abrir dados privados para fazer screenshots. Instalação do ambiente salva deve incluir Qt e sua suíte, sem modelo/ML obrigatório. `pip==26.3` corrige os alertas do pip originalmente fornecido. Os constraints existentes continuam aplicados. Os testes Windows precisam de Python 3.12 x64 real; Linux offscreen não é equivalente.
+
+Próximas dependências e entregas:
+
+1. **Logo:** imagem inline foi visível, porém seu arquivo não estava entre os anexos locais. Solicitar o PNG/JPG/WebP original como arquivo. Manifest segue `awaiting_original_file`; não usar imagem sintética da suíte. Importar com `tools/import_branding.py`, preservar bytes/SHA e revisar tamanhos visualmente. Sem esse arquivo, o build de release recusa prosseguir.
+2. **Windows:** seguir `docs/DESKTOP_WINDOWS.md`. A ferramenta `tools/build_desktop_windows.py` está preparada; apenas sua recusa correta em Linux foi executada. Realizar build, smoke empacotado, revisão de licenças Qt, GUI/cofres/ACL/DPI/acessibilidade e consumo em Windows 10/8 GB. Não existe EXE validado nesta máquina.
+3. **Qwen:** runtime revisão 1 com rede restrita aplicada ainda exclui `registry.ollama.ai`; GET do manifesto e pull real continuam 403/Forbidden. O rascunho contém a regra, sem aplicação comprovada. Ferramentas não oferecem aplicação direta. Revisar/salvar/publicar configuração no painel, selecionar versão em nova tarefa e confirmar política efetiva antes de tentar novo download. Não contornar proxy/TLS nem repetir pulls sem mudança. Zero pesos instalados, zero das oito gerações reais executadas.
+4. **Voz:** reutilizar contratos `now_voice`, depois implementar e testar microfone → STT → Engine → TTS → saída real. Sem botões de fachada. Wake “Now”, bandeja e startup opt-in vêm depois; falsa ativação/eco exigem hardware real.
+
+Relatórios e limites: `VALIDACAO.md`, `validation/desktop-v3-20261116.json`, `validation/desktop-dependencies-20261116.json`, `docs/DESKTOP_ARCHITECTURE.md`. Capturas compartilháveis só dos comandos artificiais de teste sem dados privados. A publicação/restauração do ambiente em nova tarefa não está comprovada por um rascunho salvo.
+
 ## Incremento de voz e memória
 
 O projeto agora inclui `now_memory` (preferências criptografadas opt-in), `now_voice` (controlador/contratos/plano de fala) e `now_engine.assistant` (adaptador local adicional). Instalar também `requirements-memory.txt` antes da suíte completa. A referência de origem deste incremento é `5caadce`; obter a revisão atual com Git, sem resetar para a referência de origem.

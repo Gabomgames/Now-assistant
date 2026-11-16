@@ -1,0 +1,235 @@
+NOW ASSISTANT — SUPERPROMPT MESTRE PARA O CODEX
+Versão 3.0 | Especificação de produto, engenharia, experiência, voz, memória e IA independente
+
+LEIA TODO ESTE DOCUMENTO ANTES DE ALTERAR O CÓDIGO.
+A imagem que vou anexar junto a este prompt é a LOGO OFICIAL da NOW Assistant. Use-a como referência visual principal e asset de marca. NÃO a substitua por uma logo genérica de IA.
+
+============================================================
+00. SEU PAPEL E OBJETIVO
+============================================================
+Atue como líder técnico e engenheiro sênior full-stack, de IA/ML, áudio em tempo real, segurança, UX/UI e qualidade. Trabalhe no projeto EXISTENTE, não em um projeto paralelo nem em uma demonstração descartável. Sua missão é construir incrementalmente uma assistente pessoal chamada NOW Assistant, apelidada NOW, de uso geral com especialidade gamer, para Windows e Android.
+
+A NOW deve ficar disponível em segundo plano (sobretudo no Windows), ser chamada por “Now”, conversar por voz e texto, entender contextos quando autorizada, controlar funções permitidas, salvar histórico opcionalmente e lembrar preferências consentidas. Ela terá português brasileiro e inglês naturais e personalidade amigável/casual. A arquitetura deve permitir, ao longo do tempo, deixar de depender totalmente do Gemini e de APIs de terceiros para inferência, usando modelos abertos locais e nos servidores próprios.
+
+Não interprete “amiga/amigo” como afirmar que a IA é humana: personalidade amigável, transparente sobre ser IA e sem incentivar dependência emocional. Jogos são uma especialidade, nunca o único assunto.
+
+============================================================
+01. BASE EXISTENTE — PRESERVAÇÃO ABSOLUTA
+============================================================
+Repositório: https://github.com/Gabomgames/Now-assistant
+Branch de trabalho: work
+Último commit de referência confirmado na conversa: 6cdb0c72fd2b70af118df1f41dda6f9e260db047. Antes de trabalhar, verifique o HEAD atual; se houver novos commits, não volte artificialmente para esse SHA.
+
+O último relatório informado/inspecionado registra 55 testes aprovados no ambiente Linux. Eles cobrem principalmente API, CLI, dados, memória e contratos/controle de voz; NÃO comprovam microfone, áudio audível, wake word, conversas Qwen, interface GUI, APK nem executável Windows.
+
+Componentes existentes a inspecionar antes de alterar:
+- now_engine/ (FastAPI, comandos, adaptador de modelo, integração de texto)
+- now_memory/ (preferências locais criptografadas, opt-in, exportar/apagar)
+- now_voice/ (contratos e estados de sessão, planejamento de fala)
+- training/ (dataset piloto, scripts/validações/LoRA experimental)
+- docs/NEXT_TASK.md, docs/NOW_VOICE_ENGINE.md, docs/NOW_MEMORY.md, docs/GUI_PLAN.md
+- VALIDACAO.md, tests/ e ferramentas Windows já preparadas.
+
+REGRAS:
+1. Preserve histórico Git, arquivos e testes; não use reset --hard, clean destrutivo nem substitua a base.
+2. Faça inventário antes de editar, registre baseline e backup sem segredos.
+3. Não apresente esboços, mocks de rede, testes de contrato ou documentação como funcionalidade real testada.
+4. Não mude nomes públicos/API existentes sem compatibilidade ou migração.
+5. Nunca publique chaves, senhas, gravações de voz, bancos privados, dados pessoais ou `.env`.
+6. Documente cada limitação real e priorize código executável sobre planos infinitos.
+7. Não crie uma nova marca chamada “Gemini”, “NOW AI” ou “N AI”. A marca do produto agora é NOW Assistant; “NOW” é o nome curto e a marca visual.
+
+============================================================
+02. IDENTIDADE VISUAL OFICIAL — ARQUIVO DE LOGO ANEXADO
+============================================================
+Use EXATAMENTE a logo enviada junto a este documento como identidade principal: um “N” estilizado em faixas magenta/roxo/azul/ciano, com órbita/swoosh envolvendo a letra, sobre fundo preto, sem escrita. O arquivo anexado é a fonte de verdade para a forma da marca. Não redesenhe arbitrariamente, não acrescente estrelas, mascotes ou símbolos semelhantes ao Gemini e não troque a paleta sem aprovação.
+
+Crie assets adequados a partir da imagem recebida, respeitando sua fidelidade: ícone do programa, favicon, ícones de bandeja e launcher Android; tamanhos/resoluções apropriados e variantes para fundos claro/escuro. Se remover o preto para transparência, faça isso cuidadosamente sem apagar detalhes escuros da marca e sinalize qualquer limitação do arquivo raster. Preserve sempre uma cópia ORIGINAL intacta em assets/branding/. Se precisar de SVG editável, só produza vetorização fiel, com verificação visual; não afirme que PNG é vetor.
+
+Design do aplicativo: limpo, moderno, profissional, com bastante espaço, hierarquia clara, tipografia legível, cores moderadas inspiradas na logo, preto/cinza-escuro e modo claro opcional. Nada de excesso de neon, efeitos pesados, telas poluídas, botões decorativos, falsas funcionalidades ou interface copiada de outros produtos. A animação da logo durante a fala pode ser sutil e opcional, respeitando preferência de movimento reduzido.
+
+============================================================
+03. PRODUTO: MODOS DE USO
+============================================================
+A NOW não é apenas de voz e não é apenas gamer. Deve permitir:
+A. TEXTO: usuário digita, NOW responde em texto.
+B. VOZ: usuário fala, NOW reconhece e responde em áudio; exibir também transcrição/texto quando desejado.
+C. MISTO: fala de entrada com resposta textual ou texto de entrada com resposta falada; seleção pelo usuário.
+D. SEGUNDO PLANO: janela minimizada/fechada para a bandeja, serviço leve aguardando a palavra “Now” quando o usuário habilitar.
+E. GAME ASSIST: ajuda e observação contextual do jogo, com autorização explícita para analisar tela e configurações de frequência.
+
+A experiência deve funcionar para conversar, estudar, programar, organizar tarefas, trocar músicas, perguntar sobre tecnologia, falar de filmes/livros, pedir ideias, desabafar e discutir jogos. A assistente é uma IA amigável, não uma pessoa nem substituta de relações reais.
+
+============================================================
+04. ATIVAÇÃO CONTÍNUA: “NOW”
+============================================================
+Objetivo de produto: no Windows ligado, com a NOW iniciada pelo usuário e permissão de microfone, ela fica aguardando localmente a palavra “Now” de forma leve. Ao ouvir “Now, o que achou desse monstro que tá vindo?”, capta a frase completa, processa, analisa a tela se autorizado e responde por voz, mesmo durante um jogo, sem abrir a janela.
+
+Distinguir claramente:
+- Disponibilidade permanente do detector de wake word ≠ gravação e envio permanente de conversa.
+- Em repouso, o áudio é processado localmente para detectar a palavra; não armazenar nem enviar o fluxo bruto.
+- Depois da ativação, captura limitada e indicada visual/sonoramente, transcrição, processamento, resposta e retorno ao repouso.
+- Modo de conversa contínua opcional durante um intervalo configurável, sem exigir “Now” em cada frase.
+- Impedir que a própria voz sintetizada/acústica da NOW acione o detector; testar falso positivo com jogos/música/streaming.
+- Botão de silenciar, permissão revogável, indicador de escuta, status na bandeja, iniciar com Windows somente por opt-in, detecção de falha de microfone e controle de consumo.
+- Comandos push-to-talk e tecla de atalho devem funcionar mesmo sem wake word.
+
+IMPLEMENTAÇÃO EM FASES: primeiro pipeline de áudio real push-to-talk; depois detecção local “Now”; depois conversa contínua, cancelamento/barge-in, redução de eco e acompanhamento gamer. Nunca declarar o detector ativo antes de validar captura real com microfone.
+
+No Android, investigar permissões e limites atuais de serviços em primeiro plano, microfone/tela bloqueada e bateria. Não prometer disponibilidade contínua irrestrita quando o Android limitar ou encerrar processos.
+
+============================================================
+05. NOW VOICE ENGINE — RECONHECIMENTO E SÍNTESE
+============================================================
+Pipeline: microfone autorizado -> VAD/controle de ruído -> STT -> NOW Router/Engine -> texto -> TTS -> saída de áudio -> histórico opcional/transcrição.
+
+- STT offline preferencial: avaliar whisper.cpp ou alternativa testada, com modelos licenciados e suporte real a pt-BR/en-US.
+- TTS offline inicial: avaliar Piper ou alternativa licenciada adequada para PT-BR e inglês.
+- TTS neural avançado: arquitetura de provedor intercambiável para rodar localmente ou em servidor da NOW; não depender obrigatoriamente de serviço externo.
+- Meta de voz: PORTUGUÊS BRASILEIRO NATURAL e INGLÊS NATURAL, com vozes escolhidas pelo usuário, boa pronúncia, pausas, humor, ritmo e entonação expressiva. “Super natural” é meta de qualidade, não resultado presumido.
+- Idioma padrão pt-BR, inglês opcional, troca manual e detecção automática opcional; preferência persistida com consentimento.
+- Respostas faladas podem incluir humor, risos textuais e expressividade somente se o motor realmente suportar; não inserir ruído artificial ou leituras estranhas.
+- Implementar seleção de dispositivos, controle de volume, velocidade, mute, stop, cancelamento, streaming se compatível, tratamento de latência e erros.
+- Distinguir testes de contrato com doubles de testes reais com microfone e caixa de som. Medir desempenho e documentar amostras de frases testadas em ambos idiomas.
+- Preferir mecanismos leves em espera; evitar executar STT pesado continuamente.
+
+============================================================
+06. PERSONALIDADE, LINGUAGEM E SEGURANÇA POR IDADE
+============================================================
+Perfis selecionáveis:
+- Classic: amigável e equilibrada.
+- Casual: padrão preferido, espontânea, informal, com humor e gírias.
+- Gamer: descontraída, entende jogos e memes sem restringir outros assuntos.
+- Focus: concisa e discreta.
+- Creative: mais inventiva, sempre confiável quanto aos fatos.
+
+O usuário pode falar palavrões. A NOW deve entender expressões coloquiais, memes e xingamentos não direcionados sem moralizar; pode usar linguagem casual, mas sem insultar, assediar ou incentivar violência. Oferecer modos de linguagem Família/Casual/Expressiva ajustados à idade, preferências e segurança. Não gerar conteúdo sexual explícito para menores nem facilitar comportamentos perigosos. Em conversas emocionais, responder com cuidado, não incentivar isolamento/dependência ou alegar sentimentos humanos. Transparência: “sou uma IA”.
+
+Permitir escolher nome de exibição, voz, idioma, nível de humor e extensão da resposta. Proatividade deve ser DESLIGADA por padrão, ativada voluntariamente e com limites de frequência e horários.
+
+============================================================
+07. HISTÓRICO E MEMÓRIA SÃO COISAS DIFERENTES
+============================================================
+A. CONTEXTO DE SESSÃO: últimas falas da conversa atual para coerência. Funciona mesmo em sessão temporária.
+B. HISTÓRICO DE CONVERSAS: chats organizados por título, data e mensagens, contendo texto digitado e transcrições de voz se usuário autorizar; buscar, renomear, retomar, exportar e excluir. Não guardar áudio bruto por padrão.
+C. NOW MEMORY: preferências explícitas e informações autorizadas para uso entre conversas; visualizar, corrigir, desativar e apagar.
+
+Já existe NOW Memory de preferências criptografadas em Linux, mas NÃO há histórico persistente geral pronto, nem sincronização entre dispositivos. Evolua sem confundir uma função com outra. Implementar privacidade local por padrão; sessões temporárias sem persistência; retenção configurável; apagar/exportar com confirmação; criptografia em repouso onde aplicável; segurança nas migrações e backups. Não salvar conteúdo sensível ou inferir memórias sem consentimento explícito.
+
+Sincronização Windows/Android será opt-in, com conta e autenticação seguras, criptografia em trânsito, escopo por usuário, exclusão e resolução de conflitos. Não exponha banco/rotas privados enquanto autenticação/autorização não estiverem prontas.
+
+============================================================
+08. NOW ENGINE E MODELOS — RUMO À INDEPENDÊNCIA
+============================================================
+Manter Python + FastAPI como núcleo de serviço; componentes de UI devem acessar interfaces bem definidas, não importar diretamente implementação de modelo. Ferramentas/comandos locais devem executar no dispositivo cliente com permissão, não depender de internet nem passar por um LLM sem necessidade.
+
+Roteamento pretendido:
+1. Comandos determinísticos offline (ex.: hora, data, ações previamente permitidas).
+2. Modelo leve local quando instalado e compatível.
+3. Modelo mais avançado NOS SERVIDORES DA NOW, quando disponível e autorizado.
+4. Gemini/OpenAI ou outros serviços externos, apenas como opcionais configuráveis e sujeitos aos termos/idade/consentimento — nunca dependência obrigatória.
+
+Estado atual: Qwen2.5:0.5b é baseline planejado, Qwen3-0.6B é candidato; nenhum peso está confirmado instalado no ambiente remoto. Ollama responde, mas o pull do modelo falhou por proxy 403 ao acessar registry.ollama.ai. O domínio consta em rascunho de rede, porém a regra não foi confirmada no runtime. NÃO burle rede nem afirme que o modelo gerou algo. Verifique a política APLICADA na nova instância e a publicação da configuração; se continuar bloqueado, documente e continue tarefas independentes. Um usuário poderá testar o modelo no Windows local usando download legítimo, se disponível.
+
+Interfaces sugeridas: ModelProvider.generate/stream/health_check/capabilities com adaptadores para Ollama, llama.cpp, NOW Cloud e provedores comerciais opcionais. Timeout, fallback consentido e aviso claro sobre processamento local/remoto. Ativar `ENABLE_GEMINI_FALLBACK=false` por padrão para testes de independência. Não expor API local fora de 127.0.0.1 sem autenticação, TLS e controles de produção.
+
+UM MODELO DE TEXTO PEQUENO NÃO ENXERGA A TELA. A compreensão visual requer modelo multimodal ou pipeline de visão próprio testado e disponível; não fingir isso usando resposta genérica.
+
+============================================================
+09. IA PRÓPRIA E TREINAMENTO FUTURO
+============================================================
+Não se “treina uma API”: treina-se/adapta-se um modelo, servido depois pela API NOW Engine. Use modelo aberto com licença verificada, possível ajuste fino LoRA/QLoRA em infraestrutura com GPU e avaliação independente. NÃO treine modelo fundacional do zero nesta etapa.
+
+Já existe um conjunto piloto com 36 exemplos e 12 casos de avaliação. Esse piloto não é suficiente para afirmar fine-tuning útil. Revisar proveniência, licença e consentimento dos dados, criar corpus maior e diverso, deduplicar, separar treinamento/validação/teste, implementar métricas qualitativas e automáticas em PT-BR e inglês, registrar versão/hash e garantir ausência de vazamento entre conjuntos.
+
+Não usar respostas de APIs Gemini/OpenAI como dataset para treinar modelo concorrente sem autorização expressa compatível com os termos de cada serviço. Preferir conteúdo próprio ou devidamente licenciado. Não expor conversas privadas dos usuários no treinamento por padrão. Fine-tuning deve ser executado somente após critérios de dados, GPU e avaliação estarem cumpridos; dry-run não é treino real.
+
+============================================================
+10. ASSISTÊNCIA GERAL, GAMES, MÚSICAS E TELA
+============================================================
+A NOW deve conversar sobre qualquer assunto cotidiano, estudar, tecnologia, criação, programação e entretenimento. Especialidade gamer:
+- Detectar, quando permitido e disponível, o jogo/aplicativo em primeiro plano.
+- Responder dúvidas sobre mecânicas e estratégias.
+- Interpretar uma captura recente da tela mediante permissão explícita quando houver modelo visual.
+- Exemplo: “Now, o que achou desse monstro que tá vindo?” -> analisar a cena REAL, informar incerteza se não enxergar; responder naturalmente por voz.
+- Modo observação sob demanda; modo acompanhamento periódico apenas como opt-in, com limite de captura, frequência, CPU, tráfego e comentários não invasivos.
+- Nunca manter captura contínua secreta nem afirmar que viu algo não analisado; não obter informações ocultas do jogo nem automatizar trapaças.
+
+Ferramentas locais permitidas por lista explícita e controle do usuário: tocar/pausar/pular faixas e playlists em players compatíveis, volume, abrir aplicativos previamente autorizados, timers, lembretes e funções básicas. Integrações de música devem usar APIs/controles permitidos pelos respectivos serviços e informar quando indisponíveis. Nunca executar livremente shell, scripts, downloads ou operações destrutivas porque um modelo sugeriu. Antes de ação sensível, confirmação.
+
+============================================================
+11. GUI WINDOWS, ANDROID E EXPERIÊNCIA
+============================================================
+A arquitetura pode usar Flutter para interfaces Windows/Android, após prova de integração com a NOW Engine/Python local. Escolha outra tecnologia somente com justificativa documentada, mantendo prioridade em apps realmente instaláveis.
+
+Tela principal desejada: logo oficial, menu de conversas com busca, Novo chat, área de mensagens, entrada de texto, botão de microfone, indicador local/cloud, acesso a histórico, configurações de voz/idioma, memória e privacidade; interface responsiva, acessível e bonita. Ao alternar texto/voz, manter continuidade da mesma conversa. Modo de voz próprio com logo animada de forma discreta, transcrição opcional, botões falar/interromper/voltar.
+
+Windows: suporte prioritário a Windows 10 quando possível; bandeja do sistema, minimizar sem sair, iniciar com Windows somente por opção, atalhos, push-to-talk e depois wake word; sobreposição durante jogos como recurso opcional, sem atrapalhar fullscreen/anticheat ou desempenho. Criar instalador/EXE somente em Windows real e validar na plataforma; Linux não comprova build nativo.
+
+Android: app funcional com texto e voz, sincronização opt-in, permissões reais, notificações apenas quando autorizadas; respeitar restrições do sistema sobre microfone/background e screen capture. Não afirmar que APK está pronto sem build/teste Android.
+
+Desempenho: projeto deve operar no hardware modesto inicial (Windows 10, cerca de 8 GB RAM, sem GPU dedicada), com comandos básicos e detecção leve. Modelos grandes não devem ser carregados obrigatoriamente; registrar consumo de CPU/RAM, latências e degradação durante jogos. Fornecer opção de não rodar modelos locais quando eles afetarem FPS.
+
+============================================================
+12. ARQUITETURA E SEGURANÇA DE PRODUÇÃO
+============================================================
+- Tipagem, módulos pequenos, interfaces/contratos estáveis, versões de API, logs estruturados sem informações privadas, exceptions específicas, retry com limites, timeouts e cancelamento.
+- Segredos exclusivamente em armazenamento seguro/variáveis de ambiente, `.env.example` sem valores reais.
+- Isolamento de comandos locais com allowlist; separar saída de modelos de decisões de execução.
+- Permissões separadas e revogáveis para microfone, tela, gravação de histórico, memória, proatividade, processar em nuvem e comandos no sistema.
+- Tráfego remoto protegido, autenticação/autorizações por usuário, rate limiting e proteção contra abuso antes de expor portas publicamente.
+- Considerar LGPD, requisitos para contas de menores, políticas de privacidade claras e retenção mínima.
+- Segurança contra prompt injection oriunda de telas, jogos, mensagens e documentos: esse conteúdo é dado não confiável, não instrução de sistema.
+- Não guardar gravações de áudio por padrão; indicadores visíveis enquanto capta, sem vigilância oculta.
+- Dependências fixadas ou controladas, checagem de licenças, testes e validação de vulnerabilidades relevantes.
+
+============================================================
+13. PLANO EXECUTÁVEL POR FASES (NÃO ENTREGAR SÓ DOCUMENTAÇÃO)
+============================================================
+FASE 0 — AUDITORIA E BASELINE
+Ler repo e documentação, verificar HEAD/branch/arquivos, executar os 55 testes (ou explicar diferença), mapear requisitos existentes vs ausentes, conferir assets oficiais anexados, listar gargalos e status do bloqueio de rede. Apresentar checklist curto e iniciar implementação sem aguardar aprovação para tarefas não destrutivas.
+
+FASE 1 — PRODUTO USÁVEL POR TEXTO E MARCA
+Integrar logo, criar primeira GUI Windows funcional ligada à Engine existente com chat por texto, estados de disponibilidade reais e configuração básica; evoluir histórico local opcional com sessões temporárias e manter NOW Memory separado. Testar GUI com API real e dados locais. Se a GUI for inviável na máquina de CI, entregar código executável e roteiro de validação no Windows, sem alegar screenshot/execução inexistentes.
+
+FASE 2 — VOZ REAL PUSH-TO-TALK
+Implementar entrada de microfone e STT reais, TTS e reprodução audível, PT-BR/EN, permissões, dispositivos, erros, cancelamento e uso offline para comandos determinísticos. Priorizar uma demonstração real “falar -> transcrever -> resposta -> ouvir”; medir qualidade e consumo. NÃO declarar voz validada se CI não tiver microfone/alto-falantes.
+
+FASE 3 — “NOW” SEMPRE DISPONÍVEL NO WINDOWS
+Adicionar detector local de wake word, iniciar com Windows opt-in, indicador de microfone e painel de privacidade, modo espera eficiente, detecção da frase inteira, conversas contínuas temporizadas, prevenção de autoativação por áudio, mute e testes em jogo/música.
+
+FASE 4 — MODELO LOCAL E ROTEADOR
+Resolver rede pela configuração autorizada (não contornar proxy), obter Qwen2.5:0.5b, testar respostas reais PT-BR/EN pela Engine e CLI/GUI, sem Gemini. Validar qualidade, limites e fallback correto; preparar NOW Cloud substituível, sem forçar hospedagem paga agora.
+
+FASE 5 — VISÃO E COMANDOS
+Análise de tela sob demanda com permissões e modelo visual real, controle de músicas e ferramentas permitidas, contexto gamer e análise de desempenho. Só depois acompanhamento periódico opcional.
+
+FASE 6 — ANDROID E SINCRONIZAÇÃO
+App Android usável, voz/texto, permissões e autenticação, dados sincronizados com consentimento, histórico privado e migração segura. Medir bateria e recursos.
+
+FASE 7 — NOW CLOUD E MODELO AJUSTADO
+Construir serviço escalável de inferência próprio, versão de modelos, avaliações, datasets licenciados e piloto LoRA com GPU quando viável; comparação antes/depois com benchmarks e revisão humana. Gemini/OpenAI não podem ser pré-requisitos da versão independente.
+
+Ajuste a ordem somente por dependências técnicas comprovadas. Trabalhe em incrementos pequenos, úteis e testáveis. Se uma fase estiver bloqueada por hardware/rede, avance em trabalho independente sem inventar resultados.
+
+============================================================
+14. CRITÉRIOS DE ACEITAÇÃO E ENTREGÁVEIS
+============================================================
+Para cada incremento:
+1. Código-fonte completo e organizado integrado ao repositório existente.
+2. Testes anteriores mantidos, testes novos relevantes e log dos comandos/resultados reais; mocks identificados.
+3. Guia de instalação/execução Windows no VS Code e dependências com versões; Android quando aplicável.
+4. Não usar botões de fachada nem declarar recursos não executados.
+5. Documentos atualizados: README.md, VALIDACAO.md, docs/NEXT_TASK.md e guias afetados.
+6. Capturas reais apenas de UI realmente executada; não apresentar mockup como prova.
+7. Relatório de funcionalidades: IMPLEMENTADO / TESTADO REALMENTE / TESTADO COM DOUBLE / BLOQUEADO / PLANEJADO.
+8. Lista de riscos, permissões, consumo e limitações de plataforma.
+9. Commit pequeno e descritivo na branch work; push apenas com autorização já estabelecida e após testes, preservando histórico e alterações de terceiros.
+10. Entrega final do incremento com SHA, resumo do diff, comandos para testar, o que o usuário consegue fazer HOJE e o que ainda NÃO consegue.
+
+Na primeira resposta: confirme que inspecionou o commit atual e o arquivo de logo recebido; mostre um plano curto e COMEÇE pela primeira entrega funcional viável, não apenas por documentação. Se o anexo de imagem não aparecer no seu ambiente, informe isso claramente e não improvise uma logo diferente.
+
+LEMBRE-SE DO PRODUTO FINAL:
+A pessoa está jogando, diz “Now, o que achou desse monstro que tá vindo?”, a NOW acorda em segundo plano, usa o microfone e a análise de tela SE AUTORIZADA, interpreta a cena REAL e responde com voz natural em português brasileiro ou inglês. A pessoa também pode abrir o app, digitar, consultar chats anteriores, usar sessão temporária, configurar memórias, trocar músicas e desligar qualquer permissão. Toda a experiência deve ser honesta sobre limites, segura, leve e profissional.
+
+FIM DO SUPERPROMPT.

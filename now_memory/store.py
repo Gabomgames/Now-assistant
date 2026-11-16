@@ -6,17 +6,15 @@ malware running as the same OS user. Exports are deliberately plaintext.
 from __future__ import annotations
 
 from datetime import datetime, timezone
-import hashlib
 import json
 import os
 from pathlib import Path
 import sqlite3
-import stat
 
 from cryptography.exceptions import InvalidTag
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 from .preferences import validate_name, validate_preferences
+from .security import CipherBox, derive_key as _derive, require_private_path as _private
 
 DATABASE = "preferences.sqlite3"
 FORMAT = "now-memory-v1"
@@ -37,20 +35,6 @@ class UnlockError(MemoryErrorBase):
 
 class IntegrityError(MemoryErrorBase):
     pass
-
-
-def _derive(passphrase, salt):
-    if not isinstance(passphrase, str) or len(passphrase.strip()) < 12 or len(passphrase.encode("utf-8")) > 1024:
-        raise ValueError("use a passphrase of at least 12 non-padding characters (maximum 1024 UTF-8 bytes)")
-    return hashlib.scrypt(passphrase.encode("utf-8"), salt=salt, n=2**17, r=8, p=1,
-                          maxmem=256 * 1024 * 1024, dklen=32)
-
-
-def _private(path):
-    if path.is_symlink():
-        raise ValueError("vault paths must not be symbolic links")
-    if os.name == "posix" and path.stat().st_mode & (stat.S_IRWXG | stat.S_IRWXO):
-        raise PermissionError("vault directory/file must be accessible only to its owner")
 
 
 def _connect(path):
@@ -75,7 +59,7 @@ class MemoryStore:
     def __init__(self, directory, connection, key):
         self.directory = Path(directory)
         self._connection = connection
-        self._aead = AESGCM(key)
+        self._cipher = CipherBox(key, FORMAT)
 
     @classmethod
     def create(cls, directory, passphrase, *, consent=False):
@@ -140,14 +124,11 @@ class MemoryStore:
         return {"initialized": True, "enabled": None, "locked": True}
 
     def _encrypt(self, name, data):
-        nonce = os.urandom(12)
-        return nonce + self._aead.encrypt(nonce, data, (FORMAT + ":" + name).encode())
+        return self._cipher.encrypt(name, data)
 
     def _decrypt(self, name, encrypted):
         try:
-            if not isinstance(encrypted, bytes) or len(encrypted) < 28:
-                raise ValueError("invalid ciphertext")
-            return self._aead.decrypt(encrypted[:12], encrypted[12:], (FORMAT + ":" + name).encode())
+            return self._cipher.decrypt(name, encrypted)
         except (InvalidTag, ValueError) as error:
             raise IntegrityError("encrypted preference authentication failed") from error
 
@@ -216,7 +197,7 @@ class MemoryStore:
 
     def close(self):
         self._connection.close()
-        self._aead = None
+        self._cipher = None
 
     def __enter__(self):
         return self

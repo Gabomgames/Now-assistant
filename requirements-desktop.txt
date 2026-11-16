@@ -1,0 +1,7 @@
+# Native desktop and local Engine; commercial AI SDKs are not required.
+-c packaging/windows/constraints-python312.txt
+fastapi==0.163.1
+uvicorn==0.54.0
+python-dotenv==1.2.4
+cryptography==50.0.2
+PySide6-Essentials==6.8.3

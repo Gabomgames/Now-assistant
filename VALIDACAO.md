@@ -1,4 +1,54 @@
-# Configuração NOW AI 0.2 — 16/11/2026
+# NOW Assistant — validação incremental
+
+## Entrega desktop V3 — 16/11/2026
+
+Especificação V3 lida integralmente (235 linhas), preservada em `docs/specs/NOW_ASSISTANT_V3.txt`, SHA-256 `7195a17c6e9da500d8873c90d42f8fe684de9da8375dc862a3a2a5f993ebb280`. O plano foi apresentado antes das alterações: GUI PySide6 ligada à Engine, texto assíncrono, estados reais, histórico opt-in e preferências separadas. Justificativa da tecnologia em `docs/DESKTOP_ARCHITECTURE.md`.
+
+### Preservação e baseline
+
+Branch `work`, HEAD inicial `6cdb0c72fd2b70af118df1f41dda6f9e260db047`, árvore inicialmente limpa e remoto correspondente. Backup dos arquivos versionados, sem `.env`/cofres privados: `/workspace/.now-ai-backups/desktop-v3-20261116T141403Z/tracked-source.zip`. Nenhum reset, clean, recriação ou remoção da base. Todos os arquivos de testes anteriores permanecem byte a byte iguais ao commit inicial.
+
+Dos nove arquivos originais do ZIP 0.2, **sete continuam byte a byte iguais**. README foi atualizado conforme pedido explícito V3, e `.gitignore` recebeu venv desktop, releases e bancos privados. Ambas as versões originais permanecem no histórico Git e no backup; os sete arquivos de código/configuração restantes não foram reescritos. `now_engine.assistant` evoluiu de forma compatível para contexto e nome atual; os primitivos de criptografia foram compartilhados sem mudar o formato Memory v1. A compatibilidade do formato antigo foi testada com um banco montado independentemente.
+
+### Resultados executados
+
+| Verificação | Resultado real e limite |
+| --- | --- |
+| Baseline antes da implementação | **55 testes**, todos aprovados em 9,100 s. |
+| Suíte final completa em venv mínimo sem Google SDK | **86 testes**, 86 aprovados, 0 ignorados, em 23,972 s. Inclui treinamento e os 55 anteriores. |
+| Reuso do install_script atualizado | Executado integralmente, código 0; **86 testes** aprovados em 26,236 s, `pip check`, validação de dados e dry-runs. Não são outros 86 testes distintos. |
+| Testes novos | 8 de histórico/compatibilidade Memory v1; 6 da API HTTP real; 9 de Qt + API/SQLite reais; 5 de estado/privacidade do controller; 3 do importador raster. |
+| GUI + API | Widgets reais via QTest: envio, idioma/nome, erro real de modelo ausente, cancelamento, limite, texto HTML não interpretado, renderização e scroll. Sem doubles de resposta nos novos testes da GUI/API. |
+| Histórico na janela | Consentimento, senha, persistir, buscar conteúdo, renomear, exportar JSON, bloquear, reabrir, erro de senha sem substituir banco, retomar, excluir e manutenção de retenção realmente executados. |
+| NOW Memory na janela | Guardar/carregar preferências, desativar, impedir carga desativada, apagar e confirmar estado real do cofre; histórico não foi criado por salvar preferências. |
+| Launcher normal | `now_desktop.__main__.main` executou seu event loop Qt, iniciou API própria, respondeu `horas` e encerrou; nenhum banco temporário criado. |
+| Smoke e capturas | Janela real **Linux/Qt offscreen**, seis comandos determinísticos: oi/horas/data e hello/time/date. Provider `offline`; nenhuma resposta generativa. Pasta local `/workspace/artifacts/NOW-Assistant-V3-FINAL-GUI`. |
+| RAM/latência observadas no smoke | Valores da execução em `validation/desktop-v3-20261116.json`: RSS de GUI/Engine e latência por comando. Não medem pico de scrypt/modelo, CPU em repouso, FPS ou Windows 10/8 GB. |
+| Dependências | Ambiente desktop mínimo instalado com versões fixadas; `pip check` aprovado. Consulta PyPI das 21 distribuições não indicou alertas após atualizar pip 25.0.1 para 26.3. Escopo não inclui auditoria completa das bibliotecas nativas Qt/OpenSSL. Licenças Qt/terceiros requerem revisão para redistribuição. |
+| Build Windows | Apenas a proteção de plataforma foi executada: recusa correta em Linux, código 2. **Nenhum `.exe` construído ou validado**. Ferramenta preparada exige logo original e revisão de ícones. |
+| Treinamento | Fontes/dados preservados; validação e dry-runs executados pelo setup. Nenhum treino, LoRA ou avaliação de respostas de modelo realizada. |
+
+Durante a implementação, o teste de exportação inicialmente selecionava o nome padrão em vez do nome solicitado; o diagnóstico confirmou exportação real para aquele nome. A automação passou a preencher o campo de arquivo e validar o destino. A inspeção das capturas também encontrou sobreposição de widgets antigos e scroll fora da última mensagem: o código foi corrigido e ganhou teste de renderização. Os resultados iniciais com falhas não foram declarados aprovados; os números acima são das execuções finais.
+
+Os testes antigos com modelos/áudio substitutos continuam sendo **TESTADO COM DOUBLE**; fixtures do controller e retângulos do importador não representam conversas/identidade visual reais. Os novos fluxos Qt/API/cofres são **TESTADO REALMENTE**, na plataforma Linux indicada. Fonte e ferramentas estão **IMPLEMENTADO**, sem aprovação automática de Windows.
+
+### Bloqueios observados
+
+- **Qwen — BLOQUEADO:** política aplicada observada atual, revisão 1, `restricted/enforced`, sem `registry.ollama.ai`. GET real falhou no túnel com `403 Forbidden`; pull real com o binário Ollama 0.40.16 retornou `Forbidden` no manifesto `https://registry.ollama.ai/v2/library/qwen2.5/manifests/0.5b`, código 1. `/api/tags` responde com lista vazia. **Zero das oito gerações reais executadas**. Nenhuma chamada Gemini, contorno de rede ou desativação de TLS.
+- **Logo — BLOQUEADO PELO ARQUIVO:** a imagem foi visível na conversa, mas não chegou como arquivo acessível nos anexos da máquina. Manifest `awaiting_original_file`; não há logo desenhada ou genérica substituta. Importador gera PNGs/ICO proporcionais preservando bytes do original quando o arquivo for fornecido. Seus testes usaram apenas retângulos temporários, não a marca oficial. A GUI usa texto NOW Assistant e paleta enquanto aguarda.
+- **Windows — PENDENTE DE PLATAFORMA:** código/build preparados, instalação e roteiro VS Code em `docs/DESKTOP_WINDOWS.md`; execução Windows, ACLs, DPI, leitor de tela, hardware alvo, licença final do bundle e EXE/instalador precisam de validação nativa.
+
+Para resolver a rede: no painel do ambiente, revisar a configuração Internet/rede restrita e confirmar o domínio **já presente no rascunho**, `registry.ollama.ai` (sem esquema/caminho), preservando os outros domínios. Salvar/aplicar a configuração pela ação disponível; publicar a versão para novas tarefas. Confirmar depois que o host aparece na política efetiva da instância. As ferramentas desta tarefa salvam rascunho e leem estado, mas não aplicam a política ao runtime. Outros hosts de blobs só podem ser identificados após liberar o manifesto. Salvar rascunho não comprova aplicação, publicação ou restauração. Não pedir chave Gemini para resolver esse bloqueio.
+
+### Próximas fases
+
+Voz real push-to-talk, STT/TTS audíveis, “Now” em segundo plano, bandeja/startup opt-in, visão, ferramentas permitidas, modos de linguagem por idade, Android/sincronização e NOW Cloud estão **PLANEJADO**, aproveitando os contratos anteriores sem anunciar captura/fala ativas. Naturalidade bilíngue, humor/entonação e contexto generativo precisam de modelo/áudio reais. Não há proatividade, microfone, tela ou nuvem habilitados pela GUI.
+
+Evidências compartilháveis (somente dados artificiais dos testes): `validation/desktop-v3-20261116.json`, `validation/desktop-dependencies-20261116.json` e `validation/desktop-v3-evidence/`. O install_script com Qt foi executado; a revisão exata salva no rascunho e o SHA enviado ao GitHub são informados na entrega final. Publicação/restauração de outra tarefa não foram realizadas nesta máquina.
+
+---
+
+## Relatórios anteriores preservados — NOW AI 0.2, 16/11/2026
 
 ## Base e preservação
 

@@ -1,6 +1,12 @@
-# Interface NOW AI — plano Windows e Android
+# Interface NOW Assistant — plano e implementação
 
-Este é um plano de produto/arquitetura. Não há aplicação Flutter, telas executáveis, APK ou nova GUI Windows construída nesta entrega.
+## Atualização V3 — 16/11/2026
+
+A primeira GUI executável está em `now_desktop`, com PySide6, API autenticada `/v2`, texto, estado real do modelo, configurações, histórico opt-in criptografado e NOW Memory separado. Foi executada com API/SQLite reais em Linux/Qt offscreen; Windows nativo, logo binária, modelo Qwen e áudio permanecem pendentes. A decisão por PySide6 e os limites estão em [DESKTOP_ARCHITECTURE.md](DESKTOP_ARCHITECTURE.md); execução no VS Code em [DESKTOP_WINDOWS.md](DESKTOP_WINDOWS.md).
+
+O plano anterior abaixo fica preservado como referência para as fases futuras. Sua preferência por Flutter/ARB não é a implementação atual: o desktop usa traduções Python PT-BR/EN e worker de armazenamento testado. Flutter/Android, permissões móveis, voz real e sincronização ainda não foram construídos.
+
+## Plano anterior preservado
 
 ## Estrutura e visual
 

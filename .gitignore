@@ -3,3 +3,8 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+.venv-desktop/
+release/
+*.sqlite3
+*.sqlite3-*
+*.sqlite3.*

@@ -1,0 +1,209 @@
+{
+  "recorded_at_utc": "2026-11-16T15:16:37.416067+00:00",
+  "baseline_commit": "6cdb0c72fd2b70af118df1f41dda6f9e260db047",
+  "branch": "work",
+  "specification_sha256": "7195a17c6e9da500d8873c90d42f8fe684de9da8375dc862a3a2a5f993ebb280",
+  "preservation": {
+    "source_only_backup": "/workspace/.now-ai-backups/desktop-v3-20261116T141403Z/tracked-source.zip",
+    "originals": [
+      {
+        "path": "requirements.txt",
+        "byte_identical": true
+      },
+      {
+        "path": "README.md",
+        "byte_identical": false
+      },
+      {
+        "path": "tests/test_core.py",
+        "byte_identical": true
+      },
+      {
+        "path": ".env.example",
+        "byte_identical": true
+      },
+      {
+        "path": "now_engine/core.py",
+        "byte_identical": true
+      },
+      {
+        "path": "now_engine/__init__.py",
+        "byte_identical": true
+      },
+      {
+        "path": "now_engine/api.py",
+        "byte_identical": true
+      },
+      {
+        "path": ".gitignore",
+        "byte_identical": false
+      },
+      {
+        "path": "main.py",
+        "byte_identical": true
+      }
+    ],
+    "preexisting_test_files_changed": [],
+    "original_readme_available_in_git": true
+  },
+  "automated_tests": {
+    "baseline": {
+      "executed": 55,
+      "passed": 55,
+      "seconds": 9.1
+    },
+    "minimal_desktop_environment": {
+      "executed": 86,
+      "passed": 86,
+      "skipped": 0,
+      "seconds": 23.972,
+      "google_sdk_present": false
+    },
+    "new_tests": {
+      "history_and_memory_wire_compatibility": 8,
+      "real_http_api": 6,
+      "real_qt_api_sqlite": 9,
+      "controller_state_fixtures": 5,
+      "raster_import_synthetic_fixtures": 3
+    },
+    "reuse_install_script": {
+      "exit_code": 0,
+      "executed": 86,
+      "passed": 86,
+      "seconds": 26.236,
+      "dataset_validation": true,
+      "train_and_eval": "DRY_RUN_only"
+    },
+    "scope": "Existing model/audio mocks remain tests of contracts; no model inference or physical audio approval."
+  },
+  "gui_execution": {
+    "checked_at_utc": "2026-11-16T15:09:25.901850+00:00",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "qt_platform": "offscreen",
+    "official_logo_loaded": false,
+    "real_gui_and_http_engine": true,
+    "mocked_responses": false,
+    "offline_commands": [
+      {
+        "language": "pt-BR",
+        "input": "oi",
+        "output": "Oi! Sou a NOW Assistant. Em que posso ajudar?",
+        "provider": "offline",
+        "latency_ms": 12.8
+      },
+      {
+        "language": "pt-BR",
+        "input": "horas",
+        "output": "Agora são 12:09 neste computador.",
+        "provider": "offline",
+        "latency_ms": 20.9
+      },
+      {
+        "language": "pt-BR",
+        "input": "data",
+        "output": "Hoje é 16/11/2026.",
+        "provider": "offline",
+        "latency_ms": 20.3
+      },
+      {
+        "language": "en-US",
+        "input": "hello",
+        "output": "Hi! I'm NOW Assistant. How can I help?",
+        "provider": "offline",
+        "latency_ms": 12.6
+      },
+      {
+        "language": "en-US",
+        "input": "time",
+        "output": "It is 12:09 on this computer.",
+        "provider": "offline",
+        "latency_ms": 14.8
+      },
+      {
+        "language": "en-US",
+        "input": "date",
+        "output": "Today is 2026-11-16.",
+        "provider": "offline",
+        "latency_ms": 22.8
+      }
+    ],
+    "temporary_session_created_database": false,
+    "gemini_sdk_present": false,
+    "model_inference_executed": false,
+    "audio_executed": false,
+    "gui_resident_kib": 88676,
+    "engine_resident_kib": 44692,
+    "metrics_scope": "Linux current RSS during offline GUI smoke; not peak KDF/model RAM or target Windows/game performance"
+  },
+  "standard_launcher": {
+    "launcher_event_loop": "passed",
+    "reply": "Agora são 12:13 neste computador.",
+    "provider": "offline",
+    "temporary_database_created": false
+  },
+  "network": {
+    "applied_environment": {
+      "environment_id": "ccarenv_b64_Y2NhcmVudl81ZjRmY2UwZTc0MDQ4MTkxOWQ3MmQ4OWQ4NGFiYTIxOQ",
+      "source_config_version_id": "33eb1acb36441db8666206ee18871830c4c7f2a9aed92f9538c44fb7ce2099ba~cecfgver_6afad71dcc8481a0b7e242a594013917",
+      "spec_revision": "1",
+      "observed_spec_revision": "1",
+      "observations_current": true,
+      "network_policy": {
+        "mode": "restricted",
+        "state": "enforced",
+        "registry_allowed": false
+      },
+      "secrets_declared": [],
+      "runtime_variables_declared": []
+    },
+    "registry_probe": {
+      "checked_at_utc": "2026-11-16T15:01:54.147999+00:00",
+      "url": "https://registry.ollama.ai/v2/library/qwen2.5/manifests/0.5b",
+      "bypass_attempted": false,
+      "status": null,
+      "reason": "Tunnel connection failed: 403 Forbidden",
+      "ollama_models": {
+        "models": []
+      }
+    },
+    "ollama_pull_exit_code": 1,
+    "ollama_pull_output": "pulling manifest \nError: pull model manifest: Get \"https://registry.ollama.ai/v2/library/qwen2.5/manifests/0.5b\": Forbidden",
+    "eight_real_model_generations": {
+      "executed": 0,
+      "status": "BLOCKED_NO_MODEL"
+    }
+  },
+  "windows": {
+    "platform_guard_exit_code": 2,
+    "native_build_executed": false,
+    "native_gui_validated": false,
+    "script_prepared": true,
+    "official_logo_required": true,
+    "manual_license_review": "pending"
+  },
+  "branding": {
+    "status": "awaiting_original_file",
+    "image_reference_visible_in_conversation": true,
+    "downloadable_image_available": false,
+    "substitute_logo_created": false,
+    "mechanical_importer_tested_on_synthetic_rectangles_only": true
+  },
+  "voice": {
+    "contracts_preserved": true,
+    "physical_microphone": false,
+    "stt_tts_audible": false,
+    "wake_word": false
+  },
+  "configuration": {
+    "prior_saved_draft_revision": 5,
+    "updated_install_script_executed": true,
+    "new_draft_save": "recorded_in_final_response_after_commit",
+    "publish_or_fresh_task_restore_verified": false
+  },
+  "evidence_files": [
+    "desktop-v3-evidence/baseline-55.log",
+    "desktop-v3-evidence/minimal-desktop-86.log",
+    "desktop-v3-evidence/standard-launcher.log",
+    "desktop-dependencies-20261116.json"
+  ]
+}
