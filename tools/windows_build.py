@@ -11,6 +11,7 @@ import sys
 import tempfile
 
 from now_desktop.version import VERSION
+from tools.alpha_request import ALPHA_WORKFLOW, read_request
 from tools.collect_licenses import collect
 from tools.distribution import (branding_receipt, inventory, parse_version, sha256_file,
                                 validate_evidence, verify_archive)
@@ -48,6 +49,15 @@ def build(args):
         raise ValueError("Import the original official logo, inspect icons, then confirm --branding-reviewed. No Alpha is approved without it.")
     if args.branding_reviewed and not branding["verified"]:
         raise ValueError("a missing original cannot be confirmed as reviewed")
+    preparation = None
+    if (not args.diagnostic_build and os.environ.get("GITHUB_ACTIONS") == "true"
+            and os.environ.get("GITHUB_EVENT_NAME") == "push"):
+        expected_workflow = os.environ.get("GITHUB_REPOSITORY", "") + "/" + ALPHA_WORKFLOW + "@refs/heads/work"
+        if os.environ.get("GITHUB_WORKFLOW_REF") != expected_workflow:
+            raise ValueError("push candidates must be built by the dedicated Alpha workflow")
+        preparation = read_request(ROOT, version=version.value, branding_sha=branding["original_sha256"])
+        if preparation["sha256"] != os.environ.get("NOW_ALPHA_REQUEST_SHA256"):
+            raise ValueError("Alpha request was not validated by the workflow")
     environment = {**os.environ, "ENABLE_GEMINI_FALLBACK": "false", "PYTHONIOENCODING": "utf-8"}
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -98,6 +108,7 @@ def build(args):
         "pe_icon_resource_present": icons_present, "executable_sha256": sha256_file(executable),
         "release_eligible": not args.diagnostic_build and branding["verified"] and args.branding_reviewed,
         "diagnostic_only": bool(args.diagnostic_build), "digital_signature": "not_signed",
+        "preparation_request": preparation,
         "unit_tests": json.loads(tests.read_text(encoding="utf-8")),
         "packaged_smoke": json.loads((smoke / "REAL-GUI-VALIDACAO.json").read_text(encoding="utf-8")),
         "ci": {"provider": "github-actions" if os.environ.get("GITHUB_ACTIONS") == "true" else "local_windows",

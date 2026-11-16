@@ -1,6 +1,10 @@
 name: Prepare Windows Alpha
 
 on:
+  push:
+    branches: [work]
+    paths:
+      - 'packaging/releases/alpha-request.json'
   workflow_dispatch:
     inputs:
       version:
@@ -18,7 +22,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: windows-alpha-${{ inputs.version }}
+  group: windows-alpha-work
   cancel-in-progress: false
 
 jobs:
@@ -29,8 +33,8 @@ jobs:
       PYTHONIOENCODING: utf-8
       ENABLE_GEMINI_FALLBACK: 'false'
       OLLAMA_NO_CLOUD: '1'
-      CANDIDATE_VERSION: ${{ inputs.version }}
-      BRANDING_REVIEWED: ${{ inputs.branding_reviewed }}
+      REQUESTED_VERSION: ${{ inputs.version }}
+      REVIEWED_INPUT: ${{ inputs.branding_reviewed }}
       REQUEST_ACTOR: ${{ github.actor }}
       TRIGGER_ACTOR: ${{ github.triggering_actor }}
       REPOSITORY_OWNER: ${{ github.repository_owner }}
@@ -38,11 +42,6 @@ jobs:
       run:
         shell: pwsh
     steps:
-      - name: Require owner, work branch and explicit branding review
-        run: |
-          if ($env:GITHUB_REF -ne 'refs/heads/work' -or $env:REQUEST_ACTOR -ne $env:REPOSITORY_OWNER -or $env:TRIGGER_ACTOR -ne $env:REPOSITORY_OWNER -or $env:BRANDING_REVIEWED -ne 'true') {
-            throw 'Only the repository owner can prepare a candidate from work after inspecting its official branding.'
-          }
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
@@ -55,6 +54,8 @@ jobs:
             requirements-desktop.txt
             packaging/desktop/requirements-build.txt
             packaging/windows/constraints-python312.txt
+      - name: Require owner, work and explicit preparation request or manual review
+        run: python tools/prepare_alpha.py
       - name: Create isolated build environment
         run: python -m venv .venv-build
       - name: Pin pip
@@ -69,7 +70,7 @@ jobs:
       - name: Upload tested Alpha for owner review
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: now-assistant-windows-${{ inputs.version }}-${{ github.sha }}-attempt-${{ github.run_attempt }}
+          name: now-assistant-windows-${{ env.CANDIDATE_VERSION }}-${{ github.sha }}-attempt-${{ github.run_attempt }}
           retention-days: 30
           if-no-files-found: error
           path: |

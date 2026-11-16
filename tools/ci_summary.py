@@ -26,6 +26,10 @@ def main():
             executable_sha256=report["executable_sha256"], frozen_executable=smoke["frozen_executable"],
             qt_platform=smoke["qt_platform"], actual_offline_commands=len(smoke["offline_commands"]),
             weights_included=False, model_inference_tested=False, digital_signature=report["digital_signature"])
+        proof = report.get("preparation_request")
+        if proof:
+            summary["preparation_request"] = {"request_id": proof["request"]["request_id"],
+                "sha256": proof["sha256"], "publication_authorized": proof["request"]["publish_release"]}
     checksum = directory / "SHA256SUMS.txt"
     if checksum.exists():
         summary["zip_sha256"] = checksum.read_text(encoding="utf-8").strip()

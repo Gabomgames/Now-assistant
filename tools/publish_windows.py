@@ -4,6 +4,8 @@ Do not invoke this script while preparing a candidate. Its only caller is the
 manual publication workflow; CI/build workflows have no contents write token.
 """
 import argparse
+import base64
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -16,8 +18,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from tools.distribution import parse_version, sha256_file, valid_sha, verify_archive
-
-ALPHA_WORKFLOW = ".github/workflows/windows-alpha.yml"
+from tools.alpha_request import ALPHA_WORKFLOW, REQUEST_PATH, validate_request
 
 
 def authorization(environment):
@@ -40,17 +41,35 @@ def authorization(environment):
     return repository, version, source, run_id
 
 
-def validate_run(run, workflow, repository, owner, source, run_id):
+def validate_run(run, workflow, repository, owner, source, run_id, *, request=None):
     if (str(run["id"]) != run_id or run["repository"]["full_name"].casefold() != repository.casefold()
             or run["head_repository"]["full_name"].casefold() != repository.casefold()
             or run["status"] != "completed" or run["conclusion"] != "success"
-            or run["head_branch"] != "work" or run["head_sha"] != source or run["event"] != "workflow_dispatch"
+            or run["head_branch"] != "work" or run["head_sha"] != source
             or run["actor"]["login"].casefold() != owner.casefold() or workflow["path"] != ALPHA_WORKFLOW):
         raise ValueError("candidate must be a successful owner Alpha build from this repository/work and commit")
+    if run["event"] == "push":
+        if request is None:
+            raise ValueError("push candidates require their explicit versioned preparation request")
+        validate_request(request)
+    elif run["event"] != "workflow_dispatch":
+        raise ValueError("unsupported Alpha preparation event")
     attempt = str(run["run_attempt"])
     if not re.fullmatch(r"[1-9][0-9]*", attempt):
         raise ValueError("invalid candidate run attempt")
     return attempt
+
+
+def validate_origin(report, repository, run_id, attempt, event, request_proof=None):
+    ci = report["ci"]
+    if (ci["provider"] != "github-actions" or ci["run_id"] != run_id or ci["run_attempt"] != attempt
+            or ci["event"] != event or ci["workflow_ref"] != repository + "/" + ALPHA_WORKFLOW + "@refs/heads/work"):
+        raise ValueError("artifact provenance differs from the reviewed Alpha run")
+    if event == "push":
+        if request_proof is None or report.get("preparation_request") != request_proof:
+            raise ValueError("artifact request differs from the committed request at its source SHA")
+        validate_request(request_proof["request"], version=report["version"],
+                         branding_sha=report["branding"]["original_sha256"])
 
 
 def gh_json(endpoint, *arguments, missing_ok=False):
@@ -67,7 +86,18 @@ def publish(directory):
     base = f"repos/{repository}"
     run = gh_json(base + f"/actions/runs/{run_id}")
     workflow = gh_json(base + f"/actions/workflows/{run['workflow_id']}")
-    attempt = validate_run(run, workflow, repository, os.environ["RELEASE_OWNER"], source, run_id)
+    request_proof = None
+    if run["event"] == "push":
+        blob = gh_json(base + "/contents/" + REQUEST_PATH + "?ref=" + source)
+        if blob.get("encoding") != "base64":
+            raise ValueError("cannot verify the committed preparation request")
+        raw = base64.b64decode("".join(blob["content"].splitlines()), validate=True)
+        if len(raw) > 4096:
+            raise ValueError("committed preparation request exceeds size limit")
+        request = validate_request(json.loads(raw), version=version.value)
+        request_proof = {"path": REQUEST_PATH, "sha256": hashlib.sha256(raw).hexdigest(), "request": request}
+    attempt = validate_run(run, workflow, repository, os.environ["RELEASE_OWNER"], source, run_id,
+                           request=request_proof["request"] if request_proof else None)
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=False)
     artifact = f"now-assistant-windows-{version.value}-{source}-attempt-{attempt}"
@@ -81,10 +111,7 @@ def publish(directory):
     external = directory / "BUILD-VALIDACAO.json"
     if json.loads(external.read_text(encoding="utf-8")) != report:
         raise ValueError("external evidence differs from the tested ZIP")
-    ci = report["ci"]
-    if (ci["provider"] != "github-actions" or ci["run_id"] != run_id or ci["run_attempt"] != attempt
-            or ci["event"] != "workflow_dispatch" or ci["workflow_ref"] != repository + "/" + ALPHA_WORKFLOW + "@refs/heads/work"):
-        raise ValueError("artifact provenance differs from the reviewed Alpha run")
+    validate_origin(report, repository, run_id, attempt, run["event"], request_proof)
     checksums, notes = directory / "SHA256SUMS.txt", directory / "RELEASE-NOTES.md"
     expected = f"{sha256_file(archive)}  {archive.name}"
     if checksums.read_text(encoding="utf-8").strip() != expected:

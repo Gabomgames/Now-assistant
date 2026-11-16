@@ -1,0 +1,10 @@
+{
+  "schema": "now-alpha-request-v1",
+  "request_id": "0e844411-a9e2-4eb5-963d-637c7e2de1e2",
+  "version": "0.3.0-alpha.1",
+  "source_branch": "work",
+  "branding_original_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+  "branding_reviewed": true,
+  "prepare_artifact": true,
+  "publish_release": false
+}

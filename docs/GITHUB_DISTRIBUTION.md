@@ -5,7 +5,7 @@
 | Workflow | Disparo | Permissões | Resultado |
 | --- | --- | --- | --- |
 | Windows CI | Push na work com código/build, PR para work ou manual | contents:read | Testes + build Windows **diagnóstico**, nunca publicável |
-| Prepare Windows Alpha | Somente manual, proprietário, work e confirmação da logo | contents:read | Candidato com logo, testes e smoke empacotado; artifact para revisão |
+| Prepare Windows Alpha | Manual ou push de solicitação explícita; proprietário, work e confirmação da logo | contents:read | Candidato com logo, testes e smoke empacotado; artifact para revisão |
 | Publish approved Windows Release | Somente manual, proprietário, versão/SHA/run exatos e frase de aprovação | contents:write/actions:read apenas no job de publicação | Publica exatamente o ZIP revisado após verificar sua origem/hashes |
 
 Não há publicação em push, tag, conclusão de CI ou cron. Não foi solicitada/executada publicação nesta preparação. GitHub pode precisar que o proprietário habilite Actions em **Settings → Actions → General**; a preferência de workflow pode permanecer read-only, pois só o job manual de publicação solicita contents:write. Não é necessário criar PAT ou guardar uma credencial pessoal: usa o GITHUB_TOKEN efêmero do próprio workflow. As actions estão fixadas por SHA completo.
@@ -37,6 +37,10 @@ python tools/import_branding.py 'C:\caminho\logo-oficial.png' --padding black
 
 Confira o original intacto, SHA do manifest e ícones derivados. Commit/push dos assets na work são necessários para o runner receber os mesmos bytes. **Actions → Prepare Windows Alpha → Run workflow**: branch work, version `0.3.0-alpha.1`, marcar `branding_reviewed` somente após inspeção. O modo Alpha recusa logo ausente/alterada e verifica recurso de ícone no PE e imagem carregada na GUI. Ele não cria tag nem release.
 
+Também é possível preparar pelo evento nativo **push**, alterando `packaging/releases/alpha-request.json` na work. Essa solicitação contém UUID v4 novo, versão exata, SHA-256 do original revisado, `branding_reviewed: true`, `prepare_artifact: true` e obrigatoriamente `publish_release: false`. Preserve o schema e os demais campos do arquivo. Commit/push pelo proprietário solicita somente o artifact; mudanças comuns de código não repetem essa preparação. O workflow valida autor original e de rerun, branch, versão e logo antes de instalar dependências. O builder vincula o SHA-256 dos bytes da solicitação ao relatório e ao ZIP.
+
+Esse disparo usa Git e o evento padrão do Actions, com token somente de leitura. Não faz chamadas à API em nome do ambiente cloud, não altera sua política de rede e não publica versões. A opção manual continua disponível. Para preparar outro candidato pela solicitação, atualize a versão se necessário e gere um novo UUID com `python -c "import uuid; print(uuid.uuid4())"`; revise, faça commit e push na work.
+
 ## Revisar antes de autorizar publicação
 
 No run de Prepare Windows Alpha, leia o Summary, a conclusão de todos os passos e baixe o artifact `now-assistant-windows-<VERSION>-<SHA>-attempt-<N>`. O artifact do GitHub é um invólucro: dentro há o ZIP portátil da NOW, relatório, hashes e capturas. Confira versão, SHA completo, assinatura ausente, proveniência e limitações. Execute a aplicação no Windows alvo, mantendo a pasta `_internal`. Preserve os dados privados; os testes do runner usam somente fixtures temporários.
@@ -52,6 +56,8 @@ Não executar esse workflow apenas porque um build terminou. A autorização des
 
 O publicador confere proprietário/evento/branch, repo/workflow/run/attempt, conclusão, SHA, artifact imutável, ZIP/relatório/notas e hashes. Recusa CI de diagnóstico, forks, commit diferente, original da logo ausente e release existente. Não recompila durante publicação. Só após validar cria/reutiliza uma tag do mesmo commit, cria um **draft**, envia assets e por último torna público. Falhas de upload deixam draft, sem release pública. Reruns de publicação não sobrescrevem uma versão existente.
 
+Para candidatos preparados por push, o publicador também lê a solicitação no **commit aprovado**, confere seus bytes/SHA contra o relatório e exige a mesma versão e logo. Um push comum ou um artifact de Windows CI não atende a esses critérios. A aceitação dessa origem não substitui a autorização manual de publicação para versão/SHA/run.
+
 Versões com sufixos alpha/beta/rc e versões 0.x são marcadas **Pre-release** e não substituem Latest estável. Uma versão estável futura precisa de SemVer próprio, notas e nova aprovação manual. Não mover tags já publicadas para outro commit.
 
 ## Usuário final e conteúdo público
@@ -66,10 +72,10 @@ Git HTTPS para work funciona. O acesso à API `api.github.com` foi recusado pelo
 
 O domínio `api.github.com` foi acrescentado ao **rascunho de rede do ambiente**, mantendo `registry.ollama.ai`. Para habilitá-lo: painel do Codex → configurações deste ambiente → Internet/rede restrita → revisar domínios permitidos → `api.github.com` sem esquema/caminho → salvar/aplicar pela ação disponível. Publicar a configuração e selecionar a versão em nova tarefa quando necessário. Confirmar o host na política efetiva antes de repetir `gh api`. Salvar rascunho não aplica a rede nem publica o ambiente; **isso não é uma GitHub Release**. O Windows runner usa a rede/token normais do Actions, separado desta instância cloud. Não é necessário fornecer PAT em chat.
 
-## Resultado real desta preparação
+## Resultados históricos de diagnóstico
 
 O [run 43950853793](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793), fonte `c97f9d1fd8ce152f3d2261c750c5d8739e69c88f`, terminou **Success** em 2m58s. Windows/Python 3.12.10: 95 casos, 94 aprovados, um POSIX não aplicável, zero falhas/erros. O EXE congelado abriu Qt `windows`, iniciou Engine e executou seis comandos offline reais. ZIP, licenças, inventário/CRC/SHA e upload passaram no runner. Artifact de cerca de 50 MB em **Artifacts**, no mesmo run.
 
-Esse artifact é **diagnóstico** (`release_eligible:false`), sem o original da logo e sem ícone substituto. Não pode ser usado pelo publicador como Alpha aprovada. O ZIP Windows não foi baixado/inspecionado localmente por bloqueio da API; os resultados/hashes foram observados nas anotações públicas. Nenhuma tag ou Release foi criada; o fluxo de publicação permanece configurado, não executado. Atualização: o original definitivo já foi recebido, integrado e testado no [Windows CI 43961691647](https://github.com/Gabomgames/Now-assistant/actions/runs/43961691647), com 97 aprovados/um POSIX não aplicável e ZIP de diagnóstico com a marca. O passo restante é disparar Prepare Windows Alpha pelo acesso legítimo à API ou pelo painel do proprietário, revisar o novo candidato e só depois autorizar publicação para sua versão/SHA. A tentativa via gh desta tarefa recebeu Forbidden no GET da API; não foi tratada como execução bem-sucedida.
+Esse artifact é **diagnóstico** (`release_eligible:false`), sem o original da logo e sem ícone substituto. Não pode ser usado pelo publicador como Alpha aprovada. O ZIP Windows não foi baixado/inspecionado localmente por bloqueio da API; os resultados/hashes foram observados nas anotações públicas. Nenhuma tag ou Release foi criada; o fluxo de publicação permanece configurado, não executado. O original definitivo foi posteriormente integrado e testado no [Windows CI 43961691647](https://github.com/Gabomgames/Now-assistant/actions/runs/43961691647), com 97 aprovados/um POSIX não aplicável e ZIP de diagnóstico com a marca. A tentativa anterior de disparo manual via gh recebeu Forbidden no GET da API; não foi tratada como execução bem-sucedida. A preparação agora admite também a solicitação explícita por push descrita acima; os resultados mais recentes de Prepare Windows Alpha ficam no início de `VALIDACAO.md`.
 
 Resultados reais, SHA testado e bloqueios finais ficam em `VALIDACAO.md` e `validation/distribution-20261116.json`. Arquivos de fixture não são evidência de um build Windows. Nenhuma publicação é presumida a partir da existência dos workflows.

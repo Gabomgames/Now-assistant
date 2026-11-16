@@ -1,6 +1,14 @@
 # Continuar em uma nova tarefa Codex
 
-## Ponto atual — logo definitiva integrada
+## Preparação por solicitação explícita — 16/11/2026
+
+Foi acrescentada uma entrada de **build**, sem publicação: push na work alterando `packaging/releases/alpha-request.json` executa Prepare Windows Alpha, com validação de proprietário, revisão da logo, versão e SHA dos bytes da solicitação. O modo manual permanece disponível. Git/Actions são usados normalmente; a instância cloud não recebe acesso à API por esse fluxo. O publicador continua manual e exige autorização exata para versão/SHA/run, além de conferir a solicitação no commit de origem quando o candidato veio de push.
+
+Estado antes do primeiro push desta entrada: **102 testes locais aprovados**, zero falhas/erros/skips, incluindo os 98 anteriores; actionlint passou. O novo candidato Windows ainda precisa executar e ter seu resultado registrado. Não promover o diagnóstico anterior nem inferir sucesso. Acompanhar Prepare Windows Alpha e atualizar `VALIDACAO.md` com o run real, fonte, ZIP/hashes e limitações antes de apresentar. Não executar publicação nem criar tag/draft/Release nesta tarefa.
+
+As seções seguintes preservam os estados anteriores. O início de `VALIDACAO.md` é a referência para o resultado atual.
+
+## Etapa anterior — logo definitiva integrada
 
 Logo recebida em `NOW_Assistant_Logo_Oficial_PARA_CODEX.zip`, PNG intacto em `assets/branding/original.png`, SHA-256 `9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc`. Não solicitar novamente a imagem. Commit da implementação **`856723ef1fccb6d86cdc3fbffdd374663f717974`**, branch work; usar HEAD mais recente sem resetar para a referência. Nove PNGs e ICO com oito tamanhos, somente escala proporcional e padding preto externo; manifest/provenance e testes preservam a identidade.
 
@@ -12,7 +20,7 @@ O usuário já autorizou **gerar e testar o candidato**, sem autorização de Re
 
 Local: 98 testes aprovados (95 anteriores + 3 de branding), Qt/API reais em Linux offscreen com venv mínimo sem SDK Gemini, ícone com oito tamanhos e seis comandos offline. Não há inferência/áudio novo. Evidências: `validation/official-logo-alpha-20261116.json`, `assets/branding/PROVENANCE.json`, `VALIDACAO.md`. Os estados anteriores de logo ausente abaixo são históricos.
 
-## Ponto atual — distribuição Windows 0.3.0-alpha.1
+## Etapa anterior — distribuição Windows 0.3.0-alpha.1
 
 Continuar do HEAD mais recente de `work`, preservando todos os commits. Implementação inicial da pipeline: `a130ba3`; correções Windows incrementais até **`c97f9d1fd8ce152f3d2261c750c5d8739e69c88f`**, que foi o código testado no [run 43950853793](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793). Commits posteriores de documentação/relatórios não mudam essa identidade de teste.
 

@@ -1,5 +1,13 @@
 # NOW Assistant — validação incremental
 
+## Preparação explícita do primeiro candidato Windows — 16/11/2026
+
+Base preservada: `25efee4c39f88e8ed72f287ed61092ec3e53a643`, branch work, backup versionado local antes das alterações. A entrada nativa de push de `packaging/releases/alpha-request.json` foi adicionada a Prepare Windows Alpha; a entrada manual permanece. A solicitação vincula versão, revisão da logo e SHA do PNG original e proíbe publicação. O workflow permanece somente de leitura. O publicador manual mantém a aprovação exata por versão/SHA/run e passa a conferir a solicitação no commit de origem de candidatos preparados por push. Não há relay de API, alteração da política de rede, publicação por push ou extração de credenciais.
+
+**Executado antes do push:** Python 3.12.14/Linux, suíte completa com **102 aprovados em 24,404 s**, zero falhas/erros/skips; todos os 98 casos anteriores preservados. Os quatro casos adicionais validam solicitações/proveniência com fixtures, sem representar um build Windows. `actionlint 1.7.11` aprovou os três workflows. A logo original mantém SHA-256 `9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc`.
+
+**Pendente neste ponto:** execução real de Prepare Windows Alpha com este commit, resultado do EXE/GUI/Engine/comandos offline e artifact final. Os resultados serão acrescentados somente após o runner concluir. Nenhuma tag, draft ou GitHub Release foi criada. Os diagnósticos abaixo permanecem históricos e não substituem esse candidato.
+
 ## Logo oficial e candidato 0.3.0-alpha.1 — 16/11/2026
 
 Continuação da `work` a partir de `fcff45f8f6bf868d08ff0639c93e445f72299393`, árvore limpa e remoto correspondente. Backup das fontes versionadas: `/workspace/.now-ai-backups/before-official-branding-fcff45f.zip`. Fonte/pipeline anteriores preservadas; publicação de GitHub Release continua proibida nesta preparação.
