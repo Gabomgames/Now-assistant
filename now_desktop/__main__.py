@@ -35,6 +35,8 @@ def main(argv=None):
 
     application = QApplication.instance() or QApplication([])
     application.setApplicationName("NOW Assistant")
+    from .version import VERSION
+    application.setApplicationVersion(VERSION)
     application.setOrganizationName("NOW")
     apply_theme(application)
     runtime = EngineProcess()

@@ -1,5 +1,17 @@
 # NOW Assistant — validação incremental
 
+## Distribuição GitHub — preparação de 0.3.0-alpha.1 (16/11/2026)
+
+Base `work`, commit inicial `15e03a7dbbe73a817a831d3f27858d7387b6e0e2`, árvore inicialmente limpa e remoto correspondente; backup de fontes versionadas em `/workspace/.now-ai-backups/distribution-before-15e03a7.zip`. Nenhum reset/recriação. Baseline: 86 testes aprovados em 25,538 s.
+
+Implementados workflows Windows CI, Prepare Windows Alpha e publicação exclusivamente manual, com permissões separadas e actions fixadas por SHA. SemVer inicial `0.3.0-alpha.1`, notas/guia para usuário sem Python/VS Code, build/Engine/smoke reais exigidos e ZIP com hashes, licenças e inspeção de arquivos privados. O CI diagnóstico é identificado como não publicável; Alpha exige logo original/revisão e ícone PE/GUI reais. Não foi autorizada/executada publicação de release.
+
+Validação local após implementação: **95 testes aprovados** em Linux, 0 ignorados, em 28,996 s. São os 86 anteriores mais nove testes de gates com fixtures sintéticos de metadados/ZIP; esses fixtures não são builds Windows e não validam inferência. Testes GUI existentes receberam apenas ajustes para operar o seletor Qt de forma portável; nenhum caso foi removido. `actionlint 1.7.11` validou os três workflows sem erros; binário oficial com checksum `900919a84f2229bac68ca9cd4103ea297abc35e9689ebb842c6e34a3d1b01b0a` verificado. Compilação de módulos e `git diff --check` aprovados.
+
+**Estado antes do primeiro push da pipeline:** build Windows ainda não executado, Alpha não aprovada. A logo foi enviada novamente como imagem inline, mas nenhum arquivo binário apareceu nos anexos locais; não foi redesenhada. `gh api .../actions/workflows` falhou no CONNECT 403 porque `api.github.com` não consta na política aplicada. Git e site GitHub respondem. O estado/resultados do runner serão registrados depois da tentativa real, sem substituir execução por simulação.
+
+Detalhes: `docs/GITHUB_DISTRIBUTION.md`. Relatórios anteriores abaixo continuam históricos, não são aprovação da distribuição Alpha.
+
 ## Entrega desktop V3 — 16/11/2026
 
 Especificação V3 lida integralmente (235 linhas), preservada em `docs/specs/NOW_ASSISTANT_V3.txt`, SHA-256 `7195a17c6e9da500d8873c90d42f8fe684de9da8375dc862a3a2a5f993ebb280`. O plano foi apresentado antes das alterações: GUI PySide6 ligada à Engine, texto assíncrono, estados reais, histórico opt-in e preferências separadas. Justificativa da tecnologia em `docs/DESKTOP_ARCHITECTURE.md`.

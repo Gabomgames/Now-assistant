@@ -1,0 +1,58 @@
+name: Publish approved Windows Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Exact reviewed SemVer, e.g. 0.3.0-alpha.1
+        type: string
+        required: true
+      source_sha:
+        description: Full 40-character commit from the reviewed candidate
+        type: string
+        required: true
+      candidate_run_id:
+        description: Successful Prepare Windows Alpha run ID (not a diagnostic CI run)
+        type: string
+        required: true
+      authorization:
+        description: 'Explicit approval: PUBLICAR v<VERSION> @ <FULL_SHA>'
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-windows-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.actor == github.repository_owner && github.triggering_actor == github.repository_owner && github.ref == 'refs/heads/work'
+    runs-on: windows-2022
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+          architecture: x64
+      - name: Verify reviewed Windows artifact, then publish exactly that ZIP
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_SOURCE_SHA: ${{ inputs.source_sha }}
+          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+          RELEASE_AUTHORIZATION: ${{ inputs.authorization }}
+          RELEASE_OWNER: ${{ github.repository_owner }}
+          RELEASE_ACTOR: ${{ github.actor }}
+          RELEASE_TRIGGER_ACTOR: ${{ github.triggering_actor }}
+        run: python tools/publish_windows.py --directory "$env:RUNNER_TEMP\approved-windows-release"

@@ -1,0 +1,32 @@
+{
+  "scope": "Pinned upstream Qt/PySide source archives, notices only; never execute downloaded source",
+  "sources": [
+    {
+      "name": "qtbase",
+      "repository": "qt/qtbase",
+      "commit": "c07c2d5a527a644d36e7853d55132ae38921682f",
+      "version": "6.8.3",
+      "url": "https://codeload.github.com/qt/qtbase/zip/c07c2d5a527a644d36e7853d55132ae38921682f",
+      "sha256": "bba50702ccf874205112809581369b8aec82d0e0203df304a6d9ebb40c09b55e",
+      "bytes": 75708191
+    },
+    {
+      "name": "qtsvg",
+      "repository": "qt/qtsvg",
+      "commit": "c75099a75e81df35e7347a65e301bbf1011831a5",
+      "version": "6.8.3",
+      "url": "https://codeload.github.com/qt/qtsvg/zip/c75099a75e81df35e7347a65e301bbf1011831a5",
+      "sha256": "f37802ccb3d890ab34ab53f2ccffd9870752d7098496fb1c0e0807c8b03445a5",
+      "bytes": 2655969
+    },
+    {
+      "name": "pyside",
+      "repository": "pyside/pyside-setup",
+      "commit": "3ae6c97953d563c33ff630f259716b01b81aa531",
+      "version": "6.8.3",
+      "url": "https://codeload.github.com/pyside/pyside-setup/zip/3ae6c97953d563c33ff630f259716b01b81aa531",
+      "sha256": "722f4f9c7178c48f114a034279f6a093f72788349a55f15a7dbe4a4cc36f95dd",
+      "bytes": 21551253
+    }
+  ]
+}

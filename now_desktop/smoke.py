@@ -10,6 +10,7 @@ import time
 
 
 def capture(output_directory):
+    import sys
     from PySide6.QtCore import QEventLoop, QTimer
     from PySide6.QtWidgets import QApplication
     from .branding import logo_path
@@ -17,6 +18,7 @@ def capture(output_directory):
     from .runtime import EngineProcess
     from .theme import apply_theme
     from .window import MainWindow
+    from .version import VERSION
 
     output_directory = Path(output_directory)
     output_directory.mkdir(parents=True, exist_ok=False)
@@ -82,6 +84,8 @@ def capture(output_directory):
                 raise RuntimeError("temporary GUI session unexpectedly created a private vault")
             report = {
                 "checked_at_utc": datetime.now(timezone.utc).isoformat(), "platform": platform.platform(),
+                "system": platform.system(), "version": VERSION, "frozen_executable": bool(getattr(sys, "frozen", False)),
+                "python_version": platform.python_version(), "python_bits": 64 if sys.maxsize > 2**32 else 32,
                 "qt_platform": application.platformName(), "official_logo_loaded": logo_path() is not None,
                 "real_gui_and_http_engine": True, "mocked_responses": False, "offline_commands": records,
                 "temporary_session_created_database": False, "gemini_sdk_present": importlib.util.find_spec("google") is not None,

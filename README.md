@@ -38,6 +38,8 @@ Reabra a NOW Assistant após configurar o ambiente. Perguntas livres usam `/api/
 
 ## Validação e limites desta entrega
 
+Distribuição pelo GitHub: [pipeline Windows, candidatos e aprovação manual](docs/GITHUB_DISTRIBUTION.md). Versão preparada `0.3.0-alpha.1`; CI e preparo de candidato não publicam Releases. Um pacote público aprovado inclui Python/Qt, com Ollama/modelos instalados separadamente. A logo binária e o build nativo ainda precisam das evidências registradas em `VALIDACAO.md`; não considerar a versão publicada apenas pela presença dos workflows.
+
 GUI, API autenticada e armazenamento foram executados em **Linux com Qt offscreen**, inclusive em um ambiente sem Gemini. [VALIDACAO.md](VALIDACAO.md) contém resultados, escopo dos doubles antigos e evidências. Para repetir toda a suíte, incluindo treinamento:
 
 ```powershell

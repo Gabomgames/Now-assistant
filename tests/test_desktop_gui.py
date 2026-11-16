@@ -35,6 +35,9 @@ PASSWORD = "desktop-test-only-passphrase-2026"
 class DesktopGUITests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        # QTest operates the real Qt file picker. Native Windows shell dialogs
+        # require separate manual accessibility/usability validation.
+        QApplication.setAttribute(Qt.ApplicationAttribute.AA_DontUseNativeDialogs)
         cls.application = QApplication.instance() or QApplication([])
         cls.application.setQuitOnLastWindowClosed(False)
         apply_theme(cls.application)
@@ -171,7 +174,7 @@ class DesktopGUITests(unittest.TestCase):
                 filename = widget.findChild(QLineEdit, "fileNameEdit")
                 self.assertIsNotNone(filename)
                 filename.setText(output.name)
-                self.assertEqual(widget.selectedFiles(), [str(output)])
+                self.assertEqual([Path(path) for path in widget.selectedFiles()], [output])
                 button = widget.findChild(QDialogButtonBox).button(QDialogButtonBox.StandardButton.Save)
                 QTest.mouseClick(button, Qt.MouseButton.LeftButton)
                 return True
