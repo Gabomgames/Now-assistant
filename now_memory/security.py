@@ -16,7 +16,8 @@ def derive_key(passphrase, salt):
 def require_private_path(path):
     if path.is_symlink():
         raise ValueError("vault paths must not be symbolic links")
-    if os.name == "posix" and path.stat().st_mode & (stat.S_IRWXG | stat.S_IRWXO):
+    metadata = path.stat()  # A missing vault must raise FileNotFoundError on every OS.
+    if os.name == "posix" and metadata.st_mode & (stat.S_IRWXG | stat.S_IRWXO):
         raise PermissionError("vault directory/file must be accessible only to its owner")
 
 

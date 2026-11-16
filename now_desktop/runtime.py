@@ -6,6 +6,9 @@ import socket
 import subprocess
 import sys
 import tempfile
+import time
+
+from now_engine.processes import stop_owned_process
 
 
 class EngineProcess:
@@ -39,15 +42,16 @@ class EngineProcess:
         return self.url
 
     def stop(self):
-        if self.process is not None and self.process.poll() is None:
-            self.process.terminate()
-            try:
-                self.process.wait(timeout=4)
-            except subprocess.TimeoutExpired:
-                self.process.kill()
-                self.process.wait(timeout=4)
+        stop_owned_process(self.process)
         if self._stream is not None:
             self._stream.close()
         if self._logs is not None:
-            self._logs.cleanup()
+            for attempt in range(20):
+                try:
+                    self._logs.cleanup()
+                    break
+                except PermissionError as error:
+                    if os.name != "nt" or getattr(error, "winerror", None) != 32 or attempt == 19:
+                        raise
+                    time.sleep(0.05)
         self.process = None

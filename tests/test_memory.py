@@ -1,3 +1,4 @@
+from contextlib import closing
 import hashlib
 import json
 import os
@@ -60,7 +61,7 @@ class MemoryTests(unittest.TestCase):
 
     def test_tampered_ciphertext_fails_authentication(self):
         self.store.set_preferences({"display_name": "test name"})
-        with sqlite3.connect(self.directory / DATABASE) as connection:
+        with closing(sqlite3.connect(self.directory / DATABASE)) as connection, connection:
             original = connection.execute("SELECT encrypted FROM preferences").fetchone()[0]
             connection.execute("UPDATE preferences SET encrypted=?", (original[:-1] + bytes([original[-1] ^ 1]),))
         with self.assertRaises(IntegrityError):
@@ -70,14 +71,14 @@ class MemoryTests(unittest.TestCase):
 
     def test_ciphertexts_cannot_be_swapped_between_preferences(self):
         self.store.set_preferences({"persona": "casual", "language": "en-US"})
-        with sqlite3.connect(self.directory / DATABASE) as connection:
+        with closing(sqlite3.connect(self.directory / DATABASE)) as connection, connection:
             values = dict(connection.execute("SELECT name, encrypted FROM preferences"))
             connection.execute("UPDATE preferences SET encrypted=? WHERE name='persona'", (values["language"],))
         with self.assertRaises(IntegrityError):
             self.store.get_preferences()
 
     def test_persisted_consent_state_is_authenticated(self):
-        with sqlite3.connect(self.directory / DATABASE) as connection:
+        with closing(sqlite3.connect(self.directory / DATABASE)) as connection, connection:
             connection.execute("UPDATE metadata SET value=? WHERE name='enabled'", (b"1",))
         with self.assertRaises(IntegrityError):
             self.store.get_preferences()
@@ -105,7 +106,7 @@ class MemoryTests(unittest.TestCase):
 
     def test_delete_and_clear_remove_records_and_compact_the_database(self):
         self.store.set_preferences({"display_name": "remove me", "persona": "focus"})
-        with sqlite3.connect(self.directory / DATABASE) as connection:
+        with closing(sqlite3.connect(self.directory / DATABASE)) as connection, connection:
             encrypted = connection.execute("SELECT encrypted FROM preferences WHERE name='display_name'").fetchone()[0]
         self.store.delete("display_name")
         self.assertEqual(self.store.get_preferences(), {"persona": "focus"})

@@ -1,3 +1,4 @@
+from contextlib import closing
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 import json
@@ -61,7 +62,7 @@ class HistoryTests(unittest.TestCase):
     def test_ciphertext_tamper_and_row_identity_swap_are_detected(self):
         first = self.store.create_conversation("first")
         second = self.store.create_conversation("second")
-        with sqlite3.connect(self.directory / "history.sqlite3") as connection:
+        with closing(sqlite3.connect(self.directory / "history.sqlite3")) as connection, connection:
             encrypted = connection.execute("SELECT encrypted FROM conversations WHERE id=?", (first.id,)).fetchone()[0]
             connection.execute("UPDATE conversations SET encrypted=? WHERE id=?", (encrypted, second.id))
         with self.assertRaises(IntegrityError):
@@ -116,7 +117,7 @@ class HistoryTests(unittest.TestCase):
         def encrypt(name, value):
             nonce = os.urandom(12)
             return nonce + AESGCM(key).encrypt(nonce, value, ("now-memory-v1:" + name).encode())
-        with sqlite3.connect(path) as connection:
+        with closing(sqlite3.connect(path)) as connection, connection:
             connection.execute("CREATE TABLE metadata (name TEXT PRIMARY KEY, value BLOB NOT NULL)")
             connection.execute("CREATE TABLE preferences (name TEXT PRIMARY KEY, encrypted BLOB NOT NULL, updated_at TEXT NOT NULL)")
             connection.executemany("INSERT INTO metadata VALUES (?,?)", [("format", b"now-memory-v1"), ("salt", salt),

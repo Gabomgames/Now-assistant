@@ -174,7 +174,9 @@ class DesktopGUITests(unittest.TestCase):
                 filename = widget.findChild(QLineEdit, "fileNameEdit")
                 self.assertIsNotNone(filename)
                 filename.setText(output.name)
-                self.assertEqual([Path(path) for path in widget.selectedFiles()], [output])
+                # Qt expands Windows 8.3 aliases such as RUNNER~1. Compare the
+                # resolved destination, keeping the filename assertion intact.
+                self.assertEqual([Path(path).resolve() for path in widget.selectedFiles()], [output.resolve()])
                 button = widget.findChild(QDialogButtonBox).button(QDialogButtonBox.StandardButton.Save)
                 QTest.mouseClick(button, Qt.MouseButton.LeftButton)
                 return True

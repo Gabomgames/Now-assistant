@@ -5,6 +5,7 @@ malware running as the same OS user. Exports are deliberately plaintext.
 """
 from __future__ import annotations
 
+from contextlib import closing
 from datetime import datetime, timezone
 import json
 import os
@@ -118,7 +119,7 @@ class MemoryStore:
             return {"initialized": False, "enabled": False, "locked": True}
         _private(directory)
         _private(path)
-        with sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True) as connection:
+        with closing(sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True)) as connection:
             connection.execute("PRAGMA trusted_schema=OFF")
             _metadata(connection)
         return {"initialized": True, "enabled": None, "locked": True}

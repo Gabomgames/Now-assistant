@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
 import subprocess
 import sys
 import unittest
@@ -56,7 +57,10 @@ def run(output):
         # never print process environments, tokens or application conversations.
         for test, detail in result.failures + result.errors:
             lines = [line for line in detail.splitlines() if line.strip()]
-            annotation("error", "NOW source test", test.id() + " — " + (lines[-1][:600] if lines else "failed"))
+            exception = next((index for index in range(len(lines) - 1, -1, -1)
+                              if re.match(r"^[A-Za-z][\w.]*?(?:Error|Exception):", lines[index])), len(lines) - 1)
+            message = " | ".join(lines[exception:exception + 4]) if lines else "failed"
+            annotation("error", "NOW source test", test.id() + " — " + message[:800])
         for test, reason in unexpected:
             annotation("error", "NOW unexpected test skip", test + " — " + reason)
         annotation("notice", "NOW source results", json.dumps({key: report[key] for key in
