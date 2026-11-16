@@ -140,6 +140,16 @@ class DesktopGUITests(unittest.TestCase):
         self.assertTrue(self.window.controller.current.temporary)
         self.assertFalse((self.directory / "history/history.sqlite3").exists())
 
+    def test_official_brand_is_visible_and_windows_icon_has_native_sizes(self):
+        from now_desktop.branding import window_icon_path
+        self.wait(lambda: bool(self.window.findChildren(QLabel, "officialLogo")))
+        label = self.window.findChild(QLabel, "officialLogo")
+        self.wait(label.isVisible)
+        self.assertFalse(label.pixmap().isNull())
+        self.assertFalse(self.window.windowIcon().isNull())
+        self.assertEqual(window_icon_path().suffix, ".ico")
+        self.assertIn(256, {size.width() for size in self.window.windowIcon().availableSizes()})
+
     def test_history_consent_save_search_rename_export_lock_reopen_and_delete(self):
         self.send("horas")
         temporary_id = self.window.controller.current.id

@@ -1,0 +1,77 @@
+{
+  "archive_filename": "NOW_Assistant_Logo_Oficial_PARA_CODEX.zip",
+  "archive_sha256": "aae376b0251529e51c7f7ec91b3841f2030e6d78db99a85cf8e2c4f33e04636b",
+  "original_member": "NOW_Assistant_Logo_Oficial.png",
+  "original_png_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+  "original_byte_identity_verified": true,
+  "source_dimensions": [
+    1301,
+    1209
+  ],
+  "black_background_preserved": true,
+  "proportional_resizing_only": true,
+  "redrawn": false,
+  "cropped": false,
+  "outside_padding": "black",
+  "vector_created": false,
+  "visual_review": "original and 512/128/32 raster icons plus actual Qt GUI inspected",
+  "visual_review_platform": "Linux Qt offscreen",
+  "windows_pe_icon_validation": "requires Windows workflow, not claimed by this local receipt",
+  "files": [
+    {
+      "path": "icons/now-128.png",
+      "bytes": 9043,
+      "sha256": "1595f76e71f34d786941c04b8271299fa4d35382871c316fa20280b3eca116df"
+    },
+    {
+      "path": "icons/now-16.png",
+      "bytes": 497,
+      "sha256": "f10d554ec4b97a0b94a2cea899e2d74387f1b249fa105cdbd7e1ae7563d83e0e"
+    },
+    {
+      "path": "icons/now-192.png",
+      "bytes": 16809,
+      "sha256": "31f1b598bc803038e7752228c3b98c4d4b9f26eb61092f39582c1341b7c1ddef"
+    },
+    {
+      "path": "icons/now-24.png",
+      "bytes": 840,
+      "sha256": "d45ce4ebe47649fdcc8d75e80b327ba30cb0ba8c2549d0a2469e15ffa5bdb447"
+    },
+    {
+      "path": "icons/now-256.png",
+      "bytes": 26668,
+      "sha256": "ba4dfe68c7fec63ad709392b90a3c7e733c71e055d6fb0879f317f4752f5fc55"
+    },
+    {
+      "path": "icons/now-32.png",
+      "bytes": 1183,
+      "sha256": "27eea1cdf29de012019f134daeed1a965435b41443b124c3b4ff874669291485"
+    },
+    {
+      "path": "icons/now-48.png",
+      "bytes": 2168,
+      "sha256": "fa1b82957bc6b2b1de40167f0f9ac574764aba5309dfdb4097bc63ac7c90e23d"
+    },
+    {
+      "path": "icons/now-512.png",
+      "bytes": 97788,
+      "sha256": "0ea1a570cb2728afd8c33cff3e9490b512582e8cfc25412c29e70127c34faabe"
+    },
+    {
+      "path": "icons/now-64.png",
+      "bytes": 3295,
+      "sha256": "1341fdf7fd63478bcc8e77bcd8b35767190361f8ced830bae18acf7662919e42"
+    },
+    {
+      "path": "icons/now.ico",
+      "bytes": 60637,
+      "sha256": "a6f4af3370d657e14df8b685176c512980a3549640a0408c8542d26a2db73d59"
+    },
+    {
+      "path": "original.png",
+      "bytes": 943589,
+      "sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc"
+    }
+  ]
+}

@@ -13,11 +13,13 @@ ROOT = Path(__file__).resolve().parents[1]
 SIZES = (16, 24, 32, 48, 64, 128, 192, 256, 512)
 
 
-def import_logo(source: Path, destination: Path) -> dict:
+def import_logo(source: Path, destination: Path, *, padding="transparent") -> dict:
     from PySide6.QtCore import Qt
     from PySide6.QtGui import QImage, QImageReader, QPainter
 
     source, destination = source.resolve(), destination.resolve()
+    if padding not in {"transparent", "black"}:
+        raise ValueError("padding must be transparent or black")
     if source.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp"}:
         raise ValueError("provide the original PNG, JPEG or WebP; SVG needs a separately reviewed renderer")
     if not source.is_file() or source.stat().st_size > 32 * 1024 * 1024:
@@ -30,6 +32,8 @@ def import_logo(source: Path, destination: Path) -> dict:
         if previous.get("status") == "imported_official_asset":
             if previous.get("original_sha256") != digest:
                 raise FileExistsError("an official logo is already imported; review replacement separately")
+            if previous.get("padding", "transparent") != padding:
+                raise FileExistsError("the imported icon padding differs; review replacement separately")
             original = destination / previous["original"]
             if hashlib.sha256(original.read_bytes()).hexdigest() != digest:
                 raise ValueError("the preserved original no longer matches its receipt")
@@ -56,7 +60,7 @@ def import_logo(source: Path, destination: Path) -> dict:
         scaled = image.scaled(side, side, Qt.AspectRatioMode.KeepAspectRatio,
                               Qt.TransformationMode.SmoothTransformation)
         canvas = QImage(side, side, QImage.Format.Format_ARGB32)
-        canvas.fill(Qt.GlobalColor.transparent)
+        canvas.fill(Qt.GlobalColor.black if padding == "black" else Qt.GlobalColor.transparent)
         painter = QPainter(canvas)
         painter.drawImage((side - scaled.width()) // 2, (side - scaled.height()) // 2, scaled)
         painter.end()
@@ -74,7 +78,8 @@ def import_logo(source: Path, destination: Path) -> dict:
         "status": "imported_official_asset", "brand": "NOW Assistant", "original": original_name,
         "original_sha256": digest, "source_dimensions": [image.width(), image.height()],
         "display_asset": "icons/now-128.png", "windows_icon": "icons/now.ico", "sizes": list(SIZES),
-        "transform": "proportional resize and transparent padding only; original background preserved",
+        "padding": padding,
+        "transform": f"proportional resize and {padding} padding only; original background preserved",
         "visual_review": "required_before_release", "vector": False,
     }
     temporary = destination / "manifest.pending.json"
@@ -87,9 +92,11 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path)
     parser.add_argument("--output", type=Path, default=ROOT / "assets/branding")
+    parser.add_argument("--padding", choices=("transparent", "black"), default="transparent",
+                        help="outside padding only; never alters pixels in the preserved original")
     args = parser.parse_args(argv)
     try:
-        receipt = import_logo(args.source, args.output)
+        receipt = import_logo(args.source, args.output, padding=args.padding)
     except (ValueError, OSError) as error:
         parser.exit(1, str(error) + "\n")
     print(json.dumps(receipt, ensure_ascii=False, indent=2))

@@ -1,5 +1,21 @@
 # NOW Assistant — validação incremental
 
+## Logo oficial e candidato 0.3.0-alpha.1 — 16/11/2026
+
+Continuação da `work` a partir de `fcff45f8f6bf868d08ff0639c93e445f72299393`, árvore limpa e remoto correspondente. Backup das fontes versionadas: `/workspace/.now-ai-backups/before-official-branding-fcff45f.zip`. Fonte/pipeline anteriores preservadas; publicação de GitHub Release continua proibida nesta preparação.
+
+O ZIP `NOW_Assistant_Logo_Oficial_PARA_CODEX.zip` passou no CRC, contém somente `NOW_Assistant_Logo_Oficial.png` (943.589 bytes, 1301 × 1209), assinatura/decodificação PNG válidas. SHA-256 ZIP: `aae376b0251529e51c7f7ec91b3841f2030e6d78db99a85cf8e2c4f33e04636b`. O original em `assets/branding/original.png` foi comparado **byte a byte** com o membro do ZIP; SHA-256 `9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc`.
+
+Gerados PNGs 16/24/32/48/64/128/192/256/512 e ICO com oito resoluções até 256. Somente redução proporcional e acomodação externa preta: sem redesenho, recorte, troca de cores, remoção de preto ou vetorização. Original, ícones 512/128/32 e a GUI real foram inspecionados. O importador manteve o comportamento anterior de padding transparente como default e ganhou a opção explícita preta, testada sem eliminar casos anteriores.
+
+Integração: PNG no cabeçalho, ICO multi-resolução para janela/Windows e o mesmo ICO para o recurso PE do EXE. O smoke agora exige logo visível e ícone real com resolução 256 quando a marca oficial existe. O CI passou a observar mudanças em `assets/branding/**`. O workflow Alpha e todas as barreiras de publicação manual continuam preservados.
+
+**Resultados locais executados:** 98 testes aprovados, 0 ignorados, 0 falhas/erros (24,016 s): os 95 anteriores mais três de padding/identidade oficial/ícone e GUI. `actionlint` passou nos três workflows. Smoke Qt/API real em Linux offscreen, venv mínimo **sem SDK Gemini**, seis comandos offline PT-BR/EN, imagem oficial e ICO carregados com oito tamanhos; nenhum banco criado. Não são inferência, áudio físico ou build Windows. Evidência: `validation/official-logo-alpha-20261116.json` e `assets/branding/PROVENANCE.json`.
+
+**Estado antes de executar o candidato Windows:** a API `api.github.com` ainda retorna Forbidden no CONNECT, ausente da política aplicada revisão 1. O domínio já consta no rascunho 8, mas não foi aplicado. O disparo via `gh` de Prepare Windows Alpha está pendente dessa configuração ou de ação do proprietário no painel Actions. A execução e o link do candidato serão registrados quando realmente ocorrerem; não considerar o diagnóstico anterior como o novo candidato com logo. Nenhuma tag, draft ou Release foi criada.
+
+Os relatórios abaixo são históricos das etapas anteriores, inclusive quando o arquivo da logo ainda não estava disponível.
+
 ## Distribuição GitHub — preparação de 0.3.0-alpha.1 (16/11/2026)
 
 Base `work`, commit inicial `15e03a7dbbe73a817a831d3f27858d7387b6e0e2`, árvore inicialmente limpa e remoto correspondente; backup de fontes versionadas em `/workspace/.now-ai-backups/distribution-before-15e03a7.zip`. Nenhum reset/recriação. Baseline: 86 testes aprovados em 25,538 s.

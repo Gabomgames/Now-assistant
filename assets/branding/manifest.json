@@ -1,8 +1,28 @@
 {
-  "status": "awaiting_original_file",
+  "status": "imported_official_asset",
   "brand": "NOW Assistant",
-  "reference": "Official N with magenta/purple/blue/cyan orbital swoosh, supplied visually in the conversation",
-  "original": null,
-  "display_asset": null,
-  "note": "The inline image was visible but no downloadable image file was exposed to the execution environment. No substitute logo is generated."
+  "original": "original.png",
+  "original_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+  "source_dimensions": [
+    1301,
+    1209
+  ],
+  "display_asset": "icons/now-128.png",
+  "windows_icon": "icons/now.ico",
+  "sizes": [
+    16,
+    24,
+    32,
+    48,
+    64,
+    128,
+    192,
+    256,
+    512
+  ],
+  "padding": "black",
+  "transform": "proportional resize and black padding only; original background preserved",
+  "visual_review": "reviewed_original_raster_icons_and_live_qt_gui_for_alpha_build",
+  "vector": false,
+  "visual_review_date": "2026-11-16"
 }

@@ -64,3 +64,35 @@ class BrandingTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             import_logo(svg, self.output)
         self.assertFalse(self.output.exists())
+
+    def test_black_padding_keeps_opaque_original_and_does_not_modify_source(self):
+        original = self.source.read_bytes()
+        receipt = import_logo(self.source, self.output, padding="black")
+        self.assertEqual(receipt["padding"], "black")
+        self.assertEqual((self.output / receipt["original"]).read_bytes(), original)
+        image = QImage(str(self.output / "icons/now-128.png"))
+        self.assertEqual(image.pixelColor(64, 0), QColor("#000000"))
+        self.assertEqual(image.pixelColor(64, 64), QColor("#0066cc"))
+        self.assertEqual(import_logo(self.source, self.output, padding="black"), receipt)
+        with self.assertRaises(FileExistsError):
+            import_logo(self.source, self.output, padding="transparent")
+
+    def test_official_repository_asset_matches_the_original_delivery_and_manifest(self):
+        root = Path(__file__).resolve().parents[1] / "assets/branding"
+        manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
+        expected = "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc"
+        self.assertEqual(manifest["status"], "imported_official_asset")
+        self.assertEqual(manifest["original_sha256"], expected)
+        self.assertEqual(hashlib.sha256((root / manifest["original"]).read_bytes()).hexdigest(), expected)
+        self.assertEqual(manifest["source_dimensions"], [1301, 1209])
+        self.assertEqual(manifest["padding"], "black")
+        provenance = json.loads((root / "PROVENANCE.json").read_text(encoding="utf-8"))
+        for entry in provenance["files"]:
+            data = (root / entry["path"]).read_bytes()
+            self.assertEqual(len(data), entry["bytes"])
+            self.assertEqual(hashlib.sha256(data).hexdigest(), entry["sha256"])
+        for side in manifest["sizes"]:
+            image = QImage(str(root / f"icons/now-{side}.png"))
+            self.assertFalse(image.isNull())
+            self.assertEqual((image.width(), image.height()), (side, side))
+            self.assertEqual(image.pixelColor(side // 2, 0), QColor("#000000"))

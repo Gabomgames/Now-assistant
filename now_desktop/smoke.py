@@ -12,7 +12,7 @@ import time
 def capture(output_directory):
     import sys
     from PySide6.QtCore import QEventLoop, QTimer
-    from PySide6.QtWidgets import QApplication
+    from PySide6.QtWidgets import QApplication, QLabel
     from .branding import logo_path
     from .engine_client import EngineClient
     from .runtime import EngineProcess
@@ -66,6 +66,13 @@ def capture(output_directory):
             client.start()
             wait(lambda: window._ready)
             screenshot("NOW-Assistant-welcome.png")
+            official = logo_path() is not None
+            icon_sizes = sorted({size.width() for size in window.windowIcon().availableSizes()})
+            if official:
+                mark = window.findChild(QLabel, "officialLogo")
+                if (mark is None or not mark.isVisible() or mark.pixmap().isNull()
+                        or window.windowIcon().isNull() or 256 not in icon_sizes):
+                    raise RuntimeError("official branding did not render or the multi-size window icon failed")
             for language, prompts in (("pt-BR", ("oi", "horas", "data")), ("en-US", ("hello", "time", "date"))):
                 window.controller.settings["language"] = language
                 window.new_chat()
@@ -86,7 +93,9 @@ def capture(output_directory):
                 "checked_at_utc": datetime.now(timezone.utc).isoformat(), "platform": platform.platform(),
                 "system": platform.system(), "version": VERSION, "frozen_executable": bool(getattr(sys, "frozen", False)),
                 "python_version": platform.python_version(), "python_bits": 64 if sys.maxsize > 2**32 else 32,
-                "qt_platform": application.platformName(), "official_logo_loaded": logo_path() is not None,
+                "qt_platform": application.platformName(), "official_logo_loaded": official,
+                "official_window_icon_loaded": official and not window.windowIcon().isNull(),
+                "window_icon_sizes": icon_sizes,
                 "real_gui_and_http_engine": True, "mocked_responses": False, "offline_commands": records,
                 "temporary_session_created_database": False, "gemini_sdk_present": importlib.util.find_spec("google") is not None,
                 "model_inference_executed": False, "audio_executed": False,

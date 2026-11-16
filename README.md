@@ -4,7 +4,7 @@ Assistente pessoal de uso geral, com especialidade gamer. A primeira interface d
 
 ## Baixar para Windows
 
-A primeira Alpha oficial ainda aguarda o arquivo original da logo e autorização de publicação. O [artefato Windows de diagnóstico](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793#artifacts) foi construído/testado no GitHub Actions e está disponível para revisão; é identificado como não publicável. O download de artifacts pode exigir login no GitHub.
+A logo oficial já foi integrada a partir do PNG original, preservando seus bytes, cores, proporções e fundo preto. A versão `0.3.0-alpha.1` está sendo preparada para revisão nos [artefatos do workflow Prepare Windows Alpha](https://github.com/Gabomgames/Now-assistant/actions/workflows/windows-alpha.yml). O resultado atual e o link de cada build estão em [VALIDACAO.md](VALIDACAO.md). Nenhuma GitHub Release será publicada nesta preparação. O download de artifacts pode exigir login no GitHub.
 
 Quando uma versão for aprovada, o ZIP ficará em [GitHub Releases](https://github.com/Gabomgames/Now-assistant/releases): extrair a pasta inteira e abrir `NOW-Assistant.exe`, **sem instalar Python ou VS Code**. Python/Qt acompanham a pasta; Ollama/pesos Qwen são separados. [Instalação e requisitos para usuários](packaging/releases/INSTALL-WINDOWS.md).
 
@@ -44,7 +44,7 @@ Reabra a NOW Assistant após configurar o ambiente. Perguntas livres usam `/api/
 
 ## Validação e limites desta entrega
 
-Distribuição pelo GitHub: [pipeline Windows, candidatos e aprovação manual](docs/GITHUB_DISTRIBUTION.md). Versão preparada `0.3.0-alpha.1`; CI e preparo de candidato não publicam Releases. O [run Windows de diagnóstico](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793) passou com EXE, Engine, seis comandos offline e ZIP verificado. A Alpha oficial continua bloqueada pela ausência do arquivo original da logo. Nenhuma Release foi publicada. Python/Qt acompanham o pacote; Ollama/modelos são instalações separadas.
+Distribuição pelo GitHub: [pipeline Windows, candidatos e aprovação manual](docs/GITHUB_DISTRIBUTION.md). Versão preparada `0.3.0-alpha.1`; CI e preparo de candidato não publicam Releases. O [run anterior de diagnóstico](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793) passou com EXE, Engine, seis comandos offline e ZIP verificado, antes da chegada da logo. A marca oficial agora está em `assets/branding`, e o novo candidato exige execução própria do workflow Alpha. Python/Qt acompanham o pacote; Ollama/modelos são separados.
 
 GUI, API autenticada e armazenamento foram executados em **Linux com Qt offscreen** e **Windows Server 2022 no GitHub Actions**. A suíte atual tem 95 casos: 95 aprovados em Linux; 94 aprovados e um teste POSIX não aplicável em Windows. O smoke do EXE usa comandos determinísticos reais, sem Gemini ou inferência simulada. [VALIDACAO.md](VALIDACAO.md) contém escopo dos fixtures/doubles e evidências. Para repetir toda a suíte, incluindo treinamento:
 
@@ -52,7 +52,7 @@ GUI, API autenticada e armazenamento foram executados em **Linux com Qt offscree
 .\.venv-desktop\Scripts\python.exe -m unittest discover -v
 ```
 
-A imagem oficial foi visível na conversa, mas seu arquivo não ficou acessível ao ambiente. [O manifest](assets/branding/manifest.json) registra a pendência; não foi criada outra logo. Há importação fiel de raster e geração de ícones pronta para receber o original. A interface usa nome e paleta até esse arquivo chegar.
+O PNG original recebido em ZIP está intacto em [assets/branding/original.png](assets/branding/original.png), com SHA-256 no [manifest](assets/branding/manifest.json) e comprovante em [PROVENANCE.json](assets/branding/PROVENANCE.json). A interface usa a imagem oficial; o ícone da janela e do EXE usa ICO com oito resoluções. A marca não foi redesenhada, recortada ou convertida em vetor.
 
 O [build Windows GUI](tools/build_desktop_windows.py) exige Windows real e logo oficial para gerar um candidato publicável. O CI gerou/testou um **EXE de diagnóstico não publicável**, sem logo substituta. Windows 10/hardware alvo e a Alpha com identidade oficial ainda precisam de validação; APK não foi construído. Microfone, STT/TTS audíveis, wake word, bandeja, inicialização automática, visão, sincronização e NOW Cloud são próximas fases.
 

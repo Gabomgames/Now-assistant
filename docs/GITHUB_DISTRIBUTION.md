@@ -27,12 +27,12 @@ Smoke no runner não comprova Windows 10, hardware de 8 GB, leitor de tela, DPI,
 
 ## Logo oficial e primeiro candidato
 
-Versão preparada: **0.3.0-alpha.1**. O arquivo inline da logo ainda não chegou como PNG/JPG/WebP acessível; `assets/branding/manifest.json` permanece `awaiting_original_file`. Não há logo alternativa. O build diagnóstico usa explicitamente `--icon NONE` se o arquivo falta e gera `release_eligible:false`; não pode virar release pela pipeline.
+Versão preparada: **0.3.0-alpha.1**. O ZIP definitivo da logo foi recebido e seu PNG original foi preservado em `assets/branding/original.png`, SHA-256 `9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc`. O manifest registra `imported_official_asset`, proporção original 1301 × 1209 e padding preto externo. Há nove PNGs derivados e ICO com oito resoluções; não houve redesenho ou remoção de fundo. O modo Alpha usa esses assets verificados. O CI de diagnóstico permanece não publicável por definição.
 
 Recebendo o arquivo original, com o ambiente desktop instalado:
 
 ```powershell
-python tools/import_branding.py 'C:\caminho\logo-oficial.png'
+python tools/import_branding.py 'C:\caminho\logo-oficial.png' --padding black
 ```
 
 Confira o original intacto, SHA do manifest e ícones derivados. Commit/push dos assets na work são necessários para o runner receber os mesmos bytes. **Actions → Prepare Windows Alpha → Run workflow**: branch work, version `0.3.0-alpha.1`, marcar `branding_reviewed` somente após inspeção. O modo Alpha recusa logo ausente/alterada e verifica recurso de ícone no PE e imagem carregada na GUI. Ele não cria tag nem release.

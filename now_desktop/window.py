@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (QApplication, QDialog, QFileDialog, QFrame, QHBox
 from now_history import HistoryStore
 from now_history.models import utc_now
 
-from .branding import logo_path
+from .branding import logo_path, window_icon_path
 from .controller import ChatController, DEFAULT_SETTINGS
 from .dialogs import SettingsDialog, VaultDialog
 from .i18n import text
@@ -96,8 +96,9 @@ class MainWindow(QMainWindow):
         brand = QHBoxLayout()
         asset = logo_path()
         if asset:
-            self.setWindowIcon(QIcon(str(asset)))
+            self.setWindowIcon(QIcon(str(window_icon_path())))
             image = self._label("")
+            image.setObjectName("officialLogo")
             image.setPixmap(QPixmap(str(asset)).scaled(58, 58, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
             image.setAccessibleName("NOW Assistant — official logo")
             brand.addWidget(image)
