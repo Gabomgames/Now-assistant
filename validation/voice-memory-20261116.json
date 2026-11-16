@@ -1,0 +1,159 @@
+{
+  "checked_at_utc": "2026-11-16T12:53:50.261810+00:00",
+  "base_commit": "5caadced232697430af32d0cb30a564901c0c25a",
+  "preservation": {
+    "original_application_files_identical": 9,
+    "existing_27_test_source_files_unchanged": true,
+    "other_preexisting_source_files_unchanged": true,
+    "updated_preexisting_non_code_files": [
+      "docs/WINDOWS_VSCODE.md",
+      "docs/NEXT_TASK.md",
+      "docs/MODEL_ROADMAP.md",
+      "packaging/windows/requirements-build.txt"
+    ]
+  },
+  "full_suite": {
+    "command": ".venv/bin/python -m unittest discover -v",
+    "executed": 55,
+    "passed": 55,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 7.63,
+    "legacy_tests": 27,
+    "memory_tests": 14,
+    "voice_tests": 14
+  },
+  "installer": {
+    "command": "bash /workspace/.now-ai-environment/install.sh",
+    "exit_code": 0,
+    "created_user_vault": false
+  },
+  "memory": {
+    "implemented": "opt-in encrypted explicit preferences",
+    "cryptography_version": "50.0.2",
+    "encryption": "AES-256-GCM",
+    "kdf": "scrypt N=131072 r=8 p=1",
+    "password_or_key_persisted": false,
+    "posix_permissions_tested": true,
+    "windows_acl_tested": false,
+    "conversation_history_implemented": false
+  },
+  "voice": {
+    "implemented": [
+      "state controller",
+      "explicit permissions",
+      "cooperative cancellation",
+      "segmentation and prosody hints",
+      "local-only text adapter"
+    ],
+    "audio_contract_tests_use_explicit_test_doubles": true,
+    "real_microphone_tested": false,
+    "real_stt_tested": false,
+    "real_tts_tested": false,
+    "wake_word_implemented": false,
+    "voice_quality_validated": false,
+    "bilingual_deterministic_commands_executed": true,
+    "real_llm_conversations_executed": false
+  },
+  "network": {
+    "runtime_revision": "1",
+    "observations_current": true,
+    "enforced_mode": "restricted",
+    "registry_allowed": false,
+    "direct_request_error": "Tunnel connection failed: 403 Forbidden",
+    "actual_pull_exit_code": 1,
+    "actual_pull_error": "Forbidden while retrieving registry.ollama.ai/v2/library/qwen2.5/manifests/0.5b",
+    "model_generations_executed": 0,
+    "initial_policy_state": "enforced",
+    "latest_policy_state": "unknown",
+    "fresh_registry_recheck": "Tunnel connection failed: 403 Forbidden",
+    "published_network_configuration_verified": false
+  },
+  "gui": {
+    "professional_design_plan_added": true,
+    "windows_or_android_gui_built": false
+  },
+  "cli_smoke": {
+    "actual_cli_checks": [
+      {
+        "name": "status_without_storage",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "init_explicit_consent",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "save_language",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "save_display_name",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "read_persistent_preferences",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "voice_client_reads_preferences",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "disable_memory",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "disabled_preferences_are_not_used",
+        "exit_code": 2,
+        "passed": true
+      },
+      {
+        "name": "explicit_plaintext_export",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "clear_while_disabled",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "enable_with_fresh_consent",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "data_cleared",
+        "exit_code": 0,
+        "passed": true
+      },
+      {
+        "name": "audio_backend_absence_is_explicit",
+        "exit_code": 2,
+        "passed": true
+      },
+      {
+        "name": "missing_model_pt-BR",
+        "exit_code": 2,
+        "passed": true
+      },
+      {
+        "name": "missing_model_en-US",
+        "exit_code": 2,
+        "passed": true
+      }
+    ],
+    "temporary_data_removed": true,
+    "password_persisted_in_evidence": false,
+    "model_generations": 0,
+    "physical_audio_executed": false
+  }
+}

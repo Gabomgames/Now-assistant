@@ -4,7 +4,7 @@
 
 Os nove arquivos da base original foram preservados. Foram acrescentadas ferramentas de validação real e de empacotamento, sem recriar o projeto. A máquina de desenvolvimento atual é Linux: o `.exe` ainda não foi gerado ou testado em Windows. O modelo local também aguarda liberação de rede no ambiente em nuvem. Consulte `VALIDACAO.md`; não considere os passos abaixo como testes já concluídos.
 
-O executável será um aplicativo de terminal com opção de iniciar a API local. A base não tem interface gráfica, voz, ativação por palavra, memória persistente ou aplicativo Android.
+O executável legado será um aplicativo de terminal com opção de iniciar a API local. Não há GUI, áudio real, ativação por palavra ou aplicativo Android. O incremento opcional oferece preferências criptografadas persistentes e controlador de voz em código-fonte; o build legado não os anuncia como modos empacotados.
 
 ## Pré-requisitos no Windows
 
@@ -121,3 +121,14 @@ Na pasta do projeto, estes comandos adicionais validam dados, separação e plan
 ```
 
 O dry-run não é um treinamento ou teste de inferência. Os 36 exemplos piloto não estão aprovados para fine-tuning. O novo perfil Casual/PT-BR/EN está no avaliador; a persona da Engine original foi preservada. Consulte `training/README.md`, `docs/MODEL_ROADMAP.md` e `docs/NEXT_TASK.md` antes de continuar. O pipeline GPU é experimental e não foi executado em Windows ou nesta máquina Linux.
+
+## Novo código de memória e controle de voz
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-memory.txt
+.\.venv\Scripts\python.exe -m now_voice --capabilities
+.\.venv\Scripts\python.exe -m now_voice --text "time" --language en-US
+.\.venv\Scripts\python.exe -m now_memory status
+```
+
+São comandos de código-fonte, não um novo `.exe` aprovado. Memória só é criada por `init --consent`, com senha no terminal; consulte `docs/NOW_MEMORY.md`. Estados, permissões, pausas e estilo estão em `docs/NOW_VOICE_ENGINE.md`. A GUI é apenas planejada em `docs/GUI_PLAN.md`. Segurança de ACL, drivers, áudio e builds Windows/Android ainda exigem execução nativa.

@@ -133,3 +133,51 @@ Qwen2.5 permanece baseline; Qwen3-0.6B é apenas candidato registrado, sem troca
 O avaliador foi preparado para manter progresso/metadados, arquivos anteriores e revisão humana. O caminho que recebe/salva gerações reais ainda precisa ser exercitado com Ollama e pesos locais. Nenhum adaptador foi treinado e nenhum modelo próprio foi declarado pronto. Personalizar Qwen não equivale a treinar um modelo fundacional do zero.
 
 Evidência estruturada e hashes dos nove originais: `validation/training-integration-20261116.json`. Para identificar o commit desta entrega, consultar `git log -1 --format='%H %s'`; o resultado do envio remoto deve ser conferido no retorno desta tarefa e com Git de leitura, sem presumir autorização ou push bem-sucedido.
+
+
+## Incremento NOW Memory / NOW Voice Engine — 16/11/2026 09:57 (America/Sao_Paulo)
+
+Origem confirmada em `5caadced232697430af32d0cb30a564901c0c25a`, branch `work`, com árvore limpa e remoto igual. Backup anterior à edição: `/workspace/.now-ai-backups/voice-memory-20261116T123125Z/`. Os nove arquivos originais da aplicação e todos os arquivos-fonte dos 27 testes anteriores foram preservados. Não houve recriação da Engine, remoção de funcionalidades ou alteração dos dados de treinamento.
+
+| Entrega/check | Estado | Resultado executado e limite |
+| --- | --- | --- |
+| Regressão da base | TESTADO | Os 27 testes existentes foram executados inicialmente e novamente na suíte completa; continuaram aprovados. |
+| Suíte completa | TESTADO | 55 executados, 55 aprovados, zero falhas/skip no Linux: 27 anteriores + 14 de memória + 14 de voz. Reproduzidos também pelo instalador atualizado. |
+| NOW Memory: preferências | FUNCIONAL/TESTADO | SQLite real, AES-256-GCM, scrypt e senha/chave não persistidas. Opt-in, leitura, atualização atômica, desabilitação, exportação explícita, exclusão e limpeza. Estado de consentimento autenticado e cifra vinculada ao campo. |
+| Integridade/privacidade | TESTADO | Senha incorreta preserva banco; alteração/troca de cifras é detectada; dados inválidos não alteram preferências; diretório/arquivo 0700/0600 no POSIX. Abertura repetida nunca sobrescreve cofre. Exportação é texto aberto e não substitui arquivo existente. |
+| CLI de memória e novo cliente | TESTADO | 15 verificações reais de subprocesso, incluindo preferências persistentes, saudação personalizada em inglês, recusa de memória desabilitada, exportação/limpeza e erros explícitos de modelo/áudio ausentes. Cofre de teste e exportação removidos; nenhum cofre real de usuário criado automaticamente. |
+| NOW Voice Engine: infraestrutura | IMPLEMENTADO/TESTADO | Contratos PCM16, estados, uma requisição ativa, permissões independentes, cancelamento cooperativo e plano de segmentos/pausas/estilo. Não abre microfone no import ou setup. |
+| Texto PT-BR/EN independente de modelo | FUNCIONAL/TESTADO | Novo `LocalAssistant` responde comandos determinísticos em ambos os idiomas e usa preferências explícitas. Testes impedem chamadas a modelo nesses comandos. |
+| Persona geral Casual | PREPARADA EM CÓDIGO | Novo adaptador monta instruções versionadas de persona/humor/idioma; caminho generativo só aceita modelo local instalado, sem Gemini. Qualidade de conversação e humor continua não validada com modelo real. API/CLI originais preservadas. |
+| Áudio/STT/TTS/“Now” | PENDENTE | Nenhum adaptador físico ou detector foi instalado. Capacidades reais padrão: capture=false, speech_output=false, wake_word=false, voice_quality_validated=false. `--speak` retorna erro de capacidade ausente. |
+| Testes de contrato de áudio | TESTADO COM DOUBLES | Fixtures explicitamente identificadas, com PCM silencioso apenas para fluxo/estado; não são provas de transcrição, síntese, reprodução física ou qualidade vocal. |
+| GUI Windows/Android | PLANEJADO | `docs/GUI_PLAN.md`: navegação, estados reais, acessibilidade, privacidade, transporte/autenticação e separação ViewModel/serviços. Nenhuma GUI/APK construída. |
+| Modelo Qwen/inferência real | BLOQUEADO | GET novo e `ollama pull qwen2.5:0.5b` falharam no manifesto de registry.ollama.ai com Forbidden. Inventário Ollama vazio. Zero gerações novas; oito checks legados, 12 casos de persona e conversas do novo adaptador continuam sem execução real. |
+| Fine-tuning, histórico e voz natural | PENDENTE | Nenhum peso treinado, histórico conversacional, sincronização, STT/TTS audível ou teste em hardware-alvo. Perfis/planos não comprovam voz natural ou expressividade. |
+| Windows nativo | NÃO EXECUTADO | Guias/dependência opcional preparados. ACLs, dispositivos, GUI e `.exe` Windows/Android não foram validados nesta máquina Linux. |
+
+### Rede publicada versus esta instância
+
+A instância permaneceu na revisão desejada/observada `1`, ligada à mesma versão de origem anterior; a regra registry.ollama.ai consta no rascunho. O primeiro status desta rodada indicava política restrita aplicada (`enforced`); o último indicou estado de rede `unknown`, ainda sem a regra no conjunto informado. Esse estado desconhecido não prova prontidão. Uma conexão nova ao registro continuou recebendo `Tunnel connection failed: 403 Forbidden` após a reconsulta. Portanto, não foi possível confirmar que a configuração publicada se aplicou a esta máquina. O cliente Ollama também falhou com código 1 no domínio exato do manifesto; nenhum redirecionamento de blob foi alcançado. Não se contornou a política nem se inventaram respostas.
+
+### Comandos efetivamente executados
+
+```bash
+.venv/bin/python -m unittest discover -v                 # base inicial: 27; suíte final: 55
+.venv/bin/python -m pip install -r requirements-memory.txt -c packaging/windows/constraints-python312.txt
+.venv/bin/python -m unittest tests.test_memory tests.test_voice -v  # 26 antes das duas últimas regressões
+.venv/bin/python -m now_voice --capabilities
+TZ=America/Sao_Paulo .venv/bin/python -m now_voice --text horas --language pt-BR
+TZ=America/Sao_Paulo .venv/bin/python -m now_voice --text time --language en-US
+bash /workspace/.now-ai-environment/install.sh           # suíte final 55 + preparação e status sem criar cofre
+```
+
+Também foram executados 15 comandos de smoke pela CLI com senha aleatória só no ambiente temporário do processo, sem imprimi-la ou persistir esse valor na evidência. O arquivo `validation/voice-memory-20261116.json` registra contagens e limites reais. O retorno `mode=text` e `playback_completed=false` foi conferido; não representa fala audível.
+
+### Segurança e próximos passos
+
+O cofre protege preferências em repouso, sem armazenar senha/chave; metadados como nomes de campos e horários são legíveis. Não é proteção contra um processo/conta já comprometido. Exclusão SQLite não apaga backups externos ou garante eliminação forense em SSD. A senha precisa ser fornecida pelo usuário no terminal, e os dados permanecem fora do Git. Permissões de microfone nunca são carregadas de preferências persistidas. Não há endpoints HTTP novos para dados privados.
+
+O cancelamento de voz é cooperativo: drivers reais devem respeitar o token; a requisição HTTP local ainda pode aguardar até 90 segundos e não tem interrupção ativa da geração. Próximos incrementos: aplicar rede à instância e revisar conversas reais PT-BR/EN; implementar push-to-talk com adaptadores STT/TTS licenciados e medir em hardware; só então detector “Now”, eco e barge-in. Memória de conversas, migrações futuras, sincronização e transporte autenticado para a GUI requerem escopo/testes próprios.
+
+Documentação: `docs/INCREMENT_VOICE_MEMORY.md`, `docs/NOW_MEMORY.md`, `docs/NOW_VOICE_ENGINE.md`, `docs/GUI_PLAN.md` e `docs/NEXT_TASK.md`. A revisão a usar na nova tarefa deve ser obtida com `git log -1`; confirmação do envio remoto e do rascunho fica no retorno desta tarefa. Publicação e restauração numa nova instância não são comprovadas pelos testes nesta máquina.

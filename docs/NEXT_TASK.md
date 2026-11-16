@@ -1,5 +1,19 @@
 # Continuar em uma nova tarefa Codex
 
+## Incremento de voz e memória
+
+O projeto agora inclui `now_memory` (preferências criptografadas opt-in), `now_voice` (controlador/contratos/plano de fala) e `now_engine.assistant` (adaptador local adicional). Instalar também `requirements-memory.txt` antes da suíte completa. A referência de origem deste incremento é `5caadce`; obter a revisão atual com Git, sem resetar para a referência de origem.
+
+```bash
+cd /workspace/Now-assistant
+.venv/bin/python -m pip install -r requirements-memory.txt -c packaging/windows/constraints-python312.txt
+.venv/bin/python -m unittest discover -v
+.venv/bin/python -m now_voice --capabilities
+.venv/bin/python -m now_memory --directory /workspace/.now-ai-environment/user-memory status
+```
+
+Status não cria banco. Não criar cofre, senha, permissão de microfone ou sessão de escuta durante setup. `docs/INCREMENT_VOICE_MEMORY.md` detalha o escopo. Este incremento não possui STT/TTS/detector, e os testes de contrato com doubles não validam áudio. Captura, fala física e “Now” continuam indisponíveis até implementar/adicionar e testar adaptadores reais.
+
 Use o checkout existente em `/workspace/Now-assistant`; a tarefa já está isolada. Não crie worktree, não substitua o checkout nem use reset/clean sobre arquivos locais. Os arquivos originais da NOW AI 0.2 e todo o histórico de relatórios devem permanecer preservados.
 
 ## Confirmar a versão e o estado
@@ -39,4 +53,4 @@ Nenhum desses comandos de preparação precisa de Ollama, GPU ou dependências d
 
 Não importar outputs sintéticos como evidência de inferência. Não iniciar treino com o piloto de 36 registros. A procedência/licença permanece pendente e o treinamento real está bloqueado por essas condições, além de corpus/validação/GPU.
 
-Para a próxima fase, seguir `MODEL_ROADMAP.md`. Windows, memória e voz continuam pendentes; não foram validados por estes testes offline. Os nove arquivos originais podem ser verificados usando os hashes e a origem registrados em `VALIDACAO.md` e `training/data/PROVENANCE.json`.
+Para a próxima fase, seguir `MODEL_ROADMAP.md` e os guias `NOW_MEMORY.md`, `NOW_VOICE_ENGINE.md` e `GUI_PLAN.md`. Preferências criptografadas e controle/planejamento de voz foram testados em Linux; memória de conversas, STT/TTS, hardware, wake word e builds Windows/Android continuam pendentes. Os nove arquivos originais podem ser verificados pelos hashes de `validation/training-integration-20261116.json`.

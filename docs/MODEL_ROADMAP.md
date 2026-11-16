@@ -17,13 +17,13 @@ A NOW Engine 0.2 continua com terminal, FastAPI e comandos determinísticos. O p
 
 Adaptar pesos Qwen pode produzir um modelo personalizado da NOW, sujeito à licença do modelo-base. Não equivale a treinar um modelo fundacional próprio do zero.
 
-## Memória — fase ainda não implementada
+## Memória — preferências implementadas, histórico/sync pendentes
 
-Implementar SQLite separado do modelo, com preferências explícitas, consentimento, retenção e isolamento por usuário. Entregar visualizar, editar, exportar e excluir antes de habilitar persistência. Testar exclusão e modo sem memória. A linguagem do modelo nunca deve afirmar que algo foi salvo sem confirmação do armazenamento.
+O módulo `now_memory` já oferece SQLite criptografado por senha, preferências explícitas, consentimento, leitura/edição/exportação/exclusão e desabilitação. Foi testado em Linux. A integração opcional com o novo cliente de texto usa snapshots de preferências. O terminal/API legados não foram alterados para coletar dados. Históricos de conversa, memórias inferidas, contas e sincronização continuam pendentes; precisam de retenção e isolamento explícitos. A linguagem do modelo nunca deve afirmar salvamento sem confirmação do armazenamento.
 
-## Voz — fase ainda não implementada
+## Voz — controlador/contratos implementados, áudio pendente
 
-Começar com push-to-talk, indicador de microfone, permissões revogáveis e transcrição/síntese local. Escolher STT/TTS após conferir licenças e desempenho real em pt-BR/EN. Validar primeiro em hardware Windows; Android tem requisitos próprios. Wake word, conversa contínua e expressividade dependem de medições e testes posteriores.
+`now_voice` já prepara estados, permissões, cancelamento cooperativo, segmentação/pausas e estilo com fallback neutro. Ainda não há adaptadores STT/TTS/microfone/saída ou detector “Now”. O próximo incremento deve entregar push-to-talk real e medir o indicador/encerramento de captura, antes de wake word. Escolher motores após conferir licenças e desempenho pt-BR/EN e validar em hardware Windows; Android exige testes próprios. Qualidade natural/expressiva, conversa contínua e barge-in continuam sem validação.
 
 ## Windows
 
