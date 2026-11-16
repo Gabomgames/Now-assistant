@@ -14,6 +14,27 @@ Integração: PNG no cabeçalho, ICO multi-resolução para janela/Windows e o m
 
 **Estado antes de executar o candidato Windows:** a API `api.github.com` ainda retorna Forbidden no CONNECT, ausente da política aplicada revisão 1. O domínio já consta no rascunho 8, mas não foi aplicado. O disparo via `gh` de Prepare Windows Alpha está pendente dessa configuração ou de ação do proprietário no painel Actions. A execução e o link do candidato serão registrados quando realmente ocorrerem; não considerar o diagnóstico anterior como o novo candidato com logo. Nenhuma tag, draft ou Release foi criada.
 
+### Windows com a marca oficial: execução real concluída
+
+O [Windows CI 43961691647](https://github.com/Gabomgames/Now-assistant/actions/runs/43961691647), fonte **`856723ef1fccb6d86cdc3fbffdd374663f717974`**, terminou **Success em 3m8s**: **98 casos, 97 aprovados, um POSIX não aplicável, zero falhas/erros**, Windows Server 2022 x64/Python 3.12.10. Os 95 casos anteriores foram mantidos. O builder verificou o ícone PE, abriu o EXE congelado com Qt `windows`, renderizou logo e ICO, iniciou a Engine empacotada e executou seis comandos offline reais. O smoke exige imagem visível, ícone não nulo e resolução 256, além de respostas HTTP reais.
+
+PNG original conferido no runner: SHA-256 `9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc`; ICO `a6f4af3370d657e14df8b685176c512980a3549640a0408c8542d26a2db73d59`. ZIP com Python/Qt, licenças, CRC, inventário e inspeção de arquivos privados passou. A pasta extraída dispensa Python/VS Code externos. Ollama/pesos Qwen são separados; não houve inferência simulada.
+
+- Artifact: **`now-assistant-ci-856723ef1fccb6d86cdc3fbffdd374663f717974-attempt-1`**, ~**51 MB**, em [Artifacts](https://github.com/Gabomgames/Now-assistant/actions/runs/43961691647#artifacts).
+- ZIP: `NOW-Assistant-0.3.0-alpha.1-diagnostic-Windows-x64.zip`, SHA-256 `ba874cd4734b36cdc6866ab563df20e33a24ac34898eab4aec3042c836e1e5db`.
+- EXE: SHA-256 `7fce2c1ea849566fd3e4a919537a4ccc7461cfa08fa15dcf6babb3f1f061d4fa`.
+- Digest do invólucro artifact GitHub: `16987ab23e41db67b2283600e48483867597b7232b3e2d53628d901264b534ef`.
+
+Status/hashes observados nas anotações públicas do GitHub. CRC/SHA/renderização foram executados pelo builder Windows; ZIP/EXE/screenshots Windows não foram baixados/inspecionados nesta máquina por bloqueio da API. A inspeção visual local foi da GUI Linux offscreen e ícones reais. Evidência: `validation/official-logo-alpha-20261116.json`.
+
+### Prepare Windows Alpha: tentativa bloqueada, não executado
+
+Após enviar o commit, foi tentado `gh workflow run windows-alpha.yml --repo Gabomgames/Now-assistant --ref work -f version=0.3.0-alpha.1 -f branding_reviewed=true`. Encerrou com **código 1**: `Get "https://api.github.com/repos/Gabomgames/Now-assistant/actions/workflows/windows-alpha.yml": Forbidden`. Política aplicada observada: revisão **1**, sem esse domínio. A tentativa não disparou o workflow. Nenhuma credencial foi extraída/pedida e nenhuma barreira da pipeline foi removida.
+
+O pacote acima é **CI diagnóstico**, `release_eligible:false`, mesmo com a marca. Não equivale ao candidato final de Prepare Windows Alpha. Para concluir: aplicar legitimamente a regra já salva no rascunho ou acessar [Prepare Windows Alpha](https://github.com/Gabomgames/Now-assistant/actions/workflows/windows-alpha.yml) → Run workflow → **work** → version **0.3.0-alpha.1** → **branding_reviewed=true**. Acompanhar o novo run e apresentar candidato/resultados antes de publicar. Nenhuma tag, draft ou GitHub Release foi criada.
+
+Persistem limites: Windows 10/hardware de 8 GB, DPI/leitor de tela/ACLs manuais, Authenticode, inferência Qwen, áudio físico/wake word e Android não recebem aprovação por esse smoke. A marca deixou de ser bloqueio; o bloqueio atual é disparar o workflow pela API restrita desta instância.
+
 Os relatórios abaixo são históricos das etapas anteriores, inclusive quando o arquivo da logo ainda não estava disponível.
 
 ## Distribuição GitHub — preparação de 0.3.0-alpha.1 (16/11/2026)

@@ -1,5 +1,9 @@
 # Interface NOW Assistant — plano e implementação
 
+## Marca definitiva — atualização atual
+
+O PNG oficial foi recebido em ZIP e integrado sem alterar seus bytes, cores, proporções ou fundo. PNG no cabeçalho e ICO multi-resolução na janela/EXE passaram no [Windows CI 43961691647](https://github.com/Gabomgames/Now-assistant/actions/runs/43961691647): 97 aprovados, um POSIX não aplicável. O passo atual é disparar Prepare Windows Alpha pelo canal autorizado; o CI não se converte automaticamente em candidato publicável. As pendências de arquivo da logo citadas nas etapas abaixo são históricas.
+
 ## Atualização V3 — 16/11/2026
 
 A primeira GUI executável está em `now_desktop`, com PySide6, API autenticada `/v2`, texto, estado real do modelo, configurações, histórico opt-in criptografado e NOW Memory separado. Foi executada com API/SQLite reais em Linux/Qt offscreen e no Windows Server 2022 do GitHub Actions. O EXE de diagnóstico passou no smoke offline; Alpha oficial, arquivo da logo, Qwen, áudio e hardware Windows 10 permanecem pendentes. A decisão por PySide6 está em [DESKTOP_ARCHITECTURE.md](DESKTOP_ARCHITECTURE.md); execução no VS Code em [DESKTOP_WINDOWS.md](DESKTOP_WINDOWS.md) e distribuição em [GITHUB_DISTRIBUTION.md](GITHUB_DISTRIBUTION.md).

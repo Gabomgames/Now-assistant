@@ -2,7 +2,7 @@
 
 ## O que está disponível
 
-Código executável da interface Qt, chat ligado à Engine local, comandos de texto em português/inglês, histórico criptografado opcional e preferências NOW Memory. Testados em Linux offscreen e Windows Server 2022 no GitHub Actions. O [run de diagnóstico](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793) gerou um EXE e abriu GUI/Engine empacotadas com seis comandos reais; não é Alpha publicável porque falta o arquivo da logo oficial. Windows 10/hardware alvo continuam pendentes. Não há áudio real, wake word, bandeja ou APK.
+Código executável da interface Qt, chat ligado à Engine local, comandos PT-BR/EN, histórico criptografado opcional e NOW Memory. A logo definitiva está integrada ao PNG/ICO e EXE. O [run Windows com a marca oficial](https://github.com/Gabomgames/Now-assistant/actions/runs/43961691647) passou: 97 testes aprovados, um POSIX não aplicável, GUI/Engine empacotadas e seis comandos reais. É diagnóstico de CI; Prepare Windows Alpha ainda depende de disparo autorizado. Windows 10/hardware alvo, áudio real, wake word, bandeja e APK permanecem pendentes.
 
 Para usuários finais, [instalação do ZIP sem Python/VS Code](../packaging/releases/INSTALL-WINDOWS.md). Para mantenedores, [GitHub Actions e aprovação manual](GITHUB_DISTRIBUTION.md). As instruções seguintes continuam sendo para desenvolvimento/build local.
 
@@ -70,7 +70,7 @@ Para o validador legado de oito gerações, após instalar o modelo e iniciar AP
 O anexo visual desta sessão não tinha arquivo acessível. Recebendo o PNG/JPG/WebP original, execute:
 
 ```powershell
-.\.venv-desktop\Scripts\python.exe tools\import_branding.py 'C:\caminho\logo-oficial.png'
+.\.venv-desktop\Scripts\python.exe tools\import_branding.py 'C:\caminho\logo-oficial.png' --padding black
 ```
 
 Confira `assets\branding\original.*`, SHA no manifest e todos os ícones. O processo apenas escala, acomoda proporcionalmente e preserva o fundo; não desenha, não remove preto e não produz vetor. SVG é recusado até haver renderizador revisado. Os testes usam retângulos artificiais temporários, que não são assets da marca.

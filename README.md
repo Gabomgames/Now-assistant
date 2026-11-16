@@ -46,7 +46,7 @@ Reabra a NOW Assistant após configurar o ambiente. Perguntas livres usam `/api/
 
 Distribuição pelo GitHub: [pipeline Windows, candidatos e aprovação manual](docs/GITHUB_DISTRIBUTION.md). Versão preparada `0.3.0-alpha.1`; CI e preparo de candidato não publicam Releases. O [run anterior de diagnóstico](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793) passou com EXE, Engine, seis comandos offline e ZIP verificado, antes da chegada da logo. A marca oficial agora está em `assets/branding`, e o novo candidato exige execução própria do workflow Alpha. Python/Qt acompanham o pacote; Ollama/modelos são separados.
 
-GUI, API autenticada e armazenamento foram executados em **Linux com Qt offscreen** e **Windows Server 2022 no GitHub Actions**. A suíte atual tem 95 casos: 95 aprovados em Linux; 94 aprovados e um teste POSIX não aplicável em Windows. O smoke do EXE usa comandos determinísticos reais, sem Gemini ou inferência simulada. [VALIDACAO.md](VALIDACAO.md) contém escopo dos fixtures/doubles e evidências. Para repetir toda a suíte, incluindo treinamento:
+GUI, API autenticada e armazenamento foram executados em **Linux com Qt offscreen** e **Windows Server 2022 no GitHub Actions**. Com a logo oficial, são 98 casos: 98 aprovados em Linux; 97 aprovados e um POSIX não aplicável em Windows. O [run com a marca oficial](https://github.com/Gabomgames/Now-assistant/actions/runs/43961691647) abriu o EXE e verificou GUI/ícone e seis comandos offline. Esse é um diagnóstico de CI; o workflow Alpha ainda depende de disparo autorizado. [VALIDACAO.md](VALIDACAO.md) contém resultados e escopo. Para repetir toda a suíte, incluindo treinamento:
 
 ```powershell
 .\.venv-desktop\Scripts\python.exe -m unittest discover -v

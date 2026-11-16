@@ -136,7 +136,66 @@
   "visual_review_platform": "Linux Qt offscreen",
   "windows_alpha_workflow": {
     "executed": false,
-    "reason": "api.github.com still blocked in effective runtime; manual dispatch pending"
+    "reason": "api.github.com still blocked in effective runtime; manual dispatch pending",
+    "dispatch_attempted": true,
+    "dispatch_exit_code": 1,
+    "dispatch_error": "Get \"https://api.github.com/repos/Gabomgames/Now-assistant/actions/workflows/windows-alpha.yml\": Forbidden",
+    "requested_branch": "work",
+    "requested_version": "0.3.0-alpha.1",
+    "requested_branding_reviewed": true,
+    "workflow_approval_rules_preserved": true
   },
-  "github_release_published": false
+  "github_release_published": false,
+  "branding_commit": "856723ef1fccb6d86cdc3fbffdd374663f717974",
+  "windows_branded_ci": {
+    "run_id": "43961691647",
+    "url": "https://github.com/Gabomgames/Now-assistant/actions/runs/43961691647",
+    "conclusion": "success",
+    "duration": "3m8s",
+    "observed_annotation": {
+      "packaged_build": "actual_windows_smoke_passed",
+      "release_published": false,
+      "source_sha": "856723ef1fccb6d86cdc3fbffdd374663f717974",
+      "unit_tests": {
+        "system": "Windows",
+        "python_version": "3.12.10",
+        "tests_run": 98,
+        "passed": 97,
+        "failures": 0,
+        "errors": 0,
+        "skipped": [
+          {
+            "test": "tests.test_memory.MemoryTests.test_vault_permissions_are_owner_only",
+            "reason": "POSIX permission check"
+          }
+        ],
+        "status": "passed"
+      },
+      "failed_tests": [],
+      "error_tests": [],
+      "version": "0.3.0-alpha.1",
+      "release_eligible": false,
+      "diagnostic_only": true,
+      "branding": {
+        "status": "official_original_verified",
+        "verified": true,
+        "original": "original.png",
+        "original_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+        "icon_sha256": "a6f4af3370d657e14df8b685176c512980a3549640a0408c8542d26a2db73d59",
+        "display_sha256": "1595f76e71f34d786941c04b8271299fa4d35382871c316fa20280b3eca116df"
+      },
+      "executable_sha256": "7fce2c1ea849566fd3e4a919537a4ccc7461cfa08fa15dcf6babb3f1f061d4fa",
+      "frozen_executable": true,
+      "qt_platform": "windows",
+      "actual_offline_commands": 6,
+      "weights_included": false,
+      "model_inference_tested": false,
+      "digital_signature": "not_signed",
+      "zip_sha256": "ba874cd4734b36cdc6866ab563df20e33a24ac34898eab4aec3042c836e1e5db  NOW-Assistant-0.3.0-alpha.1-diagnostic-Windows-x64.zip"
+    },
+    "artifact_name": "now-assistant-ci-856723ef1fccb6d86cdc3fbffdd374663f717974-attempt-1",
+    "artifact_size_observed": "51 MB",
+    "artifact_wrapper_digest": "16987ab23e41db67b2283600e48483867597b7232b3e2d53628d901264b534ef",
+    "evidence_scope": "Public Actions run status/structured annotations; artifact not downloaded locally because API host remains blocked."
+  }
 }

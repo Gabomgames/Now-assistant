@@ -1,5 +1,17 @@
 # Continuar em uma nova tarefa Codex
 
+## Ponto atual — logo definitiva integrada
+
+Logo recebida em `NOW_Assistant_Logo_Oficial_PARA_CODEX.zip`, PNG intacto em `assets/branding/original.png`, SHA-256 `9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc`. Não solicitar novamente a imagem. Commit da implementação **`856723ef1fccb6d86cdc3fbffdd374663f717974`**, branch work; usar HEAD mais recente sem resetar para a referência. Nove PNGs e ICO com oito tamanhos, somente escala proporcional e padding preto externo; manifest/provenance e testes preservam a identidade.
+
+**Prova Windows com logo:** [run 43961691647](https://github.com/Gabomgames/Now-assistant/actions/runs/43961691647), Success em 3m8s, Windows Server 2022/Python 3.12.10, 97 aprovados e um POSIX não aplicável (98 casos). EXE abriu, marca/ícone e Engine empacotada carregaram e seis comandos offline PT-BR/EN passaram; ZIP/inventário/CRC/SHA/licenças verificados no runner. Artifact CI de ~51 MB com fonte 856723e. Continua `diagnostic_only:true`, `release_eligible:false`; não apresentar como run Prepare Windows Alpha.
+
+**Próximo passo exato:** executar `gh workflow run windows-alpha.yml --repo Gabomgames/Now-assistant --ref work -f version=0.3.0-alpha.1 -f branding_reviewed=true` após confirmar acesso legítimo à API. A tentativa desta tarefa falhou (código 1) no GET de `api.github.com`; runtime revisão 1 não aplica o domínio, embora esteja no rascunho. Não repetir antes de mudança efetiva nem alterar as regras do workflow/publicador para driblar o bloqueio. O proprietário pode disparar pelo painel GitHub, work, versão 0.3.0-alpha.1 e branding_reviewed=true. Original, ícones e GUI foram realmente inspecionados.
+
+O usuário já autorizou **gerar e testar o candidato**, sem autorização de Release. Depois do disparo legítimo, acompanhar Prepare Windows Alpha até o fim, corrigir falhas, registrar SHA/run/ZIP/hashes e apresentar artifact e limitações. Não publicar tag/draft/Release. A pipeline de publicação e suas barreiras permanecem intactas. Usar cliente `gh` normal se a rede permitir, sem extrair credenciais. ZIP/screenshots Windows ainda não foram baixados/inspecionados localmente.
+
+Local: 98 testes aprovados (95 anteriores + 3 de branding), Qt/API reais em Linux offscreen com venv mínimo sem SDK Gemini, ícone com oito tamanhos e seis comandos offline. Não há inferência/áudio novo. Evidências: `validation/official-logo-alpha-20261116.json`, `assets/branding/PROVENANCE.json`, `VALIDACAO.md`. Os estados anteriores de logo ausente abaixo são históricos.
+
 ## Ponto atual — distribuição Windows 0.3.0-alpha.1
 
 Continuar do HEAD mais recente de `work`, preservando todos os commits. Implementação inicial da pipeline: `a130ba3`; correções Windows incrementais até **`c97f9d1fd8ce152f3d2261c750c5d8739e69c88f`**, que foi o código testado no [run 43950853793](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793). Commits posteriores de documentação/relatórios não mudam essa identidade de teste.
