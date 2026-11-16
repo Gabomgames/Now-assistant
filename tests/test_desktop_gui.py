@@ -283,6 +283,10 @@ class DesktopGUITests(unittest.TestCase):
         self.assertEqual(len(self.window.controller.current.messages), 1)
         self.assertEqual(self.window.controller.current.messages[0].status, "failed")
         self.assertEqual(self.window._last_error, "MODEL_UNAVAILABLE")
+        # Native Windows delivers child-widget show/layout events after the
+        # HTTP completion signal. Wait for the real rendered label, not only IO.
+        self.wait(lambda: any(label.isVisible() and label.text() == user_text
+                              for label in self.window.findChildren(QLabel, "messageBody")))
         labels = self.window.findChildren(QLabel, "messageBody")
         current = [label for label in labels if label.isVisible() and label.text() == user_text]
         self.assertTrue(current)
