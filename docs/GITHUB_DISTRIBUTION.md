@@ -41,6 +41,8 @@ Também é possível preparar pelo evento nativo **push**, alterando `packaging/
 
 Esse disparo usa Git e o evento padrão do Actions, com token somente de leitura. Não faz chamadas à API em nome do ambiente cloud, não altera sua política de rede e não publica versões. A opção manual continua disponível. Para preparar outro candidato pela solicitação, atualize a versão se necessário e gere um novo UUID com `python -c "import uuid; print(uuid.uuid4())"`; revise, faça commit e push na work.
 
+`.gitattributes` preserva os bytes dessa solicitação no Windows: sua prova usa o SHA-256 do arquivo inteiro, inclusive as quebras de linha. Não remover essa regra; o publicador compara o arquivo do commit ao recebido pelo builder.
+
 ## Revisar antes de autorizar publicação
 
 No run de Prepare Windows Alpha, leia o Summary, a conclusão de todos os passos e baixe o artifact `now-assistant-windows-<VERSION>-<SHA>-attempt-<N>`. O artifact do GitHub é um invólucro: dentro há o ZIP portátil da NOW, relatório, hashes e capturas. Confira versão, SHA completo, assinatura ausente, proveniência e limitações. Execute a aplicação no Windows alvo, mantendo a pasta `_internal`. Preserve os dados privados; os testes do runner usam somente fixtures temporários.

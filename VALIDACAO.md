@@ -8,6 +8,8 @@ Base preservada: `25efee4c39f88e8ed72f287ed61092ec3e53a643`, branch work, backup
 
 **Pendente neste ponto:** execução real de Prepare Windows Alpha com este commit, resultado do EXE/GUI/Engine/comandos offline e artifact final. Os resultados serão acrescentados somente após o runner concluir. Nenhuma tag, draft ou GitHub Release foi criada. Os diagnósticos abaixo permanecem históricos e não substituem esse candidato.
 
+**Correção durante a preparação:** a prova de filtros Git com `core.autocrlf=true` detectou conversão LF/CRLF da solicitação (SHA do blob `ce35f814e2b47143a2c9bc545312a29f38ad99b19d30c1b00703b34b5a6e362d`, checkout convertido `4a96ae6811fbac7cfdc93164f613e7e97b17274507565b6297bf923920644bab`). A regra `-text` foi acrescentada para esse arquivo; uma nova solicitação será a fonte do candidato final. A conferência de origem não foi relaxada para aceitar bytes diferentes.
+
 ## Logo oficial e candidato 0.3.0-alpha.1 — 16/11/2026
 
 Continuação da `work` a partir de `fcff45f8f6bf868d08ff0639c93e445f72299393`, árvore limpa e remoto correspondente. Backup das fontes versionadas: `/workspace/.now-ai-backups/before-official-branding-fcff45f.zip`. Fonte/pipeline anteriores preservadas; publicação de GitHub Release continua proibida nesta preparação.

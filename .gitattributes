@@ -1,3 +1,5 @@
 # Preserve byte-bound dataset/provenance and user-provided originals on Windows.
 training/data/*.jsonl -text
 training/original/** -text
+# The Alpha provenance receipt compares the exact committed request bytes.
+packaging/releases/alpha-request.json -text
