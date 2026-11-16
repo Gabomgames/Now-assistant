@@ -1,0 +1,64 @@
+{
+  "phase": "Qwen training preparation",
+  "original_files_sha256": {
+    "requirements.txt": "2eb6f02fdc484e79ee32a69aad3acaf67c8046cb2b1ff1ff76757ceb55e33899",
+    "README.md": "bd5b4b70ee2e154fa4b8b2a8afdbc99e62cd3497dd53678e1476577a5d819086",
+    "tests/test_core.py": "c1cc66205bc9c2ffdf96b22f0b74b1935f2a6e2e4c90f5c433bf3194da28c706",
+    ".env.example": "b57464553ad6a526721d0839dc0a479e6075fd41622da47239f73d98370574d5",
+    "now_engine/core.py": "e84d5ed713d1ae86db84603534b793476f3f4067a4578ab2909b9fd758280b7e",
+    "now_engine/__init__.py": "79a27a0a89b3552c893ceb9054ff45979d095efadd2e70261dead1331cd6daa0",
+    "now_engine/api.py": "93ad81fbc82474e56b29be0a857e3e1522a90e6cbba5d621538dd529ea0d81af",
+    ".gitignore": "c35e980010550d1852b0e91bf0edde2f37b72383abd87e835d8278133c668e09",
+    "main.py": "26e9b886a861ba87e53f49cf118bf9fb969fbe113586288e1d562a9663573a8e"
+  },
+  "original_files_preserved": 9,
+  "datasets": {
+    "training_records": 36,
+    "evaluation_cases": 12,
+    "raw_files_preserved": true,
+    "validation_issues": 0,
+    "overlapping_normalized_prompts": 0,
+    "provenance_approved_for_training": false
+  },
+  "checks": {
+    "full_suite": {
+      "command": ".venv/bin/python -m unittest discover -v",
+      "executed": 27,
+      "passed": 27,
+      "failed": 0,
+      "seconds": 0.646
+    },
+    "cloud_install_script": {
+      "command": "bash /workspace/.now-ai-environment/install.sh",
+      "exit_code": 0,
+      "reused_verified_ollama_binaries": true
+    },
+    "training_dry_run": {
+      "exit_code": 0,
+      "training_executed": false,
+      "optional_gpu_libraries_imported": false
+    },
+    "evaluation_dry_run": {
+      "exit_code": 0,
+      "generations": 0,
+      "not_run": 12,
+      "quality": "NOT_SCORED"
+    },
+    "actual_offline_api_and_cli": {
+      "outbound_connections": "denied_by_audit_hook",
+      "gemini_enabled": false,
+      "model_replies_mocked": false
+    }
+  },
+  "unrun": {
+    "app_generation_checks": 8,
+    "training_evaluation_generations": 12,
+    "gpu_training": true,
+    "windows_build": true
+  },
+  "model_downloaded": false,
+  "model_training_executed": false,
+  "production_persona_changed": false,
+  "memory_implemented": false,
+  "voice_implemented": false
+}

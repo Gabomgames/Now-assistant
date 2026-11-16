@@ -1,0 +1,10 @@
+reports/
+runs/
+cache/
+.venv/
+.env
+*.safetensors
+*.gguf
+*.pt
+*.pth
+*.bin

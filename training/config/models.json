@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "baseline": {
+    "ollama": "qwen2.5:0.5b",
+    "huggingface": "Qwen/Qwen2.5-0.5B-Instruct",
+    "license_declared": "Apache-2.0",
+    "artifact_license_review": "pending_before_model_download_or_training"
+  },
+  "candidate": {
+    "ollama": "qwen3:0.6b",
+    "huggingface": "Qwen/Qwen3-0.6B",
+    "license_declared": "Apache-2.0",
+    "artifact_license_review": "pending_before_model_download_or_training",
+    "status": "candidate_not_downloaded_or_benchmarked"
+  },
+  "official_documentation": ["https://github.com/QwenLM/Qwen2.5", "https://github.com/QwenLM/Qwen3"],
+  "automatic_production_model_switch": false,
+  "trust_remote_code": false
+}

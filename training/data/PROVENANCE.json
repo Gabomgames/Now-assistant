@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "source_archive": "NOW_AI_TREINAMENTO.zip",
+  "source_archive_sha256": "66054f029771f2d19fa893c8cdb9f8b16b25d8122fc3b79aaf5899c48ffc8431",
+  "dataset": "data/now_seed.jsonl",
+  "dataset_sha256": "dd4c28950cd930fc009164bb82f5dc10bccf2f7898e9818478355b375ed07e72",
+  "records": 36,
+  "authorship_claim": "The attached README declares 36 original synthetic examples; authorship has not been independently verified.",
+  "license": null,
+  "rights_basis": null,
+  "reviewed_by": null,
+  "reviewed_at": null,
+  "approved_for_training": false,
+  "held_out_evaluation": {
+    "path": "data/eval_cases.jsonl",
+    "records": 12,
+    "sha256": "d4b3992efb8f01869d1c42fbc624861944b1507d3ed847b0b9fcd9cc2d64d46b",
+    "use_for_training": false
+  }
+}

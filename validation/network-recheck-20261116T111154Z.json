@@ -1,0 +1,44 @@
+{
+  "checked_at_utc": "2026-11-16T11:11:54.447576+00:00",
+  "runtime": {
+    "environment_id": "ccarenv_b64_Y2NhcmVudl81ZjRmY2UwZTc0MDQ4MTkxOWQ3MmQ4OWQ4NGFiYTIxOQ",
+    "observations_current": true,
+    "spec_revision": "1",
+    "observed_spec_revision": "1",
+    "network_mode": "restricted",
+    "network_state": "enforced",
+    "registry_in_effective_hosts": false
+  },
+  "draft": {
+    "revision": 2,
+    "registry_rule_saved": true
+  },
+  "live_proxy": {
+    "observed_at": "2026-11-16T11:11:54.447576+00:00",
+    "policy_path": "policy.http.allowed_domains",
+    "mode": "allowlist",
+    "allowed_rule_count": 0,
+    "registry_rule_effective": false
+  },
+  "actual_registry_request": {
+    "url": "https://registry.ollama.ai/v2/library/qwen2.5/manifests/0.5b",
+    "result": "Tunnel connection failed: 403 Forbidden"
+  },
+  "actual_ollama_pull": {
+    "model": "qwen2.5:0.5b",
+    "exit_code": 1,
+    "error": "pull model manifest: Get \"https://registry.ollama.ai/v2/library/qwen2.5/manifests/0.5b\": Forbidden"
+  },
+  "ollama_version": "0.40.16",
+  "installed_models": [],
+  "generation_checks_this_attempt": {
+    "executed": 0,
+    "not_run": 8
+  },
+  "windows_executable_this_attempt": {
+    "built": false,
+    "tested": false
+  },
+  "diagnosis": "The saved draft has the registry grant, but this instance's enforced proxy allowlist does not. The request is blocked before manifest retrieval; no blob redirect was reached.",
+  "required_configuration": "Apply the registry.ollama.ai allowlist grant to the running instance of this conversation, preserving other network rules."
+}

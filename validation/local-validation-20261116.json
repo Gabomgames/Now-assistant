@@ -1,0 +1,108 @@
+{
+  "started_at_utc": "2026-11-16T10:59:46.035895+00:00",
+  "model": "qwen2.5:0.5b",
+  "gemini_enabled_for_engine_and_cli": false,
+  "language_review": "not_run",
+  "checks": [
+    {
+      "name": "api_health",
+      "status": "passed",
+      "evidence": "ok",
+      "seconds": 0.015
+    },
+    {
+      "name": "api_offline_oi",
+      "status": "passed",
+      "evidence": {
+        "reply": "Opa! NOW na área. Qual é a missão?",
+        "provider": "offline"
+      },
+      "seconds": 0.002
+    },
+    {
+      "name": "api_offline_horas",
+      "status": "passed",
+      "evidence": {
+        "reply": "Agora são 07:59 no seu computador.",
+        "provider": "offline"
+      },
+      "seconds": 0.001
+    },
+    {
+      "name": "api_offline_data",
+      "status": "passed",
+      "evidence": {
+        "reply": "Hoje é 16/11/2026.",
+        "provider": "offline"
+      },
+      "seconds": 0.001
+    },
+    {
+      "name": "cli_offline",
+      "status": "passed",
+      "evidence": {
+        "stdout": "🎮 NOW AI 0.2 | Digite ajuda para comandos; sair para encerrar.\n\nVocê: NOW [offline]: Comandos offline: oi, ajuda, horas, data e sair. Perguntas livres usam o modelo local ou Gemini.\n\nVocê: NOW: Até a próxima partida!\n",
+        "stderr": ""
+      },
+      "seconds": 0.051
+    },
+    {
+      "name": "ollama_version",
+      "status": "passed",
+      "evidence": {
+        "version": "0.40.16"
+      },
+      "seconds": 0.001
+    },
+    {
+      "name": "ollama_models",
+      "status": "passed",
+      "evidence": {
+        "models": []
+      },
+      "seconds": 0.001
+    },
+    {
+      "name": "ollama_pt-BR",
+      "status": "not_run",
+      "reason": "Model qwen2.5:0.5b is not installed; generation tests were not run."
+    },
+    {
+      "name": "engine_pt-BR",
+      "status": "not_run",
+      "reason": "Model qwen2.5:0.5b is not installed; generation tests were not run."
+    },
+    {
+      "name": "api_pt-BR",
+      "status": "not_run",
+      "reason": "Model qwen2.5:0.5b is not installed; generation tests were not run."
+    },
+    {
+      "name": "cli_pt-BR",
+      "status": "not_run",
+      "reason": "Model qwen2.5:0.5b is not installed; generation tests were not run."
+    },
+    {
+      "name": "ollama_en-US",
+      "status": "not_run",
+      "reason": "Model qwen2.5:0.5b is not installed; generation tests were not run."
+    },
+    {
+      "name": "engine_en-US",
+      "status": "not_run",
+      "reason": "Model qwen2.5:0.5b is not installed; generation tests were not run."
+    },
+    {
+      "name": "api_en-US",
+      "status": "not_run",
+      "reason": "Model qwen2.5:0.5b is not installed; generation tests were not run."
+    },
+    {
+      "name": "cli_en-US",
+      "status": "not_run",
+      "reason": "Model qwen2.5:0.5b is not installed; generation tests were not run."
+    }
+  ],
+  "status": "blocked",
+  "blocker": "Model qwen2.5:0.5b is not installed; generation tests were not run."
+}

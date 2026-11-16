@@ -1,0 +1,67 @@
+{
+  "at_utc": "2026-11-16T11:01:57.243794+00:00",
+  "controlled_api_started_with_gemini_disabled": true,
+  "ollama_missing_model": {
+    "http_status": 404,
+    "body": {
+      "error": "model 'qwen2.5:0.5b' not found"
+    }
+  },
+  "engine_missing_model": {
+    "reply": "O modelo local está indisponível. Inicie o Ollama ou habilite o Gemini como alternativa.",
+    "provider": "unavailable"
+  },
+  "api_missing_model": {
+    "http_status": 200,
+    "body": {
+      "reply": "O modelo local está indisponível. Inicie o Ollama ou habilite o Gemini como alternativa.",
+      "provider": "unavailable"
+    }
+  },
+  "cli_missing_model": {
+    "returncode": 0,
+    "stdout": "🎮 NOW AI 0.2 | Digite ajuda para comandos; sair para encerrar.\n\nVocê: NOW [unavailable]: O modelo local está indisponível. Inicie o Ollama ou habilite o Gemini como alternativa.\n\nVocê: NOW: Até a próxima partida!\n"
+  },
+  "launcher_api_health": {
+    "http_status": 200,
+    "body": {
+      "status": "ok",
+      "engine": "NOW AI",
+      "version": "0.2.0"
+    }
+  },
+  "launcher_api_offline": {
+    "http_status": 200,
+    "body": {
+      "reply": "Opa! NOW na área. Qual é a missão?",
+      "provider": "offline"
+    }
+  },
+  "launcher_api_invalid": {
+    "http_status": 422,
+    "body": {
+      "detail": [
+        {
+          "type": "string_too_short",
+          "loc": [
+            "body",
+            "message"
+          ],
+          "msg": "String should have at least 1 character",
+          "input": "",
+          "ctx": {
+            "min_length": 1
+          }
+        }
+      ]
+    }
+  },
+  "launcher_api_missing_model": {
+    "http_status": 200,
+    "body": {
+      "reply": "O modelo local está indisponível. Inicie o Ollama ou habilite o Gemini como alternativa.",
+      "provider": "unavailable"
+    }
+  },
+  "task_owned_test_launcher_stopped": true
+}

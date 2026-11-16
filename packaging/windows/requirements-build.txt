@@ -1,0 +1,3 @@
+-r ../../requirements.txt
+-c constraints-python312.txt
+pyinstaller==6.22.3

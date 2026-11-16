@@ -1,0 +1,135 @@
+# Configuração NOW AI 0.2 — 16/11/2026
+
+## Base e preservação
+
+Importados nove arquivos originais de `NOW-AI-0.2-ENGINE.zip` para o checkout vazio `/workspace/Now-assistant`. Código, README, requisitos e seis testes foram preservados. O GitHub continua sem commits/branches; a base importada está sem commit. O TXT V2 é uma especificação futura, não uma implementação.
+
+## Verificado nesta máquina Linux x86_64 / CPU
+
+- Python 3.12.14, virtualenv, instalação dos requisitos e `pip check`: sucesso.
+- Seis testes existentes com unittest: 6 executados, 6 aprovados; alguns usam mocks.
+- CLI real: ajuda, hora, data, encerramento e erro de provedor indisponível: sucesso.
+- Dez verificações de HTTP contra Uvicorn real: saúde, Swagger, OpenAPI, três comandos offline, três entradas inválidas e indisponibilidade explícita do modelo: sucesso.
+- Ollama 0.40.16: pacote oficial com SHA-256 `87bfafb2acbc89b2e6a1be0a9043de6aa75fb450696f86bc426e65fc448f788d` verificado; somente binários/bibliotecas CPU e licenças extraídos. `/api/version` e `/api/tags` responderam; lista de modelos vazia.
+- Script de instalação executado e repetido com sucesso, reutilizando dependências e binários verificados. Servidores encerrados e reiniciados pelos comandos registrados; as mesmas dez verificações de HTTP passaram após o reinício. A configuração local `.env` permaneceu igual aos defaults fornecidos.
+- Comparação final byte a byte: todos os nove arquivos fornecidos continuam idênticos ao ZIP. Nenhum commit ou push realizado. O arquivo de instalação de 1,44 GB foi removido após verificação e extração; os componentes CPU retidos ocupam aproximadamente 77 MB.
+
+## Pendência externa
+
+O download real de `qwen2.5:0.5b` falhou no manifesto de `https://registry.ollama.ai/v2/library/qwen2.5/manifests/0.5b`: proxy Forbidden. A requisição direta também falhou com Tunnel connection failed: 403 Forbidden. Inferência com modelo local permanece não validada. A inclusão de `registry.ollama.ai` foi salva no rascunho da rede; aplicar nas configurações e repetir o pull. A consulta final do runtime confirmou que esse domínio ainda não está liberado na política aplicada. Domínios de blobs adicionais só poderão ser identificados se o registro redirecionar o download.
+
+Gemini não foi configurado nem testado, pois é opcional. Windows, Android, voz, GPU, memória persistente, internacionalização e fases V2 não foram testados ou implementados. A API atual já existia no ZIP e não tem autenticação, conforme o README; permanece em loopback.
+
+## Reutilização
+
+Instruções completas: `install.sh` e `start_skill.md` neste diretório, salvas nos campos `install_script` e `start_skill` da configuração, junto com a adição de rede `registry.ollama.ai`. A ferramenta confirmou `status=saved` e `requires_publish=true`. Dependências e binários são arquivos retidos; processos devem ser reiniciados. Salvar rascunho não aplica a rede nem publica o ambiente. Revise e salve as alterações nas configurações; após resolver o download e validar o modelo, publique o ambiente. Publicação e restauração em uma nova tarefa ainda não foram verificadas.
+
+## Continuação do desenvolvimento — 16/11/2026
+
+### Preservação
+
+Antes desta continuação foi criado o backup local `/workspace/.now-ai-backups/20261116T105318Z/before.tar.gz`, com 4.341 entradas do checkout e do estado de configuração, incluindo arquivos locais. Ele é um backup privado de trabalho e não faz parte do ZIP de entrega. Há também um manifesto SHA-256 no mesmo diretório. A comparação final confirmou que os nove arquivos originais continuam idênticos, byte a byte, ao ZIP enviado. Nenhum arquivo original foi removido, reescrito ou recriado; nenhum commit/push foi realizado.
+
+### Rede e modelo: bloqueio confirmado
+
+A consulta do ambiente retornou observações atuais, rede restrita aplicada (`state=enforced`) e revisão de runtime `1`, sem `registry.ollama.ai` entre os domínios efetivos. O rascunho, revisão `2`, já contém o domínio nos destinos personalizados. O GET real do manifesto continuou falhando com `Tunnel connection failed: 403 Forbidden`. Isso é uma diferença entre rascunho salvo e política aplicada, não uma necessidade de chave Gemini.
+
+As ferramentas disponíveis permitem consultar o runtime e salvar o rascunho, mas não oferecem `request_changes` nem outra ação para aplicar a rede diretamente à máquina. Não houve tentativa de contornar o proxy. O Ollama local responde com versão `0.40.16`; `/api/tags` continua retornando lista vazia. O modelo `qwen2.5:0.5b` não foi baixado ou instalado, e nenhuma conversa gerada foi validada.
+
+Para prosseguir: abrir as configurações deste ambiente no painel do Codex, acessar a configuração de rede/Internet, manter acesso restrito e confirmar `registry.ollama.ai` nos domínios permitidos, sem esquema, porta ou caminho. Preservar as demais permissões. Salvar/aplicar as alterações ao ambiente em execução; quando oferecida, a ação **Save draft** pode atualizar o ambiente de configuração. O domínio já está no rascunho, portanto não é necessário declará-lo de novo. Depois, confirmar a política aplicada e repetir o pull. Caso um blob redirecione a um novo host bloqueado, registrar o hostname observado para liberação adicional. Publicar a configuração reutilizável após concluir a validação.
+
+### Resultados desta continuação
+
+| Verificação | Resultado real |
+| --- | --- |
+| `pip check` | Aprovado: nenhuma dependência quebrada. |
+| `python -m unittest discover -s tests -v` | 6 testes executados e aprovados. Os mocks existentes não comprovam geração real. |
+| Validador `tools/validate_local.py` | 7 checks básicos aprovados: saúde da API, 3 comandos offline, terminal offline, versão e inventário Ollama. |
+| Gerações pt-BR/en-US, em Ollama/Engine/API/terminal | 8 checks **não executados** por ausência do modelo. O validador encerrou com código 2 e status `blocked`, preservando essa distinção. |
+| Caminho real de erro por falta do modelo | Ollama retornou HTTP 404; Engine, API FastAPI e terminal retornaram `unavailable`. Nenhuma resposta de modelo foi simulada. |
+| Gemini no teste integrado de erro | A API temporária e o terminal foram iniciados explicitamente com `ENABLE_GEMINI_FALLBACK=false`; o Engine foi chamado com a mesma variável. Nenhuma chave foi solicitada. |
+| Launcher novo, em código-fonte Linux | CLI com ajuda/hora/data/saída aprovado. API com saúde, comando offline, entrada inválida HTTP 422 e modelo ausente aprovada. Não é um teste de executável Windows. |
+| Sintaxe dos três scripts adicionados | `py_compile` aprovado; ajuda de linha de comando verificada. |
+| Build nativo Windows | Não executado: esta máquina é Linux. O comando de build recusou a plataforma com código 2, conforme projetado. Nenhum `.exe` foi gerado ou declarado validado. |
+
+Os testes temporários de API foram encerrados; os serviços originais de desenvolvimento foram preservados. As evidências estruturadas estão em `validation/local-validation-20261116.json` e `validation/failure-paths-20261116.json` no checkout. As mesmas evidências foram retidas em `/workspace/.now-ai-environment`. Elas contêm apenas prompts de teste fixos e resultados observados.
+
+### Preparação Windows e VS Code
+
+Arquivos novos, sem modificar a base:
+
+- `tools/validate_local.py`: gera oito respostas reais por quatro caminhos e dois idiomas quando o modelo existe. Sem o modelo, registra `not_run`; não substitui respostas por mocks. Mesmo com transporte aprovado, exige leitura das respostas para avaliar idioma e qualidade.
+- `packaging/windows/entry.py`: launcher adicional para o terminal original ou API em loopback, com `.env` externo ao futuro executável e saída UTF-8.
+- `tools/build_windows.py`: build com PyInstaller em Windows x64/Python 3.12. Executa testes existentes, testa CLI/API offline do executável e gera ZIP e relatório somente após esses checks. Não faz cross-compilação nem comprova conversas com modelo.
+- `packaging/windows/requirements-build.txt` e `constraints-python312.txt`: dependências de build declaradas; PyInstaller `6.22.3` consultado no PyPI oficial. As versões de runtime foram copiadas da instalação Linux validada. A instalação dessas dependências no Windows ainda não foi executada.
+- `docs/WINDOWS_VSCODE.md`: instruções completas em PowerShell para VS Code, instalação, modelo, API, terminal, validação real, build e uso do futuro `.exe`.
+
+A sequência restante é: aplicar a rede; baixar e verificar o modelo via Ollama; executar o validador e revisar as respostas pt-BR/en-US sem Gemini; gerar o `.exe` em executor Windows; validar o executável também com modelo real e registrar a versão do Windows. O prompt original pede pt-BR, portanto o comportamento em inglês precisa de evidência específica. Não há validação de Windows 10, nem comprovação de voz, interface ou Android.
+
+O pacote de fonte e ferramentas será denominado `NOW-AI-0.2-FONTE-E-BUILD-WINDOWS.zip`; esse nome não representa um executável já construído. O pacote exclui `.env`, credenciais, `.git`, ambientes virtuais, caches e modelos.
+
+
+## Rechecagem após a liberação informada — 16/11/2026 08:11:54 (America/Sao_Paulo)
+
+A alteração informada pelo usuário foi investigada com uma nova conexão ao registro, uma tentativa real de download pelo cliente Ollama e consulta da política viva do proxy. Os arquivos e resultados anteriores foram preservados; esta seção acrescenta as evidências da nova tentativa.
+
+| Item observado | Resultado desta tentativa |
+| --- | --- |
+| Estado da instância | Observações atuais; revisão desejada e observada `1`; política restrita `enforced`. |
+| Rascunho | Revisão `2`; contém a regra `registry.ollama.ai`. |
+| Política viva do proxy | Modo `allowlist`; o campo `policy.http.allowed_domains` tem zero entradas e não permite `registry.ollama.ai`. |
+| GET novo do manifesto | `Tunnel connection failed: 403 Forbidden`. |
+| `ollama pull qwen2.5:0.5b` | Executado, falhou com código 1 em `https://registry.ollama.ai/v2/library/qwen2.5/manifests/0.5b`: `Forbidden`. |
+| Ollama e inventário | `/api/version`: HTTP 200, versão 0.40.16; `/api/tags`: HTTP 200, lista de modelos vazia. |
+| API existente | `/health`: HTTP 200, NOW AI 0.2.0. Isso não demonstra inferência. |
+| Oito gerações pt-BR/en-US | **Não executadas**: o modelo não foi baixado ou instalado. Nenhuma resposta de modelo foi simulada. |
+| Executável Windows | Não gerado ou testado nesta máquina Linux; fonte, launcher, script de build e guia existentes foram preservados. |
+
+O bloqueio exato é a ausência de `registry.ollama.ai` na lista ativa `policy.http.allowed_domains` do proxy desta instância. A regra está persistida no rascunho, mas não está aplicada à máquina desta conversa. O bloqueio acontece antes de obter o manifesto; nenhum redirecionamento de blob foi alcançado. Portanto, não há evidência de outro hostname de download faltando neste momento.
+
+A configuração necessária é aplicar a regra de rede à **instância em execução desta conversa**, preservando as outras permissões e o modo restrito. Uma alteração salva apenas no rascunho ou destinada a futuras tarefas não comprova atualização desta máquina. As ferramentas disponíveis não oferecem uma ação `request_changes`/aplicação ao runtime; repetir a gravação do mesmo rascunho não resolveria essa diferença. Não foi solicitada uma nova autorização genérica: falta a aplicação da configuração à instância atual.
+
+Os seis testes unitários e os checks anteriores mantêm seus resultados históricos; não foram reexecutados nesta rechecagem, que se limitou ao diagnóstico de rede e aos endpoints de estado. Não há nova aprovação de geração, idiomas ou executável. Gemini não foi usado nesta tentativa.
+
+Evidência estruturada: `validation/network-recheck-20261116T111154Z.json`. Os relatórios anteriores foram copiados para `/workspace/.now-ai-backups/network-recheck-20261116T111154Z/` antes desta atualização. Os nove arquivos originais continuam idênticos ao ZIP; as demais fontes e configurações locais foram conferidas por SHA-256. A entrega Windows continua sendo um kit de fonte e build, sem `.exe`.
+
+
+## Integração do kit Qwen — 16/11/2026 08:43 (America/Sao_Paulo)
+
+Integração aditiva de `NOW_AI_TREINAMENTO.zip` à base existente, após backup em `/workspace/.now-ai-backups/training-integration-20261116T112912Z/`. O checkpoint preserva código, Git e arquivos locais; dependências/cache não foram alterados. Os nove arquivos originais da aplicação continuam byte a byte idênticos ao ZIP da Engine. Os datasets recebidos, os quatro testes originais do kit e `docs/DATA_POLICY.md` também foram preservados sem alterações.
+
+| Área | Estado | Evidência/limite |
+| --- | --- | --- |
+| Kit integrado | CONCLUÍDO | `training/`, procedência, persona de avaliação, configurações, testes e documentação adicionados. Scripts do add-on adaptados; Engine original preservada. |
+| Dados | TESTADO | 36 registros de treino piloto, 12 casos independentes, zero erro estrutural e zero sobreposição de prompts normalizados. A verificação não cobre toda similaridade semântica. |
+| Suíte completa | TESTADO | 27 executados, 27 aprovados: 8 da aplicação e 19 de preparação/dados. Os testes unitários originais com mocks não demonstram inferência. |
+| API/terminal sem provedor | TESTADO | Processos reais com saída de rede negada por audit hook: comandos offline funcionam e perguntas livres retornam indisponibilidade. Gemini foi explicitamente desativado. Nenhuma resposta de modelo foi simulada. |
+| Instalação reproduzível | TESTADO | `bash /workspace/.now-ai-environment/install.sh` completou, reutilizando dependências/binários verificados e executando os 27 testes e os três comandos de preparação. |
+| Planejamento LoRA | TESTADO | `--dry-run` validou dados e listou bloqueios sem importar bibliotecas GPU ou baixar pesos. Não iniciou treinamento. |
+| Planejamento da avaliação | TESTADO | `--dry-run`: 12 casos, zero gerações, 12 não executados, qualidade `NOT_SCORED`. |
+| Gerações com modelo | IMPEDIDO | Modelo não instalado; última política aplicada continua sem `registry.ollama.ai`. Não houve nova tentativa de contornar ou repetir downloads nesta integração offline. Os oito checks anteriores da aplicação e os 12 novos casos reais continuam não executados. |
+| Fine-tuning real | PENDENTE | Piloto insuficiente, validação separada ausente, licença/permissão dos dados ainda não confirmadas e executor CUDA não preparado/validado. Dependências GPU não foram instaladas. |
+| Perfil Casual/PT-BR/EN | CONCLUÍDO como preparação | Texto versionado no avaliador, com limites de ferramentas, memória e áudio. A persona da Engine original não foi alterada e o comportamento de nenhum modelo foi aprovado. |
+| Memória e voz | PENDENTE | Roadmap documentado; nenhuma persistência, transcrição, síntese ou ativação por voz foi implementada. |
+| Executável Windows | IMPEDIDO nesta máquina | Build/guia anteriores preservados e ampliados com preparação de dados. Build e execução nativa Windows continuam não executados. |
+| Retomada | CONCLUÍDO como documentação | `docs/NEXT_TASK.md`, `training/README.md`, `docs/MODEL_ROADMAP.md` e guia Windows descrevem comandos e pré-requisitos. Publicação/restauração em nova tarefa ainda não verificadas. |
+
+Comandos efetivamente executados com sucesso:
+
+```bash
+.venv/bin/python -m pip check
+.venv/bin/python training/scripts/validate_dataset.py
+.venv/bin/python -m unittest discover -s training/tests -v  # quatro testes do kit antes das adaptações
+.venv/bin/python training/scripts/train_lora_gpu.py --dry-run
+.venv/bin/python training/scripts/run_ollama_eval.py --dry-run
+.venv/bin/python -m unittest discover -v                  # suíte final: 27 testes
+bash /workspace/.now-ai-environment/install.sh           # reprodução final, também 27 testes
+```
+
+A procedência está em `training/data/PROVENANCE.json`, vinculada por SHA-256 ao arquivo piloto e ao ZIP. A declaração de autoria sintética veio no material recebido; não foi transformada em comprovação de autoria/licença. A execução real exige uma revisão explícita vinculada ao checksum, novo corpus e validação independente. A recusa de treino com o piloto foi testada.
+
+Qwen2.5 permanece baseline; Qwen3-0.6B é apenas candidato registrado, sem troca automática. Documentações oficiais Qwen foram consultadas por HTTPS e declaram licenças abertas Apache 2.0; a licença/revisão dos artefatos não baixados ainda deve ser conferida. Os ranges de dependências de treino permanecem experimentais e não tiveram compatibilidade GPU comprovada.
+
+O avaliador foi preparado para manter progresso/metadados, arquivos anteriores e revisão humana. O caminho que recebe/salva gerações reais ainda precisa ser exercitado com Ollama e pesos locais. Nenhum adaptador foi treinado e nenhum modelo próprio foi declarado pronto. Personalizar Qwen não equivale a treinar um modelo fundacional do zero.
+
+Evidência estruturada e hashes dos nove originais: `validation/training-integration-20261116.json`. Para identificar o commit desta entrega, consultar `git log -1 --format='%H %s'`; o resultado do envio remoto deve ser conferido no retorno desta tarefa e com Git de leitura, sem presumir autorização ou push bem-sucedido.
