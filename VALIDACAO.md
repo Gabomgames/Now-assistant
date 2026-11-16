@@ -8,7 +8,55 @@ Implementados workflows Windows CI, Prepare Windows Alpha e publicação exclusi
 
 Validação local após implementação: **95 testes aprovados** em Linux, 0 ignorados, em 28,996 s. São os 86 anteriores mais nove testes de gates com fixtures sintéticos de metadados/ZIP; esses fixtures não são builds Windows e não validam inferência. Testes GUI existentes receberam apenas ajustes para operar o seletor Qt de forma portável; nenhum caso foi removido. `actionlint 1.7.11` validou os três workflows sem erros; binário oficial com checksum `900919a84f2229bac68ca9cd4103ea297abc35e9689ebb842c6e34a3d1b01b0a` verificado. Compilação de módulos e `git diff --check` aprovados.
 
-**Estado antes do primeiro push da pipeline:** build Windows ainda não executado, Alpha não aprovada. A logo foi enviada novamente como imagem inline, mas nenhum arquivo binário apareceu nos anexos locais; não foi redesenhada. `gh api .../actions/workflows` falhou no CONNECT 403 porque `api.github.com` não consta na política aplicada. Git e site GitHub respondem. O estado/resultados do runner serão registrados depois da tentativa real, sem substituir execução por simulação.
+**Estado antes do primeiro push da pipeline (histórico):** build Windows ainda não executado, Alpha não aprovada. A logo foi enviada novamente como imagem inline, mas nenhum arquivo binário apareceu nos anexos locais; não foi redesenhada. `gh api .../actions/workflows` falhou no CONNECT 403 porque `api.github.com` não consta na política aplicada. Git e site GitHub respondem.
+
+### Resultado final: build Windows real de diagnóstico aprovado
+
+O [run 43950853793](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793), fonte **`c97f9d1fd8ce152f3d2261c750c5d8739e69c88f`**, terminou **Success** em **2m58s**. Runner **Windows Server 2022 x64**, Python **3.12.10**, PyInstaller **6.22.3** e dependências fixadas. Não foi build Linux, Wine ou compilação simulada.
+
+| Verificação no runner | Resultado real |
+| --- | --- |
+| Suíte completa | 95 casos: **94 aprovados**, **1 POSIX não aplicável ao Windows**, 0 falhas e 0 erros. Nenhum caso foi removido para obter aprovação. |
+| GUI, API e SQLite da fonte | Nove testes GUI e seis HTTP reais exigidos pelo gate; cofres, histórico/preferências e compatibilidade de formato incluídos na suíte. |
+| Executável | PyInstaller `onedir/windowed`, Windows x64/Python embutido; EXE executado de verdade com `sys.frozen=true`. |
+| Qt empacotado | Plugin **windows**, janela real e capturas dos widgets no runner. Não houve validação humana de acessibilidade/DPI. |
+| NOW Engine empacotada | A mesma aplicação iniciou sua Engine filha, com Bearer e identidade de instância confirmados via cliente HTTP real. |
+| Comandos reais | **6**: oi/horas/data e hello/time/date. Provider offline, conteúdo não vazio e nenhum banco criado pela sessão temporária. Não são gerações Qwen. |
+| ZIP | Criado com EXE, dependências Python/Qt, instalação/notas, licenças, capturas e evidência. CRC, caminhos, inventário, tamanho e SHA-256 verificados pelo builder Windows. |
+| Arquivos privados | Inspeção no builder aprovada: nenhum `.env`, banco privado ou padrão reconhecido de credencial incluído. Pacote construído de entradas controladas, sem diretórios de usuário. |
+| Artifact GitHub | Aproximadamente **50 MB**, `now-assistant-ci-c97f9d1fd8ce152f3d2261c750c5d8739e69c88f-attempt-1`, disponível em Artifacts do run. |
+| Publicação | **Não executada**. Nenhuma tag, draft ou Release criada por esta preparação. Workflow de publicação configurado/testado em seus gates unitários, sem execução da operação pública. |
+
+ZIP gerado: `NOW-Assistant-0.3.0-alpha.1-diagnostic-Windows-x64.zip`.
+
+- SHA-256 do ZIP informado pelo runner: `8cfa2d45fc21e635f66594e5967087b9ded53fd8cf9926439a84ee4df1842785`.
+- SHA-256 do EXE informado pelo runner: `443b63989b4ec62a0825ab4dc70c7b3a896adc04e217b448bb4a00a822a5e5bd`.
+- Digest do invólucro artifact GitHub (diferente do ZIP interno): `ee103621b88dce97f04daf2a91ccfd0805d374f409679270490b2ded10731841`.
+
+Os resultados/hashes foram observados nas anotações estruturadas e no status públicos do run. A API continua bloqueada nesta instância; **ZIP/EXE e screenshots Windows não foram baixados/inspecionados localmente**. As verificações de CRC/SHA/inventário citadas foram executadas pelo builder Windows, não uma segunda verificação nesta máquina Linux. Evidência registrada em `validation/distribution-20261116.json`.
+
+### Falhas encontradas e correções executadas
+
+| Run | Fonte | Resultado |
+| --- | --- | --- |
+| [43947946896](https://github.com/Gabomgames/Now-assistant/actions/runs/43947946896) | `a130ba3` | Falhou antes do ZIP; logs autenticados indisponíveis nesta instância. Não aprovado. |
+| [43948920266](https://github.com/Gabomgames/Now-assistant/actions/runs/43948920266) | `e5ee9bc` | Falhou; anotações identificaram arquivos SQLite abertos, erro de cofre ausente, Engine filha, bootstrap API e caminho Qt. Não aprovado. |
+| [43950337802](https://github.com/Gabomgames/Now-assistant/actions/runs/43950337802) | `aa8dd86` | 93 aprovados, uma falha de espera por widget nativo, um POSIX não aplicável; erros de recursos eliminados. Não aprovado. |
+| [43950853793](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793) | `c97f9d1` | **Sucesso**, 94 aprovados/um POSIX não aplicável; build/EXE/Engine/ZIP reais completos. |
+
+Correções mantiveram as verificações: fechamento explícito de conexões SQLite de status/fixtures (context manager SQLite faz commit, mas não fecha), cofre ausente com erro portátil, encerramento apenas da árvore da Engine própria no Windows e espera curta por liberação de handles. O teste de API cria o socketpair de controle interno do loop Windows antes de instalar o audit que continua negando toda conexão da aplicação, inclusive imports/modelo. Caminhos Qt são comparados após resolver aliases Windows 8.3 e o teste aguarda a visibilidade real após resposta HTTP. Nenhum teste de rede foi trocado por resposta simulada.
+
+Uma prova separada de checkout `core.autocrlf=true` reproduziu alteração dos 36 finais de linha do dataset, quebrando o hash original. `.gitattributes` mantém os bytes dos dados/originais; o checkout conferido voltou ao SHA-256 original `dd4c28950cd930fc009164bb82f5dc10bccf2f7898e9818478355b375ed07e72`. Não houve substituição do hash para aceitar dados alterados. Linux: 95 testes passaram após correções de recursos (25,957 s); API/GUI portáveis passaram em execução direcionada de 11 testes (12,180 s).
+
+### O que impede a Alpha oficial/publicação
+
+O pacote atual é **diagnóstico, `release_eligible:false`**: falta o PNG/JPG/WebP original da logo acessível como arquivo. Foi usado `--icon NONE`, sem logo redesenhada ou genérica apresentada como oficial. O importador/uso de PNG/ICO está implementado e o modo Alpha exige logo verificada, confirmação de revisão, ícone PE e imagem carregada na GUI. **Esses testes com a marca oficial ainda não foram executados.** Enviar o original em ZIP evita a indisponibilidade do anexo inline.
+
+Após receber/importar/revisar/commitar os assets, executar Prepare Windows Alpha, apresentar seu ZIP/resultados e só publicar mediante autorização posterior do proprietário para versão/SHA/run específicos. A publicação manual recusa diagnóstico, forks, SHA/versão diferentes, hashes inválidos e versão já existente. Não dispara automaticamente por push/tag/CI concluído. Versões experimentais são Pre-release.
+
+Windows 10/hardware alvo de 8 GB, revisão humana de DPI/leitor de tela/ACLs e assinatura digital permanecem pendentes. Ollama e Qwen não estão incluídos; nenhuma inferência, voz física, wake word ou APK foi validado nesta pipeline. A execução automática Windows não altera esses limites.
+
+Para `gh`/download de logs nesta instância: painel do ambiente Codex → Internet/rede restrita → confirmar **`api.github.com`** nos hosts permitidos, sem esquema/caminho → revisar/salvar/aplicar e publicar configuração para novas tarefas quando necessário → verificar política efetiva. O domínio já foi salvo no rascunho, preservando `registry.ollama.ai`, mas o runtime ainda observa revisão **1**, sem a regra. Não foi pedido PAT/chave nem contornado proxy. Essa publicação de configuração de ambiente é diferente de GitHub Releases.
 
 Detalhes: `docs/GITHUB_DISTRIBUTION.md`. Relatórios anteriores abaixo continuam históricos, não são aprovação da distribuição Alpha.
 

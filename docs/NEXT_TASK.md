@@ -1,6 +1,24 @@
 # Continuar em uma nova tarefa Codex
 
-## Ponto atual — NOW Assistant V3 desktop
+## Ponto atual — distribuição Windows 0.3.0-alpha.1
+
+Continuar do HEAD mais recente de `work`, preservando todos os commits. Implementação inicial da pipeline: `a130ba3`; correções Windows incrementais até **`c97f9d1fd8ce152f3d2261c750c5d8739e69c88f`**, que foi o código testado no [run 43950853793](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793). Commits posteriores de documentação/relatórios não mudam essa identidade de teste.
+
+O CI Windows Server 2022/Python 3.12.10 passou: **94 testes aprovados, um teste POSIX não aplicável**, GUI/API/SQLite reais, EXE PyInstaller, Engine empacotada e seis comandos determinísticos PT-BR/EN. Artefato Windows de diagnóstico (~50 MB), ZIP/SHA/evidências em Artifacts do run. Não declarar esse diagnóstico como Alpha oficial: `release_eligible:false`, original da logo ainda ausente. Publicação configurada, **não executada e não autorizada** nesta preparação.
+
+O que desbloqueia a Alpha:
+
+1. Receber o PNG/JPG/WebP original **como arquivo**; a imagem inline não foi exposta no filesystem. Não redesenhar, não usar fixtures, não afirmar que foi incorporada. Importar com `tools/import_branding.py`, conferir original/SHA/ícones e commitar assets na work.
+2. Executar **Prepare Windows Alpha** pelo proprietário (work, SemVer do `now_desktop/version.py`, revisão visual verdadeira), aguardar todo o build/smoke e apresentar o artifact/resultados. Se o assistente não puder usar a API, o proprietário pode disparar pelo painel Actions; não usar push de tag como substituto.
+3. Somente após autorização explícita para o candidato revisado, usar **Publish approved Windows Release** com versão, SHA completo, ID do run Alpha e frase exata. Não invocar agora com base no pedido de preparar. Nenhuma tag/release existente deve ser sobrescrita.
+
+API `api.github.com` está bloqueada no runtime revisão 1; Git/site público funcionam e permitiram ler status/anotações. Rascunho de rede já contém esse domínio e registry.ollama.ai, mas não está aplicado. Revisar/salvar/aplicar no painel, publicar configuração para tarefas novas e confirmar política efetiva antes de tentar `gh`. Não extrair credenciais ou contornar proxy. Mesmo sem isso, os workflows rodam no GitHub e o proprietário pode revisar os artifacts pelo navegador autenticado.
+
+Suíte local: 95 testes em Linux, todos aprovados; `actionlint 1.7.11` passou. Fixtures sintéticos de gates ZIP/metadados não validam Windows/inferência; o smoke Windows é separado e real. Correções preservaram casos/asserts: fechamento de SQLite, cofre ausente portátil, encerramento da árvore de processo própria, bootstrap IPC do loop antes do audit de aplicação, caminhos Windows 8.3 e espera por widget real. `.gitattributes` preserva hashes dos dados originais em checkout Windows.
+
+Guias atuais: `docs/GITHUB_DISTRIBUTION.md`, `packaging/releases/INSTALL-WINDOWS.md`, `VALIDACAO.md`, `validation/distribution-20261116.json`. Ollama/pesos não acompanham ZIP. Qwen/inferência, áudio físico/“Now”, Windows 10/hardware alvo e Android continuam pendentes. Não recriar o projeto nem reduzir testes para aprovar pacote.
+
+## Etapa anterior preservada — NOW Assistant V3 desktop
 
 Continuar do HEAD mais recente de `work`, descendente de `6cdb0c72fd2b70af118df1f41dda6f9e260db047`; não voltar a esse SHA nem a `5caadce`. O SHA da entrega e confirmação de push ficam na resposta da tarefa e em `git log`/`git ls-remote`. A especificação integral está em `docs/specs/NOW_ASSISTANT_V3.txt`. Os relatórios anteriores abaixo são históricos.
 

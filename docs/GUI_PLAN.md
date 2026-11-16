@@ -2,7 +2,7 @@
 
 ## Atualização V3 — 16/11/2026
 
-A primeira GUI executável está em `now_desktop`, com PySide6, API autenticada `/v2`, texto, estado real do modelo, configurações, histórico opt-in criptografado e NOW Memory separado. Foi executada com API/SQLite reais em Linux/Qt offscreen; Windows nativo, logo binária, modelo Qwen e áudio permanecem pendentes. A decisão por PySide6 e os limites estão em [DESKTOP_ARCHITECTURE.md](DESKTOP_ARCHITECTURE.md); execução no VS Code em [DESKTOP_WINDOWS.md](DESKTOP_WINDOWS.md).
+A primeira GUI executável está em `now_desktop`, com PySide6, API autenticada `/v2`, texto, estado real do modelo, configurações, histórico opt-in criptografado e NOW Memory separado. Foi executada com API/SQLite reais em Linux/Qt offscreen e no Windows Server 2022 do GitHub Actions. O EXE de diagnóstico passou no smoke offline; Alpha oficial, arquivo da logo, Qwen, áudio e hardware Windows 10 permanecem pendentes. A decisão por PySide6 está em [DESKTOP_ARCHITECTURE.md](DESKTOP_ARCHITECTURE.md); execução no VS Code em [DESKTOP_WINDOWS.md](DESKTOP_WINDOWS.md) e distribuição em [GITHUB_DISTRIBUTION.md](GITHUB_DISTRIBUTION.md).
 
 O plano anterior abaixo fica preservado como referência para as fases futuras. Sua preferência por Flutter/ARB não é a implementação atual: o desktop usa traduções Python PT-BR/EN e worker de armazenamento testado. Flutter/Android, permissões móveis, voz real e sincronização ainda não foram construídos.
 

@@ -62,6 +62,14 @@ O usuário baixa o ZIP em Releases, verifica SHA-256, extrai a pasta inteira e a
 
 ## Acesso desta tarefa ao GitHub
 
-Git HTTPS para work funciona. O acesso à API `api.github.com` foi recusado pelo proxy (CONNECT 403) e esse host está ausente da política aplicada da instância. O site normal `github.com` é acessível para inspecionar o run quando houver. Não extrair tokens nem trocar proxy para contornar a regra. Se leitura/dispatch/download via `gh` exigir a API, habilitar legitimamente `api.github.com` nas configurações autorizadas e confirmar a política aplicada; um rascunho salvo sozinho não aplica a rede. O Windows runner usa o acesso/token normais do GitHub Actions, separado desta instância cloud.
+Git HTTPS para work funciona. O acesso à API `api.github.com` foi recusado pelo proxy (CONNECT 403) e esse host está ausente da política aplicada da instância. O site normal `github.com` permitiu observar status/anotações dos runs, incluindo sucesso final e hashes. Logs autenticados e download do ZIP não foram acessados nesta máquina. Não extrair tokens nem trocar proxy para contornar a regra.
+
+O domínio `api.github.com` foi acrescentado ao **rascunho de rede do ambiente**, mantendo `registry.ollama.ai`. Para habilitá-lo: painel do Codex → configurações deste ambiente → Internet/rede restrita → revisar domínios permitidos → `api.github.com` sem esquema/caminho → salvar/aplicar pela ação disponível. Publicar a configuração e selecionar a versão em nova tarefa quando necessário. Confirmar o host na política efetiva antes de repetir `gh api`. Salvar rascunho não aplica a rede nem publica o ambiente; **isso não é uma GitHub Release**. O Windows runner usa a rede/token normais do Actions, separado desta instância cloud. Não é necessário fornecer PAT em chat.
+
+## Resultado real desta preparação
+
+O [run 43950853793](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793), fonte `c97f9d1fd8ce152f3d2261c750c5d8739e69c88f`, terminou **Success** em 2m58s. Windows/Python 3.12.10: 95 casos, 94 aprovados, um POSIX não aplicável, zero falhas/erros. O EXE congelado abriu Qt `windows`, iniciou Engine e executou seis comandos offline reais. ZIP, licenças, inventário/CRC/SHA e upload passaram no runner. Artifact de cerca de 50 MB em **Artifacts**, no mesmo run.
+
+Esse artifact é **diagnóstico** (`release_eligible:false`), sem o original da logo e sem ícone substituto. Não pode ser usado pelo publicador como Alpha aprovada. O ZIP Windows não foi baixado/inspecionado localmente por bloqueio da API; os resultados/hashes foram observados nas anotações públicas. Nenhuma tag ou Release foi criada; o fluxo de publicação permanece configurado, não executado. A primeira Alpha oficial exige o PNG/JPG/WebP original, importação/revisão de assets, run Alpha bem-sucedido e autorização posterior para aquela versão/SHA.
 
 Resultados reais, SHA testado e bloqueios finais ficam em `VALIDACAO.md` e `validation/distribution-20261116.json`. Arquivos de fixture não são evidência de um build Windows. Nenhuma publicação é presumida a partir da existência dos workflows.

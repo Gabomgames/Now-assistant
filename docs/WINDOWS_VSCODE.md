@@ -1,6 +1,6 @@
 # NOW AI 0.2 — Windows x64 / VS Code
 
-> Guia legado preservado. Para a marca NOW Assistant, a GUI Qt e os comandos atuais de instalação/build, use [DESKTOP_WINDOWS.md](DESKTOP_WINDOWS.md). A interface nova foi executada em Linux; nenhum build Windows foi aprovado. As afirmações de preservação dos nove arquivos neste guia descrevem a etapa anterior: na V3, README e `.gitignore` foram atualizados intencionalmente, mantendo os sete arquivos originais restantes e o histórico Git.
+> Guia legado preservado. Para a marca NOW Assistant, GUI Qt e comandos atuais, use [DESKTOP_WINDOWS.md](DESKTOP_WINDOWS.md); para usuários sem VS Code/Python e mantenedores de Releases, [GITHUB_DISTRIBUTION.md](GITHUB_DISTRIBUTION.md). A GUI e o EXE de diagnóstico passaram no Windows Server 2022 CI; Alpha oficial ainda exige o arquivo da logo. O EXE de terminal legado deste guia não foi gerado. As afirmações de preservação dos nove arquivos descrevem a etapa anterior: README e `.gitignore` foram atualizados intencionalmente, mantendo os sete arquivos originais restantes e o histórico Git.
 
 ## Estado desta entrega
 

@@ -1,0 +1,256 @@
+{
+  "recorded_at_utc": "2026-11-16T20:40:32.289112+00:00",
+  "version_prepared": "0.3.0-alpha.1",
+  "branch": "work",
+  "baseline_commit": "15e03a7dbbe73a817a831d3f27858d7387b6e0e2",
+  "baseline_linux": {
+    "tests": 86,
+    "passed": 86,
+    "seconds": 25.538
+  },
+  "linux_after_implementation": {
+    "tests": 95,
+    "passed": 95,
+    "skipped": 0,
+    "seconds": 28.996
+  },
+  "linux_resource_fixes": {
+    "tests": 95,
+    "passed": 95,
+    "skipped": 0,
+    "seconds": 25.957
+  },
+  "portable_api_gui_targeted": {
+    "tests": 11,
+    "passed": 11,
+    "seconds": 12.18
+  },
+  "actionlint": {
+    "version": "1.7.11",
+    "official_binary_sha256": "900919a84f2229bac68ca9cd4103ea297abc35e9689ebb842c6e34a3d1b01b0a",
+    "workflows_checked": 3,
+    "errors": 0
+  },
+  "windows_runs": [
+    {
+      "run_id": "43947946896",
+      "url": "https://github.com/Gabomgames/Now-assistant/actions/runs/43947946896",
+      "source_sha": "a130ba30348075220f15d92821dc462dd94bd51a",
+      "conclusion_observed": "Failure",
+      "duration": "1m 32s",
+      "public_actions_annotation": null,
+      "github_artifact_digest": "sha256:9c779fe0319d471b0c4678c01b1c675baa8f313c384f060986a004846639fdb7",
+      "evidence_scope": "GitHub public run status and structured annotations; authenticated logs/artifact download not available in this cloud instance."
+    },
+    {
+      "run_id": "43948920266",
+      "url": "https://github.com/Gabomgames/Now-assistant/actions/runs/43948920266",
+      "source_sha": "e5ee9bc265dae2c80af084c2139d399f99aff1f4",
+      "conclusion_observed": "Failure",
+      "duration": "1m 12s",
+      "public_actions_annotation": {
+        "packaged_build": "not_approved",
+        "release_published": false,
+        "source_sha": "e5ee9bc265dae2c80af084c2139d399f99aff1f4",
+        "unit_tests": {
+          "system": "Windows",
+          "python_version": "3.12.10",
+          "tests_run": 95,
+          "passed": 84,
+          "failures": 2,
+          "errors": 9,
+          "skipped": [
+            {
+              "test": "tests.test_memory.MemoryTests.test_vault_permissions_are_owner_only",
+              "reason": "POSIX permission check"
+            }
+          ],
+          "status": "failed"
+        },
+        "failed_tests": [
+          "tests.test_desktop_gui.DesktopGUITests.test_history_consent_save_search_rename_export_lock_reopen_and_delete",
+          "tests.test_offline_integration.OfflineIntegrationTests.test_fastapi_with_all_outbound_connections_denied"
+        ],
+        "error_tests": [
+          "tearDownClass (tests.test_desktop_gui.DesktopGUITests)",
+          "tests.test_history.HistoryTests.test_ciphertext_tamper_and_row_identity_swap_are_detected",
+          "tests.test_history.HistoryTests.test_history_is_separate_from_preferences_and_wrong_password_preserves_data",
+          "tests.test_history.HistoryTests.test_memory_v1_wire_format_still_opens_after_crypto_refactor",
+          "tests.test_memory.MemoryTests.test_ciphertexts_cannot_be_swapped_between_preferences",
+          "tests.test_memory.MemoryTests.test_delete_and_clear_remove_records_and_compact_the_database",
+          "tests.test_memory.MemoryTests.test_encrypted_persistence_and_no_plaintext_secret_in_database",
+          "tests.test_memory.MemoryTests.test_persisted_consent_state_is_authenticated",
+          "tests.test_memory.MemoryTests.test_tampered_ciphertext_fails_authentication"
+        ]
+      },
+      "github_artifact_digest": "sha256:2bd5abd135b4dd31b3e91db64ce42f7d82c89ba5a2aee99fdcef0cce15882e09",
+      "evidence_scope": "GitHub public run status and structured annotations; authenticated logs/artifact download not available in this cloud instance."
+    },
+    {
+      "run_id": "43950337802",
+      "url": "https://github.com/Gabomgames/Now-assistant/actions/runs/43950337802",
+      "source_sha": "aa8dd868593ad8fcbbbb2f856c072b92629b971d",
+      "conclusion_observed": "Failure",
+      "duration": "1m 36s",
+      "public_actions_annotation": {
+        "packaged_build": "not_approved",
+        "release_published": false,
+        "source_sha": "aa8dd868593ad8fcbbbb2f856c072b92629b971d",
+        "unit_tests": {
+          "system": "Windows",
+          "python_version": "3.12.10",
+          "tests_run": 95,
+          "passed": 93,
+          "failures": 1,
+          "errors": 0,
+          "skipped": [
+            {
+              "test": "tests.test_memory.MemoryTests.test_vault_permissions_are_owner_only",
+              "reason": "POSIX permission check"
+            }
+          ],
+          "status": "failed"
+        },
+        "failed_tests": [
+          "tests.test_desktop_gui.DesktopGUITests.test_model_error_is_not_an_assistant_message_and_html_is_plain_text"
+        ],
+        "error_tests": []
+      },
+      "github_artifact_digest": "sha256:cc3f441c38df11c60203ef5ef1825dcfe52828cfc1cd2d9c9f54e5ffad331f63",
+      "evidence_scope": "GitHub public run status and structured annotations; authenticated logs/artifact download not available in this cloud instance."
+    },
+    {
+      "run_id": "43950853793",
+      "url": "https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793",
+      "source_sha": "c97f9d1fd8ce152f3d2261c750c5d8739e69c88f",
+      "conclusion_observed": "Success",
+      "duration": "2m 58s",
+      "public_actions_annotation": {
+        "packaged_build": "actual_windows_smoke_passed",
+        "release_published": false,
+        "source_sha": "c97f9d1fd8ce152f3d2261c750c5d8739e69c88f",
+        "unit_tests": {
+          "system": "Windows",
+          "python_version": "3.12.10",
+          "tests_run": 95,
+          "passed": 94,
+          "failures": 0,
+          "errors": 0,
+          "skipped": [
+            {
+              "test": "tests.test_memory.MemoryTests.test_vault_permissions_are_owner_only",
+              "reason": "POSIX permission check"
+            }
+          ],
+          "status": "passed"
+        },
+        "failed_tests": [],
+        "error_tests": [],
+        "version": "0.3.0-alpha.1",
+        "release_eligible": false,
+        "diagnostic_only": true,
+        "branding": {
+          "status": "missing_original",
+          "verified": false
+        },
+        "executable_sha256": "443b63989b4ec62a0825ab4dc70c7b3a896adc04e217b448bb4a00a822a5e5bd",
+        "frozen_executable": true,
+        "qt_platform": "windows",
+        "actual_offline_commands": 6,
+        "weights_included": false,
+        "model_inference_tested": false,
+        "digital_signature": "not_signed",
+        "zip_sha256": "8cfa2d45fc21e635f66594e5967087b9ded53fd8cf9926439a84ee4df1842785  NOW-Assistant-0.3.0-alpha.1-diagnostic-Windows-x64.zip"
+      },
+      "github_artifact_digest": "sha256:ee103621b88dce97f04daf2a91ccfd0805d374f409679270490b2ded10731841",
+      "evidence_scope": "GitHub public run status and structured annotations; authenticated logs/artifact download not available in this cloud instance."
+    }
+  ],
+  "final_windows_diagnostic": {
+    "packaged_build": "actual_windows_smoke_passed",
+    "release_published": false,
+    "source_sha": "c97f9d1fd8ce152f3d2261c750c5d8739e69c88f",
+    "unit_tests": {
+      "system": "Windows",
+      "python_version": "3.12.10",
+      "tests_run": 95,
+      "passed": 94,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "tests.test_memory.MemoryTests.test_vault_permissions_are_owner_only",
+          "reason": "POSIX permission check"
+        }
+      ],
+      "status": "passed"
+    },
+    "failed_tests": [],
+    "error_tests": [],
+    "version": "0.3.0-alpha.1",
+    "release_eligible": false,
+    "diagnostic_only": true,
+    "branding": {
+      "status": "missing_original",
+      "verified": false
+    },
+    "executable_sha256": "443b63989b4ec62a0825ab4dc70c7b3a896adc04e217b448bb4a00a822a5e5bd",
+    "frozen_executable": true,
+    "qt_platform": "windows",
+    "actual_offline_commands": 6,
+    "weights_included": false,
+    "model_inference_tested": false,
+    "digital_signature": "not_signed",
+    "zip_sha256": "8cfa2d45fc21e635f66594e5967087b9ded53fd8cf9926439a84ee4df1842785  NOW-Assistant-0.3.0-alpha.1-diagnostic-Windows-x64.zip"
+  },
+  "actual_windows_zip_built_and_smoked": true,
+  "windows_10_target_hardware_human_audio_validated": false,
+  "source_byte_integrity": {
+    "autocrlf_probe_before_matches": false,
+    "crlf_lines_before": 36,
+    "after_gitattributes_matches": true,
+    "preserved_dataset_sha256": "dd4c28950cd930fc009164bb82f5dc10bccf2f7898e9818478355b375ed07e72"
+  },
+  "fixes": [
+    "Byte-bound training data kept unchanged under Windows checkout",
+    "Explicit SQLite status/fixture connection closing",
+    "Portable missing-vault error",
+    "Owned Windows Engine process-tree cleanup",
+    "Windows event-loop control pipe bootstrap before application network audit",
+    "Canonical 8.3 path comparison and native widget visibility wait"
+  ],
+  "branding": {
+    "official_image_visually_provided": true,
+    "original_file_available": false,
+    "substitute_logo_created": false,
+    "release_blocked": true
+  },
+  "publication": {
+    "workflow_configured": true,
+    "only_manual_owner_authorization": true,
+    "publication_workflow_executed": false,
+    "tag_or_release_created": false,
+    "release_approved": false
+  },
+  "network": {
+    "github_git": "working",
+    "github_public_site": "working",
+    "api.github.com": "CONNECT 403 Forbidden; not in effective policy",
+    "network_draft_addition": "api.github.com",
+    "applied_network_revision": "1",
+    "draft_save_does_not_apply_runtime": true
+  },
+  "artifact_access": {
+    "location": "GitHub Actions artifact on the successful run",
+    "downloaded_to_this_cloud_instance": false,
+    "local_windows_zip_crc_recheck": false,
+    "crc_sha_inventory_verified_by_windows_builder": true
+  },
+  "consumer_runtime": {
+    "python_included": true,
+    "qt_included": true,
+    "ollama_included": false,
+    "model_weights_included": false,
+    "gemini_used": false
+  }
+}
