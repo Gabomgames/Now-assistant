@@ -132,5 +132,8 @@ def main(argv=None):
     try:
         build(args)
     except (ValueError, OSError, KeyError, subprocess.CalledProcessError) as error:
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            message = str(error).replace("%", "%25").replace("\n", "%0A").replace("\r", "%0D")
+            print("::error title=NOW Windows packaging::" + message[:1000])
         parser.exit(1, str(error) + "\n")
     return 0

@@ -15,6 +15,8 @@ def main():
         tests = json.loads(tests_path.read_text(encoding="utf-8"))
         summary.update(source_sha=tests["source_sha"], unit_tests={key: tests[key] for key in
             ("system", "python_version", "tests_run", "passed", "failures", "errors", "skipped", "status")})
+        summary["failed_tests"] = tests.get("failed_tests", [])
+        summary["error_tests"] = tests.get("error_tests", [])
     if report_path.exists():
         report = json.loads(report_path.read_text(encoding="utf-8"))
         smoke = report["packaged_smoke"]
@@ -32,6 +34,9 @@ def main():
         with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a", encoding="utf-8") as stream:
             stream.write(text)
     print(text)
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        data = json.dumps(summary, ensure_ascii=True).replace("%", "%25").replace("\n", "%0A").replace("\r", "%0D")
+        print("::notice title=NOW actual distribution results::" + data)
 
 
 if __name__ == "__main__":

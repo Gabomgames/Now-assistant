@@ -1,0 +1,3 @@
+# Preserve byte-bound dataset/provenance and user-provided originals on Windows.
+training/data/*.jsonl -text
+training/original/** -text

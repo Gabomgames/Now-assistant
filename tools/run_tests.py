@@ -2,6 +2,7 @@
 import argparse
 from datetime import datetime, timezone
 import json
+import os
 from pathlib import Path
 import platform
 import subprocess
@@ -37,6 +38,8 @@ def run(output):
         "source_sha": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
         "tests_run": result.testsRun, "passed": len(result.successes),
         "failures": len(result.failures), "errors": len(result.errors),
+        "failed_tests": [test.id() for test, _ in result.failures],
+        "error_tests": [test.id() for test, _ in result.errors],
         "skipped": [{"test": test.id(), "reason": reason} for test, reason in result.skipped],
         "unexpected_skips": unexpected, "real_gui_tests_passed": len(gui), "real_http_tests_passed": len(http),
         "status": "passed" if passed else "failed",
@@ -45,6 +48,19 @@ def run(output):
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        def annotation(kind, title, message):
+            escaped = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+            print(f"::{kind} title={title}::{escaped}")
+        # Test fixtures contain no user data. Keep public diagnostics bounded;
+        # never print process environments, tokens or application conversations.
+        for test, detail in result.failures + result.errors:
+            lines = [line for line in detail.splitlines() if line.strip()]
+            annotation("error", "NOW source test", test.id() + " — " + (lines[-1][:600] if lines else "failed"))
+        for test, reason in unexpected:
+            annotation("error", "NOW unexpected test skip", test + " — " + reason)
+        annotation("notice", "NOW source results", json.dumps({key: report[key] for key in
+                   ("system", "python_version", "source_sha", "tests_run", "passed", "failures", "errors", "status")}))
     return 0 if passed else 1
 
 
