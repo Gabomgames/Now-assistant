@@ -93,6 +93,9 @@ class DesktopStreamingTests(unittest.TestCase):
         heartbeat.setInterval(10)
         heartbeat.timeout.connect(lambda: ticks.append(True))
         heartbeat.start()
+        results = []
+        self.client.chat_finished.connect(lambda identifier, data, error: results.append(data))
+        conversation_id = self.window.controller.current.id
         self.window.submit_text("slow")
         self.wait(lambda: self.window._stream_body is not None and "Olá" in self.window._stream_body.text())
         self.assertIsNotNone(self.window._pending)
@@ -109,6 +112,7 @@ class DesktopStreamingTests(unittest.TestCase):
         heartbeat.stop()
         self.assertEqual(self.window.controller.current.messages[-1].provider, "local")
         self.assertIn("tokens/s", self.window.generation_status.text())
+        self.assertEqual(results[-1]["conversation_id"], conversation_id)
 
     def test_cancel_closes_actual_upstream_and_drops_partial_history(self):
         self.configure()
@@ -138,6 +142,17 @@ class DesktopStreamingTests(unittest.TestCase):
         self.assertIn("Agora são", self.window.controller.current.messages[-1].content)
         self.assertEqual(fixtures.BrainAPIV1Tests.recorded, [])
         self.assertEqual(set(self.window.controller.settings), {"language", "persona", "humor", "reply_length", "display_name"})
+
+    def test_wrapped_bodies_remain_unclipped_across_native_layout_widths(self):
+        self.configure()
+        self.window.submit_text("Synthetic long message " * 120)
+        self.wait(lambda: self.window._pending is None)
+        for width in (920, 1280, 1000):
+            self.window.resize(width, 680)
+            self.application.processEvents()
+            for label in self.window.findChildren(QLabel, "messageBody"):
+                if label.isVisible():
+                    self.assertGreaterEqual(label.height(), label.heightForWidth(label.width()))
 
     def test_installed_models_require_explicit_choice_before_open_chat(self):
         self.window.submit_text("Explain recursion")

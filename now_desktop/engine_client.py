@@ -92,9 +92,9 @@ class EngineClient(QObject):
             reply.deleteLater()
         reply.finished.connect(finished)
 
-    def chat(self, messages, settings):
+    def chat(self, messages, settings, conversation_id=None):
         if self.protocol == "v1":
-            return self._stream_chat(messages, settings)
+            return self._stream_chat(messages, settings, conversation_id)
         if self._closed or self._active is not None:
             raise RuntimeError("the client is closed or already has an active request")
         identifier = str(uuid4())
@@ -160,7 +160,7 @@ class EngineClient(QObject):
             reply.deleteLater()
         reply.finished.connect(finished)
 
-    def _stream_chat(self, messages, settings):
+    def _stream_chat(self, messages, settings, conversation_id=None):
         if self._closed or self._active is not None:
             raise RuntimeError("the client is closed or busy")
         # Useful deterministic commands survive missing models. Once a model is
@@ -177,6 +177,8 @@ class EngineClient(QObject):
             QTimer.singleShot(0, lambda: self.chat_finished.emit(identifier, None, "MODEL_NOT_SELECTED"))
             return identifier
         payload = {"messages": messages, "options": settings, "mode": mode}
+        if conversation_id is not None:
+            payload["conversation_id"] = conversation_id
         if self.selected_model is not None:
             payload["model_id"] = self.selected_model
         request = self._request("/api/now/v1/chat/stream")

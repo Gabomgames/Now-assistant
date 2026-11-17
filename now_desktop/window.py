@@ -24,6 +24,47 @@ from .i18n import text
 from .storage_service import StorageService
 
 
+class WrappedBody(QLabel):
+    """Honor wrapped text height immediately when Qt changes width/font.
+
+    Native Windows can assign a one-line height before the deferred parent
+    layout runs. An explicit minimum prevents that intermediate clipped frame.
+    """
+    def __init__(self, value):
+        self._fitting = False
+        super().__init__(value)
+        self.setWordWrap(True)
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
+
+    def _fit_height(self):
+        if self._fitting:
+            return
+        self._fitting = True
+        try:
+            self.ensurePolished()
+            required = self.heightForWidth(max(1, self.width()))
+            if required > 0 and self.minimumHeight() != required:
+                self.setMinimumHeight(required)
+        finally:
+            self._fitting = False
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._fit_height()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self._fit_height()
+
+    def changeEvent(self, event):
+        super().changeEvent(event)
+        self._fit_height()
+
+    def setText(self, value):
+        super().setText(value)
+        self._fit_height()
+
+
 class Composer(QPlainTextEdit):
     submitted = Signal()
     def keyPressEvent(self, event):
@@ -87,7 +128,7 @@ class MainWindow(QMainWindow):
         return text(key, self.language)
 
     def _label(self, value, name=None):
-        label = QLabel(value)
+        label = WrappedBody(value) if name in {"messageBody", "streamingBody"} else QLabel(value)
         label.setTextFormat(Qt.TextFormat.PlainText)
         if name:
             label.setObjectName(name)
@@ -402,7 +443,7 @@ class MainWindow(QMainWindow):
         conversation = None
         try:
             conversation = self.controller.add_user(value)
-            identifier = self.engine.chat(conversation.context(), dict(self.controller.settings))
+            identifier = self.engine.chat(conversation.context(), dict(self.controller.settings), conversation_id=conversation.id)
         except (ValueError, RuntimeError):
             if conversation is not None:
                 self._persist(self.controller.fail(conversation.id))
