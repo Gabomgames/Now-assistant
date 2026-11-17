@@ -2,10 +2,18 @@
 
 Assistente pessoal de uso geral, com especialidade gamer. A primeira interface desktop está integrada à NOW Engine existente: chat por texto, comandos locais em português/inglês, sessões temporárias e histórico opcional criptografado. O terminal, a API 0.2, a preparação de treinamento, o NOW Memory e os contratos do NOW Voice continuam no projeto.
 
+## Fase 6 — Brain na interface Windows
+
+Cliente desktop por SSE, seleção de modelo nas Preferências, indicadores e
+rollback `/v2`. O candidato `0.3.0-alpha.2` inclui `Avaliar-Modelos.cmd`, sem
+instalar Python manualmente. [Como usar e avaliar](docs/PHASE6_WINDOWS.md).
+Resultados e link do build em [VALIDACAO.md](VALIDACAO.md). Qualidade Qwen e
+Windows 10/Athlon continuam exigindo avaliação real; não há Release publicada.
+
 ## NOW Brain API — desenvolvimento V5
 
 API local independente em `/api/now/v1`, com inventário, chat, SSE e cancelamento.
-A GUI e `/v2` permanecem compatíveis. [Instalação, contrato e validação real no Windows](docs/NOW_BRAIN_API_V1.md).
+A GUI usa v1 por padrão e mantém rollback compatível para `/v2`. [Instalação, contrato e validação real no Windows](docs/NOW_BRAIN_API_V1.md).
 A inferência na nuvem continua bloqueada; a API não foi aprovada como serviço público ou multiusuário.
 
 ## Baixar para Windows

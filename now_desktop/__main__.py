@@ -16,7 +16,19 @@ def main(argv=None):
     parser.add_argument("--engine-child", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--port", type=int, help=argparse.SUPPRESS)
     parser.add_argument("--smoke-output", type=Path, help="run actual offline GUI/API checks in temporary storage and capture results")
+    parser.add_argument("--legacy-api", action="store_true", help="start with the compatible /v2 client")
+    parser.add_argument("--evaluate", action="store_true", help="open the local model evaluation utility")
+    parser.add_argument("--evaluate-child", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--evaluation-self-check", type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("--output", type=Path, help=argparse.SUPPRESS)
+    parser.add_argument("--models", nargs="+", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
+    if args.evaluate_child:
+        from .evaluation import child_main
+        return child_main(args.output, args.models)
+    if args.evaluate or args.evaluation_self_check:
+        from .evaluation import run
+        return run(args.evaluation_self_check)
     if args.engine_child:
         from now_engine.desktop_api import main as engine_main
         if args.port is None:
@@ -42,7 +54,8 @@ def main(argv=None):
     runtime = EngineProcess()
     try:
         runtime.start()
-        client = EngineClient(runtime.url, runtime.token, runtime.instance)
+        client = EngineClient(runtime.url, runtime.token, runtime.instance,
+                              protocol="v2" if args.legacy_api else "v1", force_protocol=args.legacy_api)
         window = MainWindow(client, args.data_dir)
         window.show()
         QTimer.singleShot(0, client.start)

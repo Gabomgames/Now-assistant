@@ -120,6 +120,28 @@ class SettingsDialog(QDialog):
         note.setWordWrap(True)
         note.setObjectName("muted")
         layout.addWidget(note)
+        self.engine = getattr(parent, "engine", None)
+        if self.engine is not None:
+            self.protocol = QComboBox()
+            self.protocol.setObjectName("setting_protocol")
+            self.protocol.addItem("NOW Brain v1 · SSE", "v1")
+            self.protocol.addItem(text("legacy_api", self.language), "v2")
+            self.protocol.setCurrentIndex(self.protocol.findData(self.engine.protocol))
+            form.addRow(text("api_mode", self.language), self.protocol)
+            self.model = QComboBox()
+            self.model.setObjectName("setting_model")
+            form.addRow(text("model_selection", self.language), self.model)
+            self.model_note = QLabel()
+            self.model_note.setWordWrap(True)
+            layout.addWidget(self.model_note)
+            self.refresh_models = QPushButton(text("refresh_model", self.language))
+            self.refresh_models.setObjectName("refreshModels")
+            self.refresh_models.clicked.connect(self.engine.refresh_models)
+            layout.addWidget(self.refresh_models)
+            self.engine.capabilities_received.connect(self._models_updated)
+            self.protocol.currentIndexChanged.connect(self._model_enabled)
+            self._models_updated({})
+            self.engine.refresh_models()
         self.memory_action = None
         for action in ("memory_load", "memory_save", "memory_disable", "memory_clear"):
             button = QPushButton(text(action, self.language))
@@ -136,6 +158,23 @@ class SettingsDialog(QDialog):
     def values(self):
         return {**{key: field.currentData() for key, field in self.fields.items()},
                 "humor": self.humor.value(), "display_name": self.display_name.text().strip() or None}
+
+    def _models_updated(self, values):
+        selected = self.model.currentData() if self.model.count() else self.engine.selected_model
+        self.model.clear()
+        self.model.addItem(text("choose_model", self.language), None)
+        for row in self.engine.models:
+            self.model.addItem(row["model_id"], row["model_id"])
+        if selected is not None and self.model.findData(selected) < 0:
+            self.model.addItem(selected + " · " + text("model_missing", self.language), selected)
+        self.model.setCurrentIndex(max(0, self.model.findData(selected)))
+        key = "inventory_loading" if self.engine.inventory_loading else "model_inventory_empty" if not self.engine.models else "model_choice_note"
+        self.model_note.setText(text(key, self.language))
+        self.refresh_models.setEnabled(not self.engine.inventory_loading)
+        self._model_enabled()
+
+    def _model_enabled(self):
+        self.model.setEnabled(self.protocol.currentData() == "v1")
 
     def _memory(self, action):
         self.memory_action = action

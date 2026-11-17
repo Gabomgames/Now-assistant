@@ -38,7 +38,7 @@ class ChatRequest(BaseModel):
 
 
 
-def create_app(token, instance_id):
+def create_app(token, instance_id, *, brain_provider=None):
     if not isinstance(token, str) or len(token) < 32 or not token.isascii():
         raise ValueError("a fresh ASCII token of at least 32 characters is required")
     app = FastAPI(title="NOW Assistant", version="0.3.0", docs_url=None, redoc_url=None, openapi_url=None)
@@ -91,6 +91,12 @@ def create_app(token, instance_id):
         finally:
             active.release()
 
+    # Additive side-by-side API. Existing /v2 routes keep their public contract.
+    from now_brain.api import create_app as create_brain_app
+    if brain_provider is None:
+        from now_brain.provider import OllamaProvider
+        brain_provider = OllamaProvider(timeout=300)
+    app.mount("/", create_brain_app(token, instance_id=instance_id, provider=brain_provider))
     return app
 
 

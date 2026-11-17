@@ -6,6 +6,7 @@ actual replies and stay in the explicit output directory; nothing is uploaded.
 import argparse
 from datetime import datetime, timezone
 import hashlib
+import html
 import json
 import math
 import os
@@ -59,6 +60,16 @@ def model_metadata(model):
 
 
 def provenance():
+    if getattr(sys, "frozen", False):
+        executable = Path(sys.executable)
+        build_path = executable.parent / "BUILD-VALIDACAO.json"
+        try:
+            build = json.loads(build_path.read_text(encoding="utf-8"))
+            sha = build["source_sha"]
+        except (OSError, ValueError, KeyError):
+            sha = None  # Build-time self-check precedes the final manifest.
+        return {"source_sha": sha, "source_dirty": False, "frozen_executable": True,
+                "executable_sha256": hashlib.sha256(executable.read_bytes()).hexdigest()}
     try:
         sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
         dirty = bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).strip())
@@ -66,11 +77,32 @@ def provenance():
         sha, dirty = None, None
     files = [*sorted((ROOT / "now_brain").glob("*.py")), ROOT / "now_engine/assistant.py",
              ROOT / "now_engine/security.py", ROOT / "validation/brain-v5-cases.json", Path(__file__)]
-    return {"source_sha": sha, "source_dirty": dirty, "files_sha256": {
+    return {"source_sha": sha, "source_dirty": dirty, "frozen_executable": False, "files_sha256": {
         str(path.relative_to(ROOT)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest() for path in files}}
 
 
-def evaluate(output, models, timeout):
+def readable_report(report):
+    lines = ["<!doctype html><meta charset='utf-8'><title>NOW — avaliação local</title>",
+             "<style>body{font:16px system-ui;max-width:1000px;margin:32px auto;padding:16px}pre{white-space:pre-wrap}td,th{padding:8px;border:1px solid #bbb}table{border-collapse:collapse}</style>",
+             "<h1>NOW Brain — avaliação local</h1>", "<p>Somente prompts de avaliação. Sem envio automático ou treinamento. Qualidade exige revisão humana; nenhum vencedor é escolhido automaticamente.</p>",
+             "<p>Status: " + html.escape(report["status"]) + " · qualidade: " + html.escape(report["quality"]) + "</p>",
+             "<table><tr><th>Modelo</th><th>Gerações</th><th>Status</th><th>p50 ms</th><th>p95 ms</th><th>TTFT p50 ms</th><th>tokens/s (média)</th></tr>"]
+    for row in report["models"]:
+        values = [row["model_id"], row["generated"], row["status"], row.get("latency", {}).get("p50_ms"),
+                  row.get("latency", {}).get("p95_ms"), row.get("first_token_latency", {}).get("p50_ms"), row.get("mean_tokens_per_second")]
+        lines.append("<tr>" + "".join("<td>" + html.escape("—" if value is None else str(value)) + "</td>" for value in values) + "</tr>")
+    lines.append("</table><p>Streaming mostra o texto antes; não aumenta por si só a velocidade de inferência. CPU/RAM/FPS no hardware alvo não foram medidos por este utilitário.</p>")
+    for row in report["models"]:
+        lines.append("<h2>" + html.escape(row["model_id"]) + "</h2>")
+        for case in row["cases"]:
+            lines.append("<h3>" + html.escape(case["id"]) + " — " + html.escape(case["status"]) + "</h3>")
+            for key in ("prompt", "answer", "review", "error"):
+                if key in case:
+                    lines.append("<p><strong>" + key + "</strong></p><pre>" + html.escape(str(case[key])) + "</pre>")
+    return "\n".join(lines)
+
+
+def evaluate(output, models, timeout, *, client=None):
     cases_path = ROOT / "validation/brain-v5-cases.json"
     plan = json.loads(cases_path.read_text(encoding="utf-8"))
     cases = plan["cases"]
@@ -90,13 +122,17 @@ def evaluate(output, models, timeout):
               "measurement_limits": "Single-client end-to-end local API wall times; Ollama-reported token timing. No GPU, model RAM, FPS, multi-user or SLO claim."}
 
     def save():
-        (output / "evaluation.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        temporary = output / "evaluation.tmp"
+        temporary.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        os.replace(temporary, output / "evaluation.json")
+        (output / "report.html").write_text(readable_report(report), encoding="utf-8")
 
-    runtime = BrainProcess(timeout=timeout)
+    runtime = BrainProcess(timeout=timeout) if client is None else None
     save()
     try:
-        runtime.start()
-        client = Client(runtime.url, runtime.token, timeout=timeout + 15)
+        if runtime is not None:
+            runtime.start()
+            client = Client(runtime.url, runtime.token, timeout=timeout + 15)
         report["health"] = client.json("/health")
         schema = client.json("/openapi.json")
         (output / "openapi.json").write_text(json.dumps(schema, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -125,6 +161,7 @@ def evaluate(output, models, timeout):
             evaluation["status"] = "RUNNING"
             conversation, conversation_id, latencies, first_tokens, rates = [], None, [], [], []
             evaluation["cases"] = []
+            save()
             for index, case in enumerate(cases):
                 if case.get("conversation") != "plan":
                     conversation, conversation_id = [], None
@@ -212,7 +249,8 @@ def evaluate(output, models, timeout):
         return 1
     finally:
         try:
-            runtime.stop()
+            if runtime is not None:
+                runtime.stop()
         finally:
             for evaluation in report["models"]:
                 observed = {row["id"] for row in evaluation["cases"]}

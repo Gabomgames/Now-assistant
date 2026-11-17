@@ -93,9 +93,11 @@ def evaluate(output):
             window = MainWindow(client, Path(temporary))
             window.show()
             client.start()
-            wait(lambda: window._ready and bool(capabilities), 20)
-            report["model"] = capabilities[-1].get("model")
-            if not capabilities[-1].get("model_installed"):
+            wait(lambda: window._ready and bool(capabilities) and not client.inventory_loading, 20)
+            selected = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
+            client.selected_model = selected
+            report["model"] = selected
+            if selected not in {row["model_id"] for row in client.models}:
                 report.update(status="BLOCKED", blocker="Local Ollama model is unavailable; no generation was attempted.")
                 return 2
             for index, (identifier, language, length, prompt) in enumerate(CASES):

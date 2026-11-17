@@ -1,7 +1,7 @@
 {
   "schema": "now-alpha-request-v1",
-  "request_id": "6f8b0545-5ed9-426e-9c52-7d84a44942b0",
-  "version": "0.3.0-alpha.1",
+  "request_id": "7b3bea00-34e1-4e3e-8732-31b4ac3ce996",
+  "version": "0.3.0-alpha.2",
   "source_branch": "work",
   "branding_original_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
   "branding_reviewed": true,

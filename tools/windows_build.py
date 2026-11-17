@@ -72,7 +72,8 @@ def build(args):
         command = [
             sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", "--windowed", "--noupx",
             "--name", "NOW-Assistant", "--paths", str(ROOT), "--version-file", str(resource),
-            "--collect-submodules", "uvicorn", "--copy-metadata", "PySide6_Essentials",
+            "--collect-submodules", "uvicorn", "--collect-submodules", "now_brain",
+            "--add-data", f"{ROOT / 'validation/brain-v5-cases.json'}{os.pathsep}validation", "--copy-metadata", "PySide6_Essentials",
             "--copy-metadata", "shiboken6", "--add-data", f"{ROOT / 'assets/branding'}{os.pathsep}assets/branding",
             "--distpath", str(output / "dist"), "--workpath", str(temp / "work"), "--specpath", str(temp),
         ]
@@ -88,6 +89,16 @@ def build(args):
     smoke = output / "packaged-smoke"
     subprocess.run([str(executable), "--smoke-output", str(smoke)], cwd=bundle, env=environment,
                    timeout=120, check=True)
+    evaluation_output = output / "packaged-evaluation"
+    subprocess.run([str(executable), "--evaluation-self-check", str(evaluation_output)], cwd=bundle,
+                   env=environment, timeout=90, check=True)
+    evaluation = json.loads((evaluation_output / "evaluation.json").read_text(encoding="utf-8"))
+    if not evaluation.get("frozen_executable") or evaluation["status"] != "BLOCKED" or evaluation["inference_executed"]:
+        raise ValueError("packaged evaluator self-check must exercise unavailable-model path without inference")
+    (bundle / "Avaliar-Modelos.cmd").write_text('@echo off\r\nstart "" "%~dp0NOW-Assistant.exe" --evaluate\r\n', encoding="ascii")
+    (bundle / "Modo-Legado.cmd").write_text('@echo off\r\nstart "" "%~dp0NOW-Assistant.exe" --legacy-api\r\n', encoding="ascii")
+    shutil.copy2(ROOT / "docs/PHASE6_WINDOWS.md", bundle / "AVALIACAO-E-MODELOS.md")
+    shutil.copytree(evaluation_output, bundle / "validation-evaluator-self-check")
     shutil.copy2(ROOT / "packaging/releases/INSTALL-WINDOWS.md", bundle / "LEIA-ME.md")
     shutil.copy2(ROOT / "packaging/releases" / (version.value + ".md"), bundle / "CHANGELOG.md")
     shutil.copytree(smoke, bundle / "validation")
@@ -110,6 +121,8 @@ def build(args):
         "diagnostic_only": bool(args.diagnostic_build), "digital_signature": "not_signed",
         "preparation_request": preparation,
         "unit_tests": json.loads(tests.read_text(encoding="utf-8")),
+        "packaged_evaluation_self_check": {"frozen_executable": evaluation["frozen_executable"],
+            "status": evaluation["status"], "inference_executed": False, "purpose": "unavailable_model_path_only"},
         "packaged_smoke": json.loads((smoke / "REAL-GUI-VALIDACAO.json").read_text(encoding="utf-8")),
         "ci": {"provider": "github-actions" if os.environ.get("GITHUB_ACTIONS") == "true" else "local_windows",
                "run_id": os.environ.get("GITHUB_RUN_ID"), "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),

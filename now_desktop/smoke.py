@@ -96,7 +96,7 @@ def capture(output_directory):
                 "qt_platform": application.platformName(), "official_logo_loaded": official,
                 "official_window_icon_loaded": official and not window.windowIcon().isNull(),
                 "window_icon_sizes": icon_sizes,
-                "real_gui_and_http_engine": True, "mocked_responses": False, "offline_commands": records,
+                "api_protocol": client.protocol, "real_gui_and_http_engine": True, "mocked_responses": False, "offline_commands": records,
                 "temporary_session_created_database": False, "gemini_sdk_present": importlib.util.find_spec("google") is not None,
                 "model_inference_executed": False, "audio_executed": False,
                 "gui_resident_kib": resident_kib(os.getpid()), "engine_resident_kib": resident_kib(runtime.process.pid),

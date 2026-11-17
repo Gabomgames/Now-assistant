@@ -93,3 +93,33 @@ EN.update({"OUTPUT_EXISTS": "The file already exists. Choose a new destination; 
            "output_truncated": "The reply reached the generation limit. You can ask to continue or choose a detailed reply in Preferences.",
            "PAYLOAD_TOO_LARGE": "This request exceeded this version's limit. Start a new conversation.",
            "reply_short": "Short", "reply_balanced": "Balanced", "reply_detailed": "Detailed"})
+
+PT.update({
+    "legacy_api": "Legado /v2 (rollback)", "api_mode": "Conexão", "model_selection": "Modelo local",
+    "choose_model": "Escolha um modelo instalado", "model_missing": "não instalado",
+    "model_inventory_empty": "Ollama indisponível ou sem modelos locais. Comandos básicos continuam disponíveis.",
+    "model_choice_note": "Escolha para esta máquina; nenhuma tag é promovida por qualidade automaticamente. Modelo/conexão são configurações técnicas locais. Preferências pessoais continuam sob seu consentimento.",
+    "generating": "Gerando", "waiting_token": "Aguardando o primeiro texto…",
+    "generating_stats": "Gerando · {elapsed:.1f} s · primeiro texto: {first} s · recepção: {speed:.1f} caracteres/s",
+    "completed_stats": "Concluída · primeiro texto: {first} s · total: {elapsed:.1f} s · modelo: {speed} tokens/s",
+    "MODEL_NOT_SELECTED": "Escolha um modelo instalado nas Preferências para conversar.",
+    "MODEL_TIMEOUT": "O modelo atingiu o tempo limite. Tente uma resposta mais curta ou outro modelo instalado.",
+    "STREAM_INTERRUPTED": "A resposta foi interrompida. O texto parcial não foi salvo como resposta completa. Você pode tentar novamente.",
+    "CANCELLED": "Solicitação cancelada. No Brain v1 a conexão de geração é encerrada; a liberação de CPU pelo Ollama depende do serviço. No legado, o cálculo pode continuar.",
+})
+EN.update({
+    "legacy_api": "Legacy /v2 (rollback)", "api_mode": "Connection", "model_selection": "Local model",
+    "choose_model": "Choose an installed model", "model_missing": "not installed",
+    "model_inventory_empty": "Ollama is unavailable or has no local models. Basic commands still work.",
+    "model_choice_note": "Choose for this machine; no tag is automatically promoted for quality. Model/connection are local technical settings. Personal preferences still require consent.",
+    "generating": "Generating", "waiting_token": "Waiting for the first text…",
+    "generating_stats": "Generating · {elapsed:.1f} s · first text: {first} s · received: {speed:.1f} characters/s",
+    "completed_stats": "Completed · first text: {first} s · total: {elapsed:.1f} s · model: {speed} tokens/s",
+    "MODEL_NOT_SELECTED": "Choose an installed model in Preferences to chat.",
+    "MODEL_TIMEOUT": "The model reached the time limit. Try a shorter reply or another installed model.",
+    "STREAM_INTERRUPTED": "The reply was interrupted. Partial text was not saved as a complete answer. You can try again.",
+    "CANCELLED": "Cancelled. Brain v1 closes the generation connection; Ollama controls compute reclamation. Legacy processing may continue.",
+})
+
+PT["inventory_loading"] = "Verificando os modelos instalados no Ollama…"
+EN["inventory_loading"] = "Checking installed Ollama models…"

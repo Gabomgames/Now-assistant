@@ -76,7 +76,10 @@ def create_app(token, *, instance_id=None, provider=None):
         return ModelList(models=rows, default_model_id=default if default in {row.model_id for row in rows} else None)
 
     @app.get(PREFIX + "/health", response_model=Health)
-    async def health():
+    async def health(check_provider: bool = True):
+        if not check_provider:
+            return {"api_version": "1.0", "live": True, "ready": False, "instance_id": identity,
+                    "profile": "local", "provider_status": "not_checked"}
         try:
             models = await anyio.to_thread.run_sync(inventory)
             ready = models.default_model_id is not None

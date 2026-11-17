@@ -2,6 +2,9 @@ from dataclasses import replace
 from datetime import datetime
 import json
 import os
+import time
+
+from . import client_config
 from pathlib import Path
 
 from PySide6.QtCore import Qt, QTimer, Signal, QSize, QStandardPaths
@@ -39,6 +42,12 @@ class MainWindow(QMainWindow):
         self.resize(1280, 840)
         self.setMinimumSize(920, 620)
         self.engine = engine
+        configuration = client_config.load(data_directory)
+        if not engine.force_protocol:
+            engine.protocol = configuration["protocol"]
+        engine.selected_model = configuration["model"]
+        self._stream_text, self._stream_metrics = "", {}
+        self._stream_body, self._stream_started = None, None
         self.controller = ChatController()
         self.directory = Path(data_directory)
         self.storage = StorageService(self.directory, self)
@@ -54,6 +63,10 @@ class MainWindow(QMainWindow):
         self.engine.failed.connect(self._show_error)
         self.engine.capabilities_received.connect(self._capabilities)
         self.engine.chat_finished.connect(self._chat_finished)
+        self.engine.chat_delta.connect(self._chat_delta)
+        self._stream_timer = QTimer(self)
+        self._stream_timer.setInterval(50)
+        self._stream_timer.timeout.connect(self._paint_stream)
         self._search_timer = QTimer(self)
         self._search_timer.setSingleShot(True)
         self._search_timer.setInterval(180)
@@ -175,6 +188,9 @@ class MainWindow(QMainWindow):
         warning.addWidget(self.retry_button)
         self.banner.hide()
         content.addWidget(self.banner)
+        self.generation_status = self._label("", "generationStatus")
+        self.generation_status.setWordWrap(True)
+        content.addWidget(self.generation_status)
         composer_frame = QFrame()
         composer_frame.setObjectName("composer")
         entry = QVBoxLayout(composer_frame)
@@ -215,6 +231,13 @@ class MainWindow(QMainWindow):
         self.composer.setPlaceholderText(self.tr_key("composer"))
         self.composer.setAccessibleName(self.tr_key("composer"))
         self.engine_status.setText(self.tr_key("connecting" if not self._ready else "model_ready" if self._model_available else "offline_commands"))
+        if self._ready and self.engine.protocol == "v1":
+            if self.engine.models and self.engine.selected_model is None:
+                self.engine_status.setText(self.tr_key("MODEL_NOT_SELECTED"))
+            elif self._model_available:
+                self.engine_status.setText(self.tr_key("model_ready") + " · " + self.engine.selected_model)
+            elif self.engine.selected_model:
+                self.engine_status.setText(self.tr_key("model_missing") + " · " + self.engine.selected_model)
         self.history_button.setText(self.tr_key("history_on" if self._unlocked else "history_locked" if HistoryStore.exists(self.directory / "history") else "history_off"))
 
     def _update_enabled(self):
@@ -223,7 +246,7 @@ class MainWindow(QMainWindow):
         value = self.composer.toPlainText().strip()
         self.keyboard_hint.setText(self.tr_key("INVALID_MESSAGE" if len(value) > 4000 else "keyboard_hint"))
         self.send_button.setEnabled(allowed and 0 < len(value) <= 4000)
-        self.settings_button.setEnabled(not self._blocking_jobs and not self._closing)
+        self.settings_button.setEnabled(not busy and not self._blocking_jobs and not self._closing)
         self.composer.setEnabled(self._ready and not self._blocking_jobs and not self._closing)
         self.cancel_button.setVisible(busy)
 
@@ -233,7 +256,7 @@ class MainWindow(QMainWindow):
         self._update_enabled()
 
     def _capabilities(self, values):
-        self._model_available = bool(values.get("model_installed"))
+        self._model_available = any(row["model_id"] == self.engine.selected_model for row in self.engine.models) if self.engine.protocol == "v1" else bool(values.get("model_installed"))
         self._translate()
 
     def _title(self, conversation):
@@ -274,6 +297,17 @@ class MainWindow(QMainWindow):
             for message in self.controller.current.messages:
                 self._message_widget(message)
             self.messages_layout.addStretch()
+        self._stream_body = None
+        if self._pending is not None:
+            row = QFrame()
+            row.setObjectName("assistantBubble")
+            box = QVBoxLayout(row)
+            box.addWidget(self._label("NOW Assistant · " + self.tr_key("generating"), "messageRole"))
+            self._stream_body = self._label(self._stream_text or self.tr_key("waiting_token"), "streamingBody")
+            self._stream_body.setWordWrap(True)
+            self._stream_body.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            box.addWidget(self._stream_body)
+            self.messages_layout.insertWidget(max(0, self.messages_layout.count()-1), row)
         self._refresh_list()
         self._update_enabled()
         QTimer.singleShot(0, self._scroll_bottom)
@@ -376,6 +410,11 @@ class MainWindow(QMainWindow):
             self._show_error("INVALID_MESSAGE")
             return
         self._pending = (identifier, conversation.id)
+        self._stream_text, self._stream_metrics = "", {}
+        self._stream_started = time.monotonic()
+        self._last_error = None
+        self.generation_status.setText(self.tr_key("waiting_token"))
+        self._stream_timer.start()
         self.composer.clear()
         self.banner.hide()
         self._persist(conversation)
@@ -385,7 +424,18 @@ class MainWindow(QMainWindow):
         if self._closing or self._pending is None or self._pending[0] != identifier:
             return
         conversation_id = self._pending[1]
+        self._stream_timer.stop()
+        if result and result.get("metrics"):
+            stats = result["metrics"]
+            first = self._stream_metrics.get("first_token_ms") or stats.get("first_token_ms")
+            self.generation_status.setText(self.tr_key("completed_stats").format(
+                first="—" if first is None else f"{first/1000:.2f}",
+                elapsed=stats["elapsed_ms"]/1000,
+                speed="—" if stats.get("tokens_per_second") is None else f"{stats['tokens_per_second']:.1f}"))
+        else:
+            self.generation_status.clear()
         self._pending = None
+        self._stream_text = ""
         if error:
             conversation = self.controller.fail(conversation_id, cancelled=error == "CANCELLED")
             self._show_error(error)
@@ -402,10 +452,32 @@ class MainWindow(QMainWindow):
         self._persist(conversation)
         self._render()
 
+    def _chat_delta(self, identifier, piece, metrics):
+        if not self._closing and self._pending and self._pending[0] == identifier:
+            self._stream_text += piece
+            self._stream_metrics = metrics
+
+    def _paint_stream(self):
+        if self._closing or not self._pending:
+            return
+        if self._stream_body is not None:
+            value = self._stream_text or self.tr_key("waiting_token")
+            if self._stream_body.text() != value:
+                self._stream_body.setText(value)
+                self._scroll_bottom()
+        elapsed = time.monotonic() - self._stream_started
+        first = self._stream_metrics.get("first_token_ms")
+        self.generation_status.setText(self.tr_key("generating_stats").format(
+            elapsed=elapsed, first="—" if first is None else f"{first/1000:.2f}",
+            speed=len(self._stream_text)/max(elapsed, 0.001)))
+
     def _cancel_pending(self):
         if self._pending:
             identifier = self._pending[1]
             self._pending = None
+            self._stream_timer.stop()
+            self._stream_text = ""
+            self.generation_status.clear()
             self.engine.cancel()
             self._persist(self.controller.fail(identifier, cancelled=True))
             self._show_error("CANCELLED")
@@ -415,6 +487,7 @@ class MainWindow(QMainWindow):
         self._selection_version += 1
         self._cancel_pending()
         self.controller.new_chat()
+        self.generation_status.clear()
         self.banner.hide()
         self._render()
 
@@ -625,6 +698,14 @@ class MainWindow(QMainWindow):
             dialog.deleteLater()
             return
         self.controller.settings = dialog.values()
+        previous = (self.engine.protocol, self.engine.selected_model)
+        self.engine.protocol, self.engine.selected_model = dialog.protocol.currentData(), dialog.model.currentData()
+        if previous != (self.engine.protocol, self.engine.selected_model):
+            try:
+                client_config.save(self.directory, self.engine.protocol, self.engine.selected_model)
+            except OSError:
+                self._show_error("STORAGE_ERROR")
+            self.engine.refresh_capabilities()
         self._translate()
         self._render()
         action = dialog.memory_action
@@ -650,6 +731,7 @@ class MainWindow(QMainWindow):
         self._closing = True
         self._search_timer.stop()
         self._retention_timer.stop()
+        self._stream_timer.stop()
         self.engine.close()
         self.storage.close()
         event.accept()

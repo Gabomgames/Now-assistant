@@ -29,3 +29,13 @@ Espere o download concluir e confirme a tag. Reabra a NOW. O modelo usa CPU/RAM 
 Sem voz audível, microfone/STT/TTS, wake “Now”, bandeja, iniciar com Windows, análise de tela, sincronização ou Android. Fechar a janela encerra a Engine própria. Cancelar descarta a resposta da janela; uma geração já iniciada pode continuar no Ollama. É uma versão experimental; compatibilidade Windows 10, DPI, leitor de tela, ACLs e hardware de 8 GB ainda exigem validação manual no alvo. Um teste no runner Windows Server não comprova todos esses cenários.
 
 Para remover, feche o aplicativo e apague a pasta extraída. Dados pessoais permanecem em `%LOCALAPPDATA%\NOWAssistant`; exporte/apague explicitamente pelo app conforme sua preferência. Desinstalar o Ollama/modelo é uma operação separada. Não envie bancos, senhas ou exports pessoais em relatos de erro.
+
+
+## Candidato 0.3.0-alpha.2 / Fase 6
+
+No pacote novo, escolha o modelo instalado em Preferências. Não é necessário
+configurar variáveis para o Brain v1. `Avaliar-Modelos.cmd` abre o utilitário
+empacotado com relatório local e `Modo-Legado.cmd` permite rollback.
+Leia `AVALIACAO-E-MODELOS.md` incluído no ZIP. Ollama/pesos não acompanham o
+candidato; nenhuma avaliação é enviada automaticamente e nenhuma Release foi
+publicada por essa mudança.
