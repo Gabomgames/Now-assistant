@@ -1,0 +1,4 @@
+# Independent local API; no Qt, proprietary SDK or storage dependency.
+-c packaging/windows/constraints-python312.txt
+fastapi==0.163.1
+uvicorn==0.54.0

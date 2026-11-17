@@ -2,6 +2,12 @@
 
 Assistente pessoal de uso geral, com especialidade gamer. A primeira interface desktop está integrada à NOW Engine existente: chat por texto, comandos locais em português/inglês, sessões temporárias e histórico opcional criptografado. O terminal, a API 0.2, a preparação de treinamento, o NOW Memory e os contratos do NOW Voice continuam no projeto.
 
+## NOW Brain API — desenvolvimento V5
+
+API local independente em `/api/now/v1`, com inventário, chat, SSE e cancelamento.
+A GUI e `/v2` permanecem compatíveis. [Instalação, contrato e validação real no Windows](docs/NOW_BRAIN_API_V1.md).
+A inferência na nuvem continua bloqueada; a API não foi aprovada como serviço público ou multiusuário.
+
 ## Baixar para Windows
 
 A versão **`0.3.0-alpha.1`** está disponível para revisão nos [Artifacts do build Windows 43969485511](https://github.com/Gabomgames/Now-assistant/actions/runs/43969485511#artifacts), aproximadamente 51 MB. Windows Server 2022/Python 3.12: 101 testes aprovados, um POSIX não aplicável, EXE/GUI/Engine e seis comandos offline reais aprovados. A logo oficial preserva bytes, cores, proporções e fundo preto. [Resultados, hashes e limitações](VALIDACAO.md). **Nenhuma GitHub Release foi publicada.** O download de artifacts pode exigir login no GitHub e tem retenção de 30 dias.

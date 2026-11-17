@@ -10,7 +10,7 @@ from typing import Literal
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 from starlette.middleware.trustedhost import TrustedHostMiddleware
-from starlette.responses import JSONResponse
+from .security import LocalSecurity
 
 from .assistant import LocalAssistant, LocalModelUnavailable
 
@@ -36,41 +36,6 @@ class ChatRequest(BaseModel):
     settings: Settings = Field(default_factory=Settings)
 
 
-class LocalSecurity:
-    def __init__(self, app, token):
-        self.app, self.token = app, token.encode("ascii")
-
-    async def __call__(self, scope, receive, send):
-        if scope["type"] != "http":
-            return await self.app(scope, receive, send)
-        headers = {key.lower(): value for key, value in scope["headers"]}
-        authorization = headers.get(b"authorization", b"")
-        if not authorization.startswith(b"Bearer ") or not secrets.compare_digest(authorization[7:], self.token):
-            return await JSONResponse({"error": "UNAUTHORIZED"}, status_code=401)(scope, receive, send)
-        if b"origin" in headers:
-            return await JSONResponse({"error": "BROWSER_ORIGIN_FORBIDDEN"}, status_code=403)(scope, receive, send)
-        chunks, size = [], 0
-        while True:
-            event = await receive()
-            if event["type"] == "http.disconnect":
-                return
-            chunk = event.get("body", b"")
-            size += len(chunk)
-            if size > 65536:
-                return await JSONResponse({"error": "PAYLOAD_TOO_LARGE"}, status_code=413)(scope, receive, send)
-            chunks.append(chunk)
-            if not event.get("more_body", False):
-                break
-        delivered = False
-
-        async def replay():
-            nonlocal delivered
-            if not delivered:
-                delivered = True
-                return {"type": "http.request", "body": b"".join(chunks), "more_body": False}
-            return await receive()
-
-        await self.app(scope, replay, send)
 
 
 def create_app(token, instance_id):
