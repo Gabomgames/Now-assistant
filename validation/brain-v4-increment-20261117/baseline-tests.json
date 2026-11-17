@@ -1,0 +1,19 @@
+{
+  "schema": "now-tests-v1",
+  "checked_at_utc": "2026-11-17T18:17:35.116826+00:00",
+  "system": "Linux",
+  "python_version": "3.12.14",
+  "source_sha": "32220c92d22c7eba13f81fb7c1ef47b3b9d54fba",
+  "tests_run": 102,
+  "passed": 102,
+  "failures": 0,
+  "errors": 0,
+  "failed_tests": [],
+  "error_tests": [],
+  "skipped": [],
+  "unexpected_skips": [],
+  "real_gui_tests_passed": 10,
+  "real_http_tests_passed": 6,
+  "status": "passed",
+  "scope": "Includes model/audio doubles and synthetic release-gate metadata/ZIP fixtures; native packaged smoke is separate. No model/physical audio approval."
+}

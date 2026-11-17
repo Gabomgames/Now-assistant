@@ -1,0 +1,75 @@
+{
+  "checked_at_utc": "2026-11-17T18:22:57.305520+00:00",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "system": "Linux",
+  "version": "0.3.0-alpha.1",
+  "frozen_executable": false,
+  "python_version": "3.12.14",
+  "python_bits": 64,
+  "qt_platform": "offscreen",
+  "official_logo_loaded": true,
+  "official_window_icon_loaded": true,
+  "window_icon_sizes": [
+    16,
+    24,
+    32,
+    48,
+    64,
+    128,
+    192,
+    256
+  ],
+  "real_gui_and_http_engine": true,
+  "mocked_responses": false,
+  "offline_commands": [
+    {
+      "language": "pt-BR",
+      "input": "oi",
+      "output": "Oi! Sou a NOW Assistant. Em que posso ajudar?",
+      "provider": "offline",
+      "latency_ms": 13.5
+    },
+    {
+      "language": "pt-BR",
+      "input": "horas",
+      "output": "Agora são 18:22 neste computador.",
+      "provider": "offline",
+      "latency_ms": 12.9
+    },
+    {
+      "language": "pt-BR",
+      "input": "data",
+      "output": "Hoje é 17/11/2026.",
+      "provider": "offline",
+      "latency_ms": 18.1
+    },
+    {
+      "language": "en-US",
+      "input": "hello",
+      "output": "Hi! I'm NOW Assistant. How can I help?",
+      "provider": "offline",
+      "latency_ms": 12.8
+    },
+    {
+      "language": "en-US",
+      "input": "time",
+      "output": "It is 18:22 on this computer.",
+      "provider": "offline",
+      "latency_ms": 12.9
+    },
+    {
+      "language": "en-US",
+      "input": "date",
+      "output": "Today is 2026-11-17.",
+      "provider": "offline",
+      "latency_ms": 14.9
+    }
+  ],
+  "temporary_session_created_database": false,
+  "gemini_sdk_present": false,
+  "model_inference_executed": false,
+  "audio_executed": false,
+  "gui_resident_kib": 89812,
+  "engine_resident_kib": 44700,
+  "metrics_scope": "Linux current RSS during offline GUI smoke; not peak KDF/model RAM or target Windows/game performance"
+}

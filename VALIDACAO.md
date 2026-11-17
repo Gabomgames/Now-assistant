@@ -1,5 +1,55 @@
 # NOW Assistant — validação incremental
 
+## NOW Brain V4 — incremento 1, aceite generativo BLOQUEADO — 17/11/2026
+
+Ambiente operacional, checkout `Gabomgames/Now-assistant`, branch `work`, base
+`32220c92d22c7eba13f81fb7c1ef47b3b9d54fba`, inicialmente limpa e igual à referência
+remota verificada por `git ls-remote`. Anexo Master V4.0 disponível, 10.000 linhas,
+SHA-256 `be5811f706bce8efb002823010519df17331ccb9d002214b11fee159917bec42`.
+O cabeçalho contém o prompt de execução e a especificação mestre; não foi
+localizado outro prompt inicial separado no workspace ou nesta conversa.
+
+Código do incremento: **`201fe4cab058bf7e7da41523b47404ba7c02c76f`**. O provedor
+Ollama foi separado da preparação de contexto/personalidade; geração continua
+local, sem proxy, redirecionamentos ou Gemini. As preferências existentes Curta,
+Equilibrada e Detalhada agora controlam 192/512/1024 tokens, substituindo o limite
+único 220. API v2 acrescenta modelo/encerramento/truncamento; a GUI mostra aviso
+quando o modelo encerra por limite. Nenhuma mudança nos formatos dos cofres.
+
+| Verificação real | Resultado |
+| --- | --- |
+| Base antes das mudanças | 102 testes aprovados, zero falhas/erros/skips. |
+| Suíte no commit de implementação acima | **112 aprovados em 24,456 s**, zero falhas/erros/skips; 10 testes GUI anteriores e seis testes HTTP anteriores continuam aprovados. |
+| Novos testes | Nove casos de transporte/contrato/contexto/preferências e um caso de renderização Qt com fixtures sintéticas; **não representam inferência**. Incluem redirecionamento HTTP real recusado. |
+| GUI + Engine autenticada, Linux Qt offscreen | Seis comandos offline reais PT-BR/EN aprovados; capturas reais salvas, captura PT-BR inspecionada visualmente. Nenhum banco criado pela sessão temporária. |
+| Dependências | `pip check`: sem dependências quebradas. |
+| Marca, workflows, histórico e NOW Memory | Diretórios sem diferenças contra a base; PNG original mantém SHA-256 `9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc`. |
+| Ollama / pesos | Executável ausente, serviço loopback recusou conexão. Downloads oficiais e registro retornaram CONNECT 403 no proxy. |
+| Avaliação generativa pela GUI no commit limpo | **BLOCKED**, saída 2, **0 gerações, 20 casos não executados, qualidade NOT_SCORED**. Nenhuma resposta de modelo inventada ou aprovada. |
+
+Evidências versionadas em `validation/brain-v4-increment-20261117/`: relatórios
+base/pós-alteração, preflight generativo, smoke offline, capturas e proveniência.
+Guia e comando real: [NOW Brain](docs/NOW_BRAIN.md). A avaliação preparada usa a
+GUI e sua Engine, com cinco turnos encadeados, mudança de idioma e casos de
+profundidade, personalidade, incerteza e limites de memória/permissão. Ela exige
+revisão das respostas reais; sucesso de transporte não aprova qualidade.
+
+A política ativa era restrita/enforced, sem domínios customizados. Adições
+`ollama.com` e `registry.ollama.ai` foram salvas no rascunho do ambiente,
+preservando o preset. Isso **não aplicou nem publicou** a configuração. É preciso
+revisar/salvar nas configurações do ambiente e publicar essa configuração para
+retestar os downloads por via oficial. Nenhuma credencial adicional foi pedida.
+
+**Entrega parcial:** não se afirma que a NOW já conversa melhor. Faltam pesos
+reais, gerações e avaliação de naturalidade/coerência/qualidade e latência por
+modelo. Streaming visual, cancelamento no servidor, memória permanente de fatos
+com consentimento granular e integração SG ficam para incrementos posteriores.
+As preferências autorizadas e o histórico existentes foram preservados/testados.
+Nenhum SG, release, deploy, push ou workflow remoto foi executado. Windows nativo
+não foi revalidado para este incremento. Rollback: reverter o commit de código;
+não há migrações de dados nem mudança na versão do candidato Alpha anterior.
+
+
 ## Candidato Windows 0.3.0-alpha.1 executado — 16/11/2026
 
 **Prepare Windows Alpha concluiu Success:** [run 43969485511](https://github.com/Gabomgames/Now-assistant/actions/runs/43969485511), commit **`cb5204041907139a8fb862e7ff6a557dec53df24`**, branch work. Duração total **3m57s**, incluindo espera; job Windows **2m44s**. Windows Server 2022 x64/Python **3.12.10**, PyInstaller e dependências fixadas. Base `25efee4` preservada, com commits incrementais; nenhum arquivo original ou teste anterior removido.

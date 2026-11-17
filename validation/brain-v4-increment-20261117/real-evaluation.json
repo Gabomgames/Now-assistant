@@ -1,0 +1,28 @@
+{
+  "schema": "now-brain-evaluation-v1",
+  "started_at_utc": "2026-11-17T18:23:49.801666+00:00",
+  "source_sha": "201fe4cab058bf7e7da41523b47404ba7c02c76f",
+  "source_dirty": false,
+  "system": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "status": "BLOCKED",
+  "quality": "NOT_SCORED",
+  "cases_total": 20,
+  "generated": 0,
+  "not_run": 20,
+  "cases": [],
+  "inference_executed": false,
+  "synthetic_prompts_only": true,
+  "review_dimensions": [
+    "language",
+    "naturalness",
+    "coherence",
+    "context",
+    "persona",
+    "honest_memory_and_permissions",
+    "depth",
+    "correctness"
+  ],
+  "model": null,
+  "blocker": "Local Ollama model is unavailable; no generation was attempted.",
+  "completed_at_utc": "2026-11-17T18:23:50.359675+00:00"
+}

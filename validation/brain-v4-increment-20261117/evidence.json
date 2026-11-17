@@ -1,0 +1,56 @@
+{
+  "schema": "now-brain-increment-evidence-v1",
+  "implementation_commit": "201fe4cab058bf7e7da41523b47404ba7c02c76f",
+  "baseline_commit": "32220c92d22c7eba13f81fb7c1ef47b3b9d54fba",
+  "specification": {
+    "filename": "NOW_ASSISTANT_SUPERPROMPT_MASTER_PRODUCAO_10000_LINHAS.txt",
+    "lines": 10000,
+    "sha256": "be5811f706bce8efb002823010519df17331ccb9d002214b11fee159917bec42"
+  },
+  "status": "PARTIAL_BLOCKED_REAL_INFERENCE",
+  "network_checks": {
+    "observed_at_utc": "2026-11-17T18:18:10Z",
+    "method": "curl -I --max-time 20 via existing proxy; TLS verification enabled",
+    "destinations": [
+      {
+        "url": "https://ollama.com/download/ollama-linux-amd64.tar.zst",
+        "result": "CONNECT tunnel failed, response 403"
+      },
+      {
+        "url": "https://registry.ollama.ai/v2/library/qwen2.5/manifests/3b",
+        "result": "CONNECT tunnel failed, response 403"
+      }
+    ],
+    "runtime_policy": "restricted, enforced, custom allowed_hosts empty; package_managers preset",
+    "saved_draft_additions": [
+      "ollama.com",
+      "registry.ollama.ai"
+    ],
+    "runtime_application_confirmed": false
+  },
+  "inference_executed": false,
+  "model_quality": "NOT_SCORED",
+  "preserved_unchanged": [
+    "assets/branding",
+    ".github",
+    "now_history",
+    "now_memory"
+  ],
+  "original_logo_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+  "evidence_scope": {
+    "baseline-tests.json": "full baseline source suite",
+    "source-tests.json": "full suite on exact implementation commit",
+    "gui-offline-smoke.json": "actual GUI + authenticated Engine; deterministic offline commands only; run on source tree before implementation commit",
+    "actual-gui-offline-pt-BR.png": "actual Qt offscreen screenshot, manually viewed; no generated model replies",
+    "actual-gui-offline-en-US.png": "actual Qt offscreen screenshot; no generated model replies",
+    "real-evaluation.json": "real GUI/Engine model preflight on clean implementation commit; BLOCKED, zero generations, 20 unrun"
+  },
+  "not_implemented_or_validated": [
+    "real-model quality and comparative benchmark",
+    "visual token streaming",
+    "persistent conversational fact memory",
+    "native Windows execution of this increment",
+    "Something Gamer integration"
+  ],
+  "release_or_deployment_executed": false
+}
