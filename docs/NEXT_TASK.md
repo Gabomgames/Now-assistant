@@ -18,7 +18,12 @@ Próximo gate: executar `tools/validate_brain_api.py` no Windows 10 com os Qwen
 observados. Não publicar relatórios privados, não baixar pesos por vias não
 autorizadas e não promover modelo antes da revisão de qualidade. Não reaproveitar
 respostas de GPT/Gemini para treinamento. A avaliação cloud está BLOCKED/0
-respostas/NOT_SCORED; o wrapper PowerShell e Windows ainda não foram executados.
+respostas/NOT_SCORED; o wrapper PowerShell e Windows 10 do usuário ainda não foram executados.
+
+CI Windows Server 2022 passou no run 44159954202, fonte `d4b4408…`: 129 casos,
+128 aprovados e um POSIX não aplicável; EXE/Qt/Engine/logo e seis comandos offline
+reais. Artifact de diagnóstico, sem inferência, assinatura ou autorização de
+Release. Metadados em `validation/brain-api-v5-20261117/windows-ci.json`.
 
 Depois dos resultados reais, escolher o próximo incremento de qualidade e
 migração da GUI para SSE. Multiusuário/infraestrutura SG, memória de fatos,

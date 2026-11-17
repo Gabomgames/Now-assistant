@@ -1,0 +1,70 @@
+{
+  "schema": "now-brain-v5-windows-ci-observation-v1",
+  "run_id": "44159954202",
+  "run_url": "https://github.com/Gabomgames/Now-assistant/actions/runs/44159954202",
+  "source_sha": "d4b4408c6fb400c9f8dcc8b08d858332f6af9d2c",
+  "conclusion": "success",
+  "duration": "2m 59s",
+  "evidence_source": "public GitHub run page and structured annotations",
+  "annotations": [
+    {
+      "packaged_build": "actual_windows_smoke_passed",
+      "release_published": false,
+      "source_sha": "d4b4408c6fb400c9f8dcc8b08d858332f6af9d2c",
+      "unit_tests": {
+        "system": "Windows",
+        "python_version": "3.12.10",
+        "tests_run": 129,
+        "passed": 128,
+        "failures": 0,
+        "errors": 0,
+        "skipped": [
+          {
+            "test": "tests.test_memory.MemoryTests.test_vault_permissions_are_owner_only",
+            "reason": "POSIX permission check"
+          }
+        ],
+        "status": "passed"
+      },
+      "failed_tests": [],
+      "error_tests": [],
+      "version": "0.3.0-alpha.1",
+      "release_eligible": false,
+      "diagnostic_only": true,
+      "branding": {
+        "status": "official_original_verified",
+        "verified": true,
+        "original": "original.png",
+        "original_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+        "icon_sha256": "a6f4af3370d657e14df8b685176c512980a3549640a0408c8542d26a2db73d59",
+        "display_sha256": "1595f76e71f34d786941c04b8271299fa4d35382871c316fa20280b3eca116df"
+      },
+      "executable_sha256": "e78f9e8a6d628871b6cac020c684e538f75b1dcbee880544d94568751400631c",
+      "frozen_executable": true,
+      "qt_platform": "windows",
+      "actual_offline_commands": 6,
+      "weights_included": false,
+      "model_inference_tested": false,
+      "digital_signature": "not_signed",
+      "zip_sha256": "ec34676d695333d3774b99e665392705288a58e664fbd9492bf42e2cf3e49e38  NOW-Assistant-0.3.0-alpha.1-diagnostic-Windows-x64.zip"
+    },
+    {
+      "system": "Windows",
+      "python_version": "3.12.10",
+      "source_sha": "d4b4408c6fb400c9f8dcc8b08d858332f6af9d2c",
+      "tests_run": 129,
+      "passed": 128,
+      "failures": 0,
+      "errors": 0,
+      "status": "passed"
+    }
+  ],
+  "artifact_name": "now-assistant-ci-d4b4408c6fb400c9f8dcc8b08d858332f6af9d2c-attempt-1",
+  "artifact_downloaded_or_inspected_locally": false,
+  "real_qwen_inference_executed": false,
+  "windows_10_user_hardware_executed": false,
+  "release_or_deployment_executed": false,
+  "observed_at_utc": "2026-11-17T19:39:56.762602+00:00",
+  "artifact_size_display": "51 MB",
+  "artifact_digest_observed": "sha256:a85a2f1fe3e6e3e2840de15ee864b5f02815687991d890f3aa3923b7e384703c"
+}

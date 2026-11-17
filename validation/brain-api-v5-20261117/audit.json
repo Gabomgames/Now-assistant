@@ -67,7 +67,7 @@
     "desktop": "Actual Qt offscreen + owned authenticated Engine, six deterministic offline commands; no model replies.",
     "standalone": "Installed/started in minimal venv without Qt, cryptography or proprietary SDK; pip check passed.",
     "model_evaluation": "Real API/Ollama preflight; BLOCKED exit 2; zero generations; 20 NOT_RUN cases for each of two requested models.",
-    "windows_validator": "Python CLI executed on Linux blocked path; PowerShell wrapper and Windows 10 execution NOT_RUN. No pwsh or Windows host available."
+    "windows_validator": "Python CLI executed on Linux blocked path; Windows 10 user/Ollama evaluation and PowerShell wrapper NOT_RUN. Windows Server CI source suite and packaged GUI passed separately."
   },
   "network": {
     "observed_at_utc": "2026-11-17T19:10:41Z",
@@ -99,5 +99,17 @@
     "Measure CPU/RAM/FPS and real model latency on Windows 10 Athlon/8 GB",
     "Migrate GUI to v1 SSE with regression tests in a later increment",
     "Remote auth, tenants and distributed quotas before any public API"
-  ]
+  ],
+  "windows_ci": {
+    "run_id": "44159954202",
+    "source_sha": "d4b4408c6fb400c9f8dcc8b08d858332f6af9d2c",
+    "conclusion": "success",
+    "tests_run": 129,
+    "passed": 128,
+    "expected_posix_skip": 1,
+    "packaged_gui_engine_smoke": "passed",
+    "diagnostic_only": true,
+    "model_inference_tested": false,
+    "evidence_file": "windows-ci.json"
+  }
 }

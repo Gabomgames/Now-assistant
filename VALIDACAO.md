@@ -31,7 +31,22 @@ mantido por default. Novas rotas não acessam cofres nem executam ferramentas.
 | GUI legada | Qt offscreen e HTTP autenticado reais; seis comandos offline PT-BR/EN, marca/ícone oficiais e nenhuma base privada criada no smoke. |
 | Marca/dados/distribuição | `assets/branding`, `now_history`, `now_memory`, `now_voice`, `.github`, `packaging` e dependências desktop sem alterações contra a base. |
 | Inferência real na nuvem | **BLOQUEADA**, exit 2: Ollama ausente; CONNECT 403 no registro e download oficiais. **Zero gerações; 20 casos NOT_RUN para cada uma das tags 0.5B e 1.5B.** |
-| Validador Windows | Entregue Python executável + wrapper PowerShell, sem download/treino/upload; o caminho bloqueado foi executado no Linux. **Windows/PowerShell/qualidade real ainda NOT_RUN.** |
+| CI Windows Server 2022 | [Run 44159954202](https://github.com/Gabomgames/Now-assistant/actions/runs/44159954202), **Success em 2m59s**; Python 3.12.10, 129 casos: **128 aprovados e um POSIX não aplicável**, zero falhas/erros. EXE Qt nativo, logo/ícone, Engine própria e seis comandos offline passaram. |
+| Validador Windows 10/Ollama | Entregue Python executável + wrapper PowerShell, sem download/treino/upload; o caminho bloqueado foi executado no Linux. **Windows 10 do usuário/PowerShell/qualidade real ainda NOT_RUN.** |
+
+A execução nativa acima foi disparada pelo push normal de
+`d4b4408c6fb400c9f8dcc8b08d858332f6af9d2c` (código e evidências V5), sem
+alterar workflows. A anotação pública informa `actual_windows_smoke_passed`,
+`qt_platform:windows`, `frozen_executable:true`, logo oficial verificada,
+`diagnostic_only:true`, `release_eligible:false`, `release_published:false` e
+`model_inference_tested:false`. O artifact real
+`now-assistant-ci-d4b4408c6fb400c9f8dcc8b08d858332f6af9d2c-attempt-1`, **51 MB**,
+está no run. Hash do ZIP diagnóstico observado no runner:
+`ec34676d695333d3774b99e665392705288a58e664fbd9492bf42e2cf3e49e38`.
+Anotações, digest e metadados foram observados no GitHub e registrados em
+`windows-ci.json`; **ZIP/EXE/capturas Windows não foram baixados nem inspecionados
+localmente**. É diagnóstico, sem assinatura e sem pesos, não novo candidato
+Alpha publicável. Não testa Qwen nem o Athlon/8 GB do usuário.
 
 **Métricas disponíveis:** 10 amostras do chat explicitamente **determinístico**
 da API independente: p50 **8,691 ms**, p95/p99 **15,638 ms** (nearest-rank).
