@@ -174,7 +174,7 @@ class EngineClient(QObject):
         }) else "model"
         identifier = str(uuid4())
         if mode == "model" and self.selected_model is None and self.models:
-            QTimer.singleShot(0, lambda: self.chat_finished.emit(identifier, None, "MODEL_NOT_SELECTED"))
+            QTimer.singleShot(0, lambda: self.chat_finished.emit(identifier, None, "MODEL_UNAVAILABLE"))
             return identifier
         payload = {"messages": messages, "options": settings, "mode": mode}
         if conversation_id is not None:

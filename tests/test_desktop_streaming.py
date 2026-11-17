@@ -157,7 +157,8 @@ class DesktopStreamingTests(unittest.TestCase):
     def test_installed_models_require_explicit_choice_before_open_chat(self):
         self.window.submit_text("Explain recursion")
         self.wait(lambda: self.window._pending is None)
-        self.assertEqual(self.window._last_error, "MODEL_NOT_SELECTED")
+        self.assertEqual(self.window._last_error, "MODEL_UNAVAILABLE")
+        self.assertIn("Preferências", self.window.error_text.text())
         self.assertEqual(fixtures.BrainAPIV1Tests.recorded, [])
 
 

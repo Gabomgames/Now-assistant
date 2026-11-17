@@ -123,3 +123,6 @@ EN.update({
 
 PT["inventory_loading"] = "Verificando os modelos instalados no Ollama…"
 EN["inventory_loading"] = "Checking installed Ollama models…"
+
+PT["MODEL_UNAVAILABLE"] = "O modelo local não está disponível para esta conversa. Confira o Ollama e escolha um modelo instalado nas Preferências. Hora, data e ajuda continuam disponíveis."
+EN["MODEL_UNAVAILABLE"] = "The local model is not available for this chat. Check Ollama and choose an installed model in Preferences. Time, date and help still work."
