@@ -116,7 +116,9 @@ def create_app(token, instance_id):
             used = assistant.messages(last, messages[:-1])
             reply = assistant.reply(last, payload.settings, messages[:-1])
             return {"reply": reply.text, "provider": reply.provider, "processing": "local",
-                    "context_messages": len(used), "context_trimmed": len(used) < len(messages)}
+                    "context_messages": len(used), "context_trimmed": len(used) < len(messages),
+                    "model": reply.model, "finish_reason": reply.finish_reason,
+                    "output_truncated": reply.finish_reason == "length"}
         except LocalModelUnavailable:
             raise HTTPException(503, detail={"error": "MODEL_UNAVAILABLE"}) from None
         except ValueError:

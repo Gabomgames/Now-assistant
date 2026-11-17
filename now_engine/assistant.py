@@ -1,16 +1,13 @@
 """Additive local-only assistant adapter for new clients; never imports Gemini."""
 from datetime import datetime
 import json
-import os
 import unicodedata
-from urllib.error import URLError
-from urllib.request import Request, urlopen
+from .providers import LocalModelUnavailable, ModelProvider, OllamaProvider, local_open as urlopen
 
 from .messages import ChatReply, ConversationSettings
 
 
-class LocalModelUnavailable(Exception):
-    pass
+TOKEN_LIMITS = {"short": 192, "balanced": 512, "detailed": 1024}
 
 
 def system_instruction(settings: ConversationSettings):
@@ -20,9 +17,15 @@ def system_instruction(settings: ConversationSettings):
         "creative": "imaginative while keeping factual claims accurate",
     }
     return (
-        "NOW Assistant persona v2. You are NOW Assistant, a general-purpose AI assistant with an optional gaming specialty. "
+        "NOW Assistant Brain v4 increment 1. You are NOW Assistant, a general-purpose AI assistant with an optional gaming specialty. "
         f"Style: {styles[settings.persona]}. Preferred language: {settings.language}; honor explicit language switches. "
         f"Humor level: {settings.humor}/3, only when appropriate. Response length: {settings.reply_length}. "
+        "Answer the actual question directly, using natural Brazilian Portuguese or English as requested. "
+        "Keep follow-up references consistent with the supplied conversation; accept corrections and topic changes. "
+        "For short replies, give the essential answer in a few sentences. For balanced replies, explain with a useful example. "
+        "For detailed replies, develop the reasoning and practical steps without filler. "
+        "Avoid canned greetings, automatic praise, forced jokes and repeated introductions. "
+        "Ask one focused question when essential information is missing; acknowledge uncertainty instead of inventing facts. "
         "Understand slang and non-abusive profanity without scolding. Do not force gaming references. "
         "You are an AI, not a human. Do not claim feelings, exclusive relationships, screen access, saved memories, "
         "microphone access or executed tools without a real software result. This adapter has no tool executor. "
@@ -55,6 +58,9 @@ def offline_reply(text, settings):
 class LocalAssistant:
     local = True
 
+    def __init__(self, provider: ModelProvider | None = None):
+        self.provider = provider
+
     @staticmethod
     def messages(text, context=None):
         if not isinstance(text, str) or not text.strip() or len(text) > 4000:
@@ -75,18 +81,7 @@ class LocalAssistant:
 
     @staticmethod
     def installed_model():
-        model = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b").strip()
-        if not model or ":cloud" in model.casefold() or "://" in model:
-            raise LocalModelUnavailable("configure an installed local model tag")
-        try:
-            with urlopen("http://127.0.0.1:11434/api/tags", timeout=5) as response:
-                inventory = json.load(response)
-            matches = [row for row in inventory.get("models", []) if row.get("name") == model or row.get("model") == model]
-            if not matches or any(row.get("remote_host") or row.get("remote_model") for row in matches):
-                raise ValueError("model is absent or remote")
-        except (URLError, OSError, ValueError, TypeError, AttributeError) as error:
-            raise LocalModelUnavailable("the local Ollama model is unavailable") from error
-        return model
+        return OllamaProvider(opener=urlopen).installed_model()
 
     def reply(self, text, settings, context=None):
         if not isinstance(text, str) or not text.strip() or len(text) > 4000:
@@ -95,18 +90,9 @@ class LocalAssistant:
         answer = offline_reply(text, settings)
         if answer is not None:
             return ChatReply(answer, "offline")
-        model = self.installed_model()
-        try:
-            request = Request("http://127.0.0.1:11434/api/chat", data=json.dumps({
-                "model": model,
-                "messages": [{"role": "system", "content": system_instruction(settings)}, *messages],
-                "stream": False, "options": {"num_predict": 220},
-            }).encode("utf-8"), headers={"Content-Type": "application/json"})
-            with urlopen(request, timeout=90) as response:
-                payload = json.load(response)
-            answer = (payload.get("message") or {}).get("content")
-            if not isinstance(answer, str) or not answer.strip() or payload.get("done") is not True:
-                raise ValueError("incomplete local response")
-        except (URLError, OSError, ValueError, TypeError, AttributeError) as error:
-            raise LocalModelUnavailable("the local Ollama model is unavailable or returned an invalid reply") from error
-        return ChatReply(answer.strip(), "local")
+        provider = self.provider or OllamaProvider(opener=urlopen)
+        result = provider.generate(
+            [{"role": "system", "content": system_instruction(settings)}, *messages],
+            max_tokens=TOKEN_LIMITS[settings.reply_length],
+        )
+        return ChatReply(result.text, "local", model=result.model, finish_reason=result.finish_reason)

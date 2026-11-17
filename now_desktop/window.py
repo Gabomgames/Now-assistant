@@ -397,6 +397,8 @@ class MainWindow(QMainWindow):
                 self._show_error("ENGINE_UNAVAILABLE")
             if result.get("context_trimmed"):
                 self._show_error("context_trimmed")
+            if result.get("output_truncated"):
+                self._show_error("output_truncated")
         self._persist(conversation)
         self._render()
 

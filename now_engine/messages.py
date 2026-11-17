@@ -7,6 +7,8 @@ from typing import Protocol
 class ChatReply:
     text: str
     provider: str
+    model: str | None = None
+    finish_reason: str = "stop"
 
 
 class ConversationSettings(Protocol):

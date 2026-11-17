@@ -86,8 +86,10 @@ def text(key, language="pt-BR"):
 
 
 PT.update({"OUTPUT_EXISTS": "O arquivo já existe. Escolha um destino novo; nada foi substituído.",
+           "output_truncated": "A resposta atingiu o limite de geração. Você pode pedir para continuar ou escolher uma resposta detalhada nas Preferências.",
            "PAYLOAD_TOO_LARGE": "A solicitação excedeu o limite desta versão. Comece uma nova conversa.",
            "reply_short": "Curta", "reply_balanced": "Equilibrada", "reply_detailed": "Detalhada"})
 EN.update({"OUTPUT_EXISTS": "The file already exists. Choose a new destination; nothing was replaced.",
+           "output_truncated": "The reply reached the generation limit. You can ask to continue or choose a detailed reply in Preferences.",
            "PAYLOAD_TOO_LARGE": "This request exceeded this version's limit. Start a new conversation.",
            "reply_short": "Short", "reply_balanced": "Balanced", "reply_detailed": "Detailed"})
