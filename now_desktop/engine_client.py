@@ -173,7 +173,7 @@ class EngineClient(QObject):
             "horas", "time", "data", "date", "ajuda", "help", "comandos", "commands", "what time is it", "que horas sao",
         }) else "model"
         identifier = str(uuid4())
-        if mode == "model" and self.selected_model is None and self.models:
+        if mode == "model" and self.selected_model is None:
             QTimer.singleShot(0, lambda: self.chat_finished.emit(identifier, None, "MODEL_UNAVAILABLE"))
             return identifier
         payload = {"messages": messages, "options": settings, "mode": mode}

@@ -160,6 +160,14 @@ class DesktopStreamingTests(unittest.TestCase):
         self.assertEqual(self.window._last_error, "MODEL_UNAVAILABLE")
         self.assertIn("Preferências", self.window.error_text.text())
         self.assertEqual(fixtures.BrainAPIV1Tests.recorded, [])
+        # Discovery may still be loading on a cold Windows launch. Never send
+        # an unselected request to the backend's environment/default model.
+        self.client.models = []
+        self.client.inventory_loading = True
+        self.window.submit_text("An open question before discovery finishes")
+        self.wait(lambda: self.window._pending is None)
+        self.assertEqual(self.window._last_error, "MODEL_UNAVAILABLE")
+        self.assertEqual(fixtures.BrainAPIV1Tests.recorded, [])
 
 
 class DecoderAndConfigTests(unittest.TestCase):
