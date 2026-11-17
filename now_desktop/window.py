@@ -273,6 +273,7 @@ class MainWindow(QMainWindow):
         self.composer.setAccessibleName(self.tr_key("composer"))
         self.engine_status.setText(self.tr_key("connecting" if not self._ready else "model_ready" if self._model_available else "offline_commands"))
         if self._ready and self.engine.protocol == "v1":
+            self._model_available = any(row["model_id"] == self.engine.selected_model for row in self.engine.models)
             if self.engine.models and self.engine.selected_model is None:
                 self.engine_status.setText(self.tr_key("MODEL_NOT_SELECTED"))
             elif self._model_available:

@@ -198,3 +198,28 @@ class DecoderAndConfigTests(unittest.TestCase):
         self.assertNotIn("<script>", page)
         self.assertIn("&lt;script&gt;", page)
         self.assertIn("nenhum vencedor", page)
+
+
+class EvaluationContrastTests(unittest.TestCase):
+    def test_evaluator_labels_have_readable_contrast_with_real_theme(self):
+        from PySide6.QtGui import QPalette
+        from now_desktop.theme import apply_theme
+        from now_desktop.evaluation import EvaluationWindow
+        application = QApplication.instance() or QApplication([])
+        application.setQuitOnLastWindowClosed(False)
+        apply_theme(application)
+        window = EvaluationWindow()
+        try:
+            window.show()
+            application.processEvents()
+            background = window.grab().toImage().pixelColor(2, 2)
+            foreground = window.status.palette().color(QPalette.ColorRole.WindowText)
+            def luminance(color):
+                channels = [color.redF(), color.greenF(), color.blueF()]
+                linear = [value/12.92 if value <= 0.04045 else ((value+0.055)/1.055)**2.4 for value in channels]
+                return sum(weight*value for weight,value in zip((0.2126,0.7152,0.0722),linear))
+            bright, dark = sorted((luminance(background), luminance(foreground)), reverse=True)
+            self.assertGreaterEqual((bright+0.05)/(dark+0.05), 4.5)
+        finally:
+            window.close()
+            application.processEvents()

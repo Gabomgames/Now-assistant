@@ -21,6 +21,7 @@ from now_engine.processes import stop_owned_process
 class EvaluationWindow(QWidget):
     def __init__(self, self_check=None):
         super().__init__()
+        self.setObjectName("main")
         self.setWindowTitle("NOW Brain — avaliação local")
         self.resize(700, 500)
         from .branding import window_icon_path
