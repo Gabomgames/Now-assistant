@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-17T22:29:40.419900+00:00",
+  "scope": "Architecture, hardware and budget proposal; documentation only",
+  "branch": "work",
+  "audited_base_commit": "06be7a941c993fff5528426e0184e7b09bef519a",
+  "application_or_training_code_changed": false,
+  "new_runtime_installed": false,
+  "real_inference_executed_this_review": false,
+  "training_executed": false,
+  "gpu_dependencies_checked": false,
+  "resources_provisioned": false,
+  "release_or_deploy_executed": false,
+  "environment": {
+    "platform": "linux",
+    "logical_cpu_count": 5,
+    "nvidia_smi_available": false,
+    "cuda_validated": false
+  },
+  "dataset_validation": {
+    "command": ".venv-desktop/bin/python training/scripts/validate_dataset.py",
+    "exit_code": 0,
+    "stdout": "dataset-validation.log",
+    "train_records": 36,
+    "held_out_cases": 12,
+    "license": null,
+    "approved_for_training": false
+  },
+  "training_dry_run": {
+    "command": ".venv-desktop/bin/python training/scripts/train_lora_gpu.py --dry-run",
+    "exit_code": 0,
+    "report": "training-dry-run.json",
+    "training_blockers": [
+      "a separate reviewed validation dataset is required",
+      "pilot dataset has fewer than 100 examples; expand and review it first (100 is not a quality guarantee)",
+      "dataset rights/provenance review has not approved this exact dataset"
+    ]
+  },
+  "pipeline_tests": {
+    "command": ".venv-desktop/bin/python -m unittest discover -s training/tests -v",
+    "tests": 19,
+    "result": "OK",
+    "log": "training-tests.log",
+    "inference_test": false
+  },
+  "full_application_suite": {
+    "rerun_this_review": false,
+    "previous_phase6_evidence": "../phase6-20261117/source-tests.json"
+  },
+  "official_component_documentation": [
+    {
+      "component": "llama",
+      "downloaded_readme_sha256": "e115253de24f69a836559639a6e8588e7ac7e917b6cab541e7398e7270e9336b"
+    },
+    {
+      "component": "vllm",
+      "downloaded_readme_sha256": "ba4998a8520051250ec81c60187203745e6bc0b9c197af6e1b6a73143f5e575e"
+    },
+    {
+      "component": "peft",
+      "downloaded_readme_sha256": "bded606f05727a975a03625a7b0b561be8b048ffacafd78874e80242d981f2d2"
+    },
+    {
+      "component": "trl",
+      "downloaded_readme_sha256": "9a788536f5ed9a21646040cc999a00aa79674f716744d1c799d0b20ac65d2301"
+    }
+  ],
+  "price_verification": {
+    "status": "BLOCKED",
+    "observed_result": "CONNECT 403",
+    "urls": [
+      "https://www.runpod.io/pricing",
+      "https://lambda.ai/service/gpu-cloud"
+    ],
+    "proposal_prices_are_planning_assumptions": true
+  }
+}

@@ -2,6 +2,16 @@
 
 Assistente pessoal de uso geral, com especialidade gamer. A primeira interface desktop está integrada à NOW Engine existente: chat por texto, comandos locais em português/inglês, sessões temporárias e histórico opcional criptografado. O terminal, a API 0.2, a preparação de treinamento, o NOW Memory e os contratos do NOW Voice continuam no projeto.
 
+## Direção — plataforma NOW Brain independente
+
+API, dataset com direitos verificáveis, Training Lab supervisionado e memória
+autorizada sob controle da NOW. [Arquitetura proposta, hardware, custos e gates
+de aprovação](docs/NOW_BRAIN_PLATFORM_ARCHITECTURE.md). Ollama permanece uma
+integração de compatibilidade; llama.cpp direto e vLLM em servidor próprio são
+próximos adaptadores propostos, ainda não implementados/testados. A inferência
+atual continua acoplada ao Ollama. Nenhum treino, provisionamento ou deploy foi
+executado nesta revisão. Armazenar conversas/preferências não altera pesos.
+
 ## Fase 6 — Brain na interface Windows
 
 Cliente desktop por SSE, seleção de modelo nas Preferências, indicadores e
@@ -12,9 +22,10 @@ Windows 10/Athlon continuam exigindo avaliação real; não há Release publicad
 
 ## NOW Brain API — desenvolvimento V5
 
-API local independente em `/api/now/v1`, com inventário, chat, SSE e cancelamento.
+API local própria em `/api/now/v1`, com inventário, chat, SSE e cancelamento.
 A GUI usa v1 por padrão e mantém rollback compatível para `/v2`. [Instalação, contrato e validação real no Windows](docs/NOW_BRAIN_API_V1.md).
-A inferência na nuvem continua bloqueada; a API não foi aprovada como serviço público ou multiusuário.
+A avaliação de inferência neste ambiente de desenvolvimento continua bloqueada;
+a API não foi aprovada como serviço público ou multiusuário.
 
 ## Baixar para Windows — Fase 6
 
@@ -58,23 +69,40 @@ A abertura padrão é temporária, sem criar bancos. “Ativar histórico” exi
 
 Preferências são um cofre separado no NOW Memory: idioma, personalidade, humor, extensão e nome. Aplicar configurações vale somente para a sessão; guardar/carregar exige ação e senha explícitas. Microfone, tela, execução de programas e processamento remoto não são autorizados por essas preferências.
 
-## Modelo local
+## Modelo local — caminho compatível atual
 
-Instale o Ollama de [sua página oficial](https://ollama.com/download), inicie-o localmente e execute:
+O candidato Windows atual usa Ollama. Ele não é requisito definitivo da
+arquitetura futura. Se já possui modelos instalados, escolha-os em
+**Preferências** sem configurar variáveis de ambiente. Para instalar um modelo
+nesse caminho compatível, use o Ollama de
+[sua página oficial](https://ollama.com/download), inicie-o localmente e execute:
 
 ```powershell
 ollama pull qwen2.5:0.5b
 ollama list
-$env:OLLAMA_MODEL = 'qwen2.5:0.5b'
 ```
 
-Reabra a NOW Assistant após configurar o ambiente. Perguntas livres usam `/api/chat` do Ollama local com contexto limitado da conversa. Essa integração tem código e tratamento real de indisponibilidade; **as oito gerações Qwen ainda não foram executadas**, pois `registry.ollama.ai` continua bloqueado nesta máquina. Não há fallback comercial na interface nova.
+Selecione o modelo nas Preferências. Perguntas livres chegam à NOW Brain API,
+que hoje usa `/api/chat` do Ollama local com contexto limitado da conversa.
+Essa integração tem código e tratamento de indisponibilidade; inferência real
+dos Qwen continua pendente nesta nuvem, sem pesos disponíveis. Não há fallback
+comercial na interface nova. [Avaliação de 20 casos no Windows](docs/PHASE6_WINDOWS.md).
 
 ## Validação e limites desta entrega
 
-Distribuição pelo GitHub: [pipeline Windows, candidatos e aprovação manual](docs/GITHUB_DISTRIBUTION.md). Versão preparada `0.3.0-alpha.1`; CI e preparo de candidato não publicam Releases. O [run anterior de diagnóstico](https://github.com/Gabomgames/Now-assistant/actions/runs/43950853793) passou com EXE, Engine, seis comandos offline e ZIP verificado, antes da chegada da logo. A marca oficial agora está em `assets/branding`, e o novo candidato exige execução própria do workflow Alpha. Python/Qt acompanham o pacote; Ollama/modelos são separados.
+Distribuição pelo GitHub: [pipeline Windows, candidatos e aprovação manual](docs/GITHUB_DISTRIBUTION.md).
+O candidato atual é `0.3.0-alpha.2`, fonte `dec9540`, run Alpha `44186126526`.
+CI e preparo de candidato não publicam Releases. Python/Qt acompanham o pacote;
+o runtime de inferência e os pesos continuam separados.
 
-GUI, API autenticada e armazenamento foram executados em **Linux com Qt offscreen** e **Windows Server 2022 no GitHub Actions**. Com a logo oficial, são 98 casos: 98 aprovados em Linux; 97 aprovados e um POSIX não aplicável em Windows. O [run com a marca oficial](https://github.com/Gabomgames/Now-assistant/actions/runs/43961691647) abriu o EXE e verificou GUI/ícone e seis comandos offline. Esse é um diagnóstico de CI; o workflow Alpha ainda depende de disparo autorizado. [VALIDACAO.md](VALIDACAO.md) contém resultados e escopo. Para repetir toda a suíte, incluindo treinamento:
+GUI, API autenticada e armazenamento foram executados em **Linux com Qt offscreen**
+e **Windows Server 2022 no GitHub Actions**. A Fase 6 registrou 139 casos:
+139 aprovados em Linux; 138 aprovados e um POSIX não aplicável em Windows.
+EXE, logo, GUI/Engine v1 e avaliador empacotado passaram. Fixtures de protocolo e
+utilitário sem modelo não são inferência. [VALIDACAO.md](VALIDACAO.md) contém
+resultados, hashes e limitações. A revisão de arquitetura posterior executou
+somente os 19 testes do pipeline de dados e dry-run, sem treino. Para repetir
+toda a suíte, incluindo os testes de preparação de treinamento:
 
 ```powershell
 .\.venv-desktop\Scripts\python.exe -m unittest discover -v
@@ -82,7 +110,12 @@ GUI, API autenticada e armazenamento foram executados em **Linux com Qt offscree
 
 O PNG original recebido em ZIP está intacto em [assets/branding/original.png](assets/branding/original.png), com SHA-256 no [manifest](assets/branding/manifest.json) e comprovante em [PROVENANCE.json](assets/branding/PROVENANCE.json). A interface usa a imagem oficial; o ícone da janela e do EXE usa ICO com oito resoluções. A marca não foi redesenhada, recortada ou convertida em vetor.
 
-O [build Windows GUI](tools/build_desktop_windows.py) exige Windows real e logo oficial para gerar um candidato publicável. O CI gerou/testou um **EXE de diagnóstico não publicável**, sem logo substituta. Windows 10/hardware alvo e a Alpha com identidade oficial ainda precisam de validação; APK não foi construído. Microfone, STT/TTS audíveis, wake word, bandeja, inicialização automática, visão, sincronização e NOW Cloud são próximas fases.
+O [build Windows GUI](tools/build_desktop_windows.py) exige Windows real e logo
+oficial. O candidato Alpha acima foi gerado/testado com essa identidade, sem
+assinatura Authenticode. Windows 10/hardware alvo e qualidade de inferência
+continuam pendentes; APK não foi construído. Microfone, STT/TTS audíveis, wake
+word, bandeja, inicialização automática, visão, sincronização e hospedagem são
+fases futuras; a independência e a qualidade da NOW Brain têm prioridade.
 
 ## Compatibilidade e continuação
 

@@ -1,0 +1,24 @@
+test_duplicate_prompt_rejected (test_dataset.DataTests.test_duplicate_prompt_rejected) ... ok
+test_empty_rejected (test_dataset.DataTests.test_empty_rejected) ... ok
+test_eval_has_unique_ids (test_dataset.DataTests.test_eval_has_unique_ids) ... ok
+test_original_seed_valid (test_dataset.DataTests.test_original_seed_valid) ... ok
+test_cloud_tag_is_rejected (test_pipeline.PreparationTests.test_cloud_tag_is_rejected) ... ok
+test_evaluation_dry_run_has_no_model_calls_and_no_quality_claim (test_pipeline.PreparationTests.test_evaluation_dry_run_has_no_model_calls_and_no_quality_claim) ... ok
+test_existing_evaluation_output_is_not_overwritten_or_queried (test_pipeline.PreparationTests.test_existing_evaluation_output_is_not_overwritten_or_queried) ... ok
+test_output_history_is_protected (test_pipeline.PreparationTests.test_output_history_is_protected) ... ok
+test_provenance_checksum_mismatch_is_not_accepted (test_pipeline.PreparationTests.test_provenance_checksum_mismatch_is_not_accepted) ... ok
+test_real_training_is_refused_for_pilot_before_gpu_imports (test_pipeline.PreparationTests.test_real_training_is_refused_for_pilot_before_gpu_imports) ... ok
+test_seed_provenance_is_bound_to_original_data_and_unapproved (test_pipeline.PreparationTests.test_seed_provenance_is_bound_to_original_data_and_unapproved) ... ok
+test_training_dry_run_is_offline_and_does_not_import_gpu_libraries (test_pipeline.PreparationTests.test_training_dry_run_is_offline_and_does_not_import_gpu_libraries) ... ok
+test_duplicate_eval_ids_are_rejected (test_pipeline.ValidationTests.test_duplicate_eval_ids_are_rejected) ... ok
+test_invalid_eval_language_is_rejected (test_pipeline.ValidationTests.test_invalid_eval_language_is_rejected) ... ok
+test_malformed_json_is_reported (test_pipeline.ValidationTests.test_malformed_json_is_reported) ... ok
+test_train_eval_and_validation_leakage_is_rejected (test_pipeline.ValidationTests.test_train_eval_and_validation_leakage_is_rejected) ... ok
+test_unicode_case_whitespace_and_punctuation_duplicates (test_pipeline.ValidationTests.test_unicode_case_whitespace_and_punctuation_duplicates) ... ok
+test_unreadable_utf8_is_a_validation_error (test_pipeline.ValidationTests.test_unreadable_utf8_is_a_validation_error) ... ok
+test_wrong_role_and_oversized_message_are_rejected (test_pipeline.ValidationTests.test_wrong_role_and_oversized_message_are_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.016s
+
+OK

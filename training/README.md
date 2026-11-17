@@ -1,4 +1,10 @@
-# NOW AI — preparação de treinamento e avaliação Qwen
+# NOW Training Lab — preparação experimental
+
+A direção atual é independente de Ollama. A
+[arquitetura proposta](../docs/NOW_BRAIN_PLATFORM_ARCHITECTURE.md) apresenta
+hardware, custos estimados e aprovações antes de qualquer treino. Este diretório
+é a base experimental, não um laboratório GPU validado. O avaliador Ollama abaixo
+é compatibilidade existente; futuros backends não devem depender dele.
 
 Este módulo é aditivo à NOW AI 0.2. Os nove arquivos originais da aplicação e os quatro testes recebidos no kit foram preservados. Os scripts do kit foram adaptados para validar separação de dados, proteger relatórios e bloquear treinamento prematuro. Não há pesos treinados ou modelo baixado neste módulo.
 
@@ -71,14 +77,22 @@ py -3.12 -m venv training\.venv
 
 Antes de qualquer execução real:
 
-1. Concluir revisão de dados, licença e permissão; registrar license, rights_basis, reviewed_by, reviewed_at e approved_for_training no manifesto correspondente ao checksum exato.
-2. Preparar treino e validação sem sobreposição, preservando os 12 casos de teste independentes.
-3. Fazer avaliação baseline real e revisão manual; conferir licença dos pesos e capacidade da GPU.
-4. Verificar a API das versões instaladas de Transformers/TRL/PEFT e registrar um lockfile daquele ambiente. Os ranges do kit são experimentais e não foram instalados/testados em GPU.
-5. Escolher uma pasta de saída nova e testar --dry-run com os caminhos reais.
+1. Obter aprovação humana para o experimento exato: modelo/revisão, hashes dos
+   datasets, configuração/código, hardware, horas e teto de custo. A aprovação
+   de procedência sozinha não autoriza treino. O script atual ainda não aplica
+   esse gate por execução; não iniciar treino antes de implementá-lo e revisá-lo.
+2. Concluir revisão de dados, licença e permissão; registrar license, rights_basis, reviewed_by, reviewed_at e approved_for_training no manifesto correspondente ao checksum exato.
+3. Preparar treino e validação sem sobreposição, preservando os 12 casos de teste independentes.
+4. Fazer avaliação baseline real e revisão manual; conferir licença dos pesos e capacidade da GPU.
+5. Verificar a API das versões instaladas de Transformers/TRL/PEFT e registrar um lockfile daquele ambiente. Os ranges do kit são experimentais e não foram instalados/testados em GPU.
+6. Escolher uma pasta de saída nova e testar --dry-run com os caminhos reais.
 
 O script aceita --dataset, --validation-dataset, --provenance e --output. O padrão local_files_only evita download implícito de pesos. --allow-model-download só deve ser usado quando o download normal estiver permitido pela política de rede; essa opção não contorna restrições.
 
-Treino bem-sucedido salvaria um adaptador LoRA, tokenizer e plano de execução. Ainda seriam necessários avaliação independente, comparação com baseline, merge/export compatível e validação no Ollama/NOW Engine. Nada disso foi executado nesta entrega.
+Treino bem-sucedido salvaria um adaptador LoRA, tokenizer e plano de execução.
+Ainda seriam necessários avaliação independente, comparação com baseline,
+aprovação separada de promoção/implantação, export compatível e validação no
+runtime de destino e na NOW Brain API. Ollama não é destino obrigatório. Nada
+disso foi executado nesta entrega; QLoRA e gates comerciais não estão implementados.
 
 Memória persistente, voz e controle de ferramentas são implementações de software separadas; fine-tuning não as cria. Próximas fases: ../docs/MODEL_ROADMAP.md. Retomada no ambiente: ../docs/NEXT_TASK.md.

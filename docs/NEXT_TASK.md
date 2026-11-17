@@ -1,5 +1,37 @@
 # Continuar em uma nova tarefa Codex
 
+## Direção atual — plataforma própria, 17/11/2026
+
+A solicitação mais recente substitui Ollama como destino obrigatório por uma
+plataforma independente. Ler primeiro
+`docs/NOW_BRAIN_PLATFORM_ARCHITECTURE.md`, `docs/MODEL_ROADMAP.md` e
+`docs/DATA_POLICY.md`. Arquitetura, hardware e custos foram preparados para
+revisão; treinamento e hospedagem não estão autorizados por essa proposta.
+Usar o HEAD mais recente de `work`, preservando o candidato Fase 6 abaixo.
+
+Próximo incremento: catálogo/adaptadores neutros e inferência direta com pesos
+abertos via llama.cpp; vLLM como opção de servidor próprio. Hoje API, contratos
+e GUI ainda fixam Ollama em pontos auditados. Preservar esse caminho como
+compatibilidade e rollback; não afirmar que novos runtimes já foram testados.
+A avaliação dos 20 casos e das tags instaladas continua necessária, sem impedir
+a preparação da independência solicitada na nova direção.
+
+NOW Dataset/Training Lab: 36 exemplos sem licença/aprovação, 12 casos de teste;
+19 testes do pipeline aprovados nesta revisão e dry-run sem treino/GPU.
+Evidência: `validation/platform-direction-20261117/audit.json`. Antes de alterar
+pesos, implementar controles por execução e obter aprovação do dataset,
+modelo-base, manifesto do experimento e orçamento. Aprovação para promover ou
+implantar é separada. Não usar chats/memória/saídas GPT ou Gemini no treino sem
+as autorizações e direitos específicos; memória armazenada não é aprendizado
+dos pesos. Preços cloud não puderam ser consultados (CONNECT 403); números da
+proposta são premissas orçamentárias, não cotações.
+
+Nenhum runtime, modelo, cofre, teste, workflow ou build Windows foi modificado
+nesta revisão documental; nenhum treino, provisionamento ou deploy foi executado.
+As seções abaixo preservam os resultados anteriores, não prevalecem sobre essa
+direção mais recente. Release/deploy/Something Gamer continuam exigindo
+autorização explícita.
+
 ## Estado atual — Fase 6 / Brain na interface
 
 Código Fase 6 em `dec954030215a262ac2f77bcfebffa4b846fafed`, `work`; usar o HEAD

@@ -1,0 +1,20 @@
+{
+  "mode": "DRY_RUN",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "train_records": 36,
+  "validation_records": 0,
+  "held_out_cases": 12,
+  "validation_dataset": null,
+  "dataset": "/workspace/Now-assistant/training/data/now_seed.jsonl",
+  "output": "/workspace/Now-assistant/training/runs/now-lora-experiment",
+  "local_files_only": true,
+  "errors": [],
+  "training_blockers": [
+    "a separate reviewed validation dataset is required",
+    "pilot dataset has fewer than 100 examples; expand and review it first (100 is not a quality guarantee)",
+    "dataset rights/provenance review has not approved this exact dataset"
+  ],
+  "training_executed": false,
+  "gpu_dependencies_checked": false,
+  "note": "No model is loaded by this planning step. Real training additionally requires reviewed model licensing, a baseline evaluation and a compatible CUDA environment."
+}
