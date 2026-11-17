@@ -1,5 +1,31 @@
 # Continuar em uma nova tarefa Codex
 
+## Continuação prioritária — NOW Brain API V5, 17/11/2026
+
+Implementação local independente em `e015f349d58ac0c125338e2761ba7b9965c05bf3`
+na `work`, sem recriar projeto, alterar SG ou publicar release. Use o HEAD mais
+recente sem resetar. As notas Alpha abaixo são históricas e não aprovam o código
+V5. Ler primeiro `docs/NOW_BRAIN_API_V1.md` e a seção V5 de `VALIDACAO.md`.
+
+API `/api/now/v1`, OpenAPI protegida, modelos locais observados, chat JSON/SSE,
+cancelamento/desconexão e limites estão implementados. GUI mantém `/v2`, cofres e
+marca; ela ainda não usa SSE novo. Linux: 129 testes aprovados, zero skips/falhas,
+GUI/Engine offline reais e execução mínima da API sem Qt. Fixtures de protocolo
+não são inferência. Registro/downloads Ollama retornam CONNECT 403 nesta nuvem.
+
+Próximo gate: executar `tools/validate_brain_api.py` no Windows 10 com os Qwen
+0.5B/1.5B já instalados, 20 casos por modelo e licença/quantização/digest/timing
+observados. Não publicar relatórios privados, não baixar pesos por vias não
+autorizadas e não promover modelo antes da revisão de qualidade. Não reaproveitar
+respostas de GPT/Gemini para treinamento. A avaliação cloud está BLOCKED/0
+respostas/NOT_SCORED; o wrapper PowerShell e Windows ainda não foram executados.
+
+Depois dos resultados reais, escolher o próximo incremento de qualidade e
+migração da GUI para SSE. Multiusuário/infraestrutura SG, memória de fatos,
+voz/visão/ações seguem fora deste primeiro incremento. Autorizações de release
+e produção continuam ausentes; não usar a existência da API como permissão.
+
+
 ## Ponto atual — candidato Alpha Windows disponível
 
 **Prepare Windows Alpha [43969485511](https://github.com/Gabomgames/Now-assistant/actions/runs/43969485511)** concluiu Success; fonte **`cb5204041907139a8fb862e7ff6a557dec53df24`**, branch work. Usar HEAD mais recente sem resetar: commits posteriores de relatório não alteram o código desse build. Windows Server 2022/Python 3.12.10: **102 casos, 101 aprovados, um POSIX não aplicável**, zero falhas/erros. EXE PyInstaller abriu Qt `windows`, logo/ICO, Engine própria e seis comandos offline PT-BR/EN reais. ZIP/CRC/SHA/inventário/licenças/inspeção de arquivos privados passaram no runner.

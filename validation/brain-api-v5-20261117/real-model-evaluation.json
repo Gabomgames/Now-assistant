@@ -1,0 +1,221 @@
+{
+  "schema": "now-brain-api-evaluation-v1",
+  "started_at_utc": "2026-11-17T19:33:01.849664+00:00",
+  "source_sha": "e015f349d58ac0c125338e2761ba7b9965c05bf3",
+  "source_dirty": false,
+  "files_sha256": {
+    "now_brain/__init__.py": "e64afff967a9394d2bf7e0190890e2cf96aaab37336724dd628c5b463c0c22be",
+    "now_brain/__main__.py": "0b400df5deb1b9d294652c129836e83703a26f6fb499f4013c9f0834b9ae27e8",
+    "now_brain/api.py": "48a32e624c435759374fd8049f5c553740a889f4bec6da8a4df134c1eb923e3e",
+    "now_brain/client.py": "da62921ab38488bef4357dcf3f2b4ff5c103f2817a6d5862af162fb1adb13557",
+    "now_brain/contracts.py": "9e1101d2dd989e9af8d5b1910459e068f6c0302b0b278bbafa558127557a14ab",
+    "now_brain/orchestrator.py": "a4bc570d14dbc6344b7c1051bba3242d2518bf80c444be90d33579b6f49c607f",
+    "now_brain/provider.py": "7cf5b563fc742c516ffb8043d1d2440b522f6581706ac26089e497225ef22b04",
+    "now_brain/runtime.py": "ee0cfab84546e93577dbe5934335549f35dedbf90f90a0835dbab64bcdb5f564",
+    "now_engine/assistant.py": "cfc3d267ced0659befa251150a2f5a70d328e31f3955710a2be5bd18ae131f5a",
+    "now_engine/security.py": "1883fbe2b72b074cbb39ef75bdfaf126071025811809970c86e156b2ebe7bbd9",
+    "validation/brain-v5-cases.json": "86a5f5cdaeb55fb065b46ea3a2dce8046e316b1742425d80674874a1c546a7be",
+    "tools/validate_brain_api.py": "366c4d2b8e94fc36e7e136c58908c569a15643831e98cf786dcc3767a0e13659"
+  },
+  "system": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "cpu_count": 5,
+  "status": "BLOCKED",
+  "quality": "NOT_SCORED",
+  "inference_executed": false,
+  "training_or_upload_executed": false,
+  "cases_sha256": "86a5f5cdaeb55fb065b46ea3a2dce8046e316b1742425d80674874a1c546a7be",
+  "models": [
+    {
+      "model_id": "qwen2.5:0.5b",
+      "status": "NOT_RUN",
+      "generated": 0,
+      "cases": [
+        {
+          "id": "context-1",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "context-2",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "context-3",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "context-4",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "context-5",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "minecraft",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "casual-pt",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "casual-en",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "short",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "balanced",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "detailed",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "programming",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "physics",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "ambiguity",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "memory",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "permissions",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "uncertainty",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "refusal",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "reasoning",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "authorized-preference",
+          "status": "NOT_RUN"
+        }
+      ]
+    },
+    {
+      "model_id": "qwen2.5:1.5b",
+      "status": "NOT_RUN",
+      "generated": 0,
+      "cases": [
+        {
+          "id": "context-1",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "context-2",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "context-3",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "context-4",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "context-5",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "minecraft",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "casual-pt",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "casual-en",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "short",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "balanced",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "detailed",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "programming",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "physics",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "ambiguity",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "memory",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "permissions",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "uncertainty",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "refusal",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "reasoning",
+          "status": "NOT_RUN"
+        },
+        {
+          "id": "authorized-preference",
+          "status": "NOT_RUN"
+        }
+      ]
+    }
+  ],
+  "measurement_limits": "Single-client end-to-end local API wall times; Ollama-reported token timing. No GPU, model RAM, FPS, multi-user or SLO claim.",
+  "health": {
+    "api_version": "1.0",
+    "live": true,
+    "ready": false,
+    "instance_id": "lvA1esYMw13eizbjALUtsaiH7NquDDGJ",
+    "profile": "local",
+    "provider_status": "unavailable"
+  },
+  "offline_api_latency": {
+    "samples": 10,
+    "p50_ms": 8.691,
+    "p95_ms": 15.638,
+    "p99_ms": 15.638
+  },
+  "blocker": "unavailable",
+  "completed_at_utc": "2026-11-17T19:33:02.710093+00:00"
+}

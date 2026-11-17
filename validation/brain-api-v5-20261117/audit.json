@@ -1,0 +1,103 @@
+{
+  "schema": "now-brain-v5-audit-v1",
+  "implementation_commit": "e015f349d58ac0c125338e2761ba7b9965c05bf3",
+  "initial_git": {
+    "branch": "work",
+    "head": "e80fb8a25d9f4b40c480cdb072880ae3d6f561df",
+    "clean": true,
+    "remote_work": "32220c92d22c7eba13f81fb7c1ef47b3b9d54fba",
+    "local_unpushed_commits_verified": [
+      "201fe4cab058bf7e7da41523b47404ba7c02c76f",
+      "e80fb8a25d9f4b40c480cdb072880ae3d6f561df"
+    ]
+  },
+  "specification": {
+    "filename": "NOW_BRAIN_API_SUPERPROMPT_ENTERPRISE_V5.txt",
+    "sha256": "64bd4932b7ec33deff28b003d2351610ac7f96ddfc84df172298d6cede1cb118",
+    "bytes": 29111,
+    "read_completely_before_edits": true
+  },
+  "implementation_files": [
+    ".gitignore",
+    "README.md",
+    "docs/NOW_BRAIN_API_V1.md",
+    "now_brain/__init__.py",
+    "now_brain/__main__.py",
+    "now_brain/api.py",
+    "now_brain/client.py",
+    "now_brain/contracts.py",
+    "now_brain/orchestrator.py",
+    "now_brain/provider.py",
+    "now_brain/runtime.py",
+    "now_engine/desktop_api.py",
+    "now_engine/security.py",
+    "requirements-brain.txt",
+    "tests/test_brain_api_v1.py",
+    "tests/test_brain_v1_validator.py",
+    "tools/validate_brain_api.py",
+    "tools/validate_brain_windows.ps1",
+    "validation/brain-v5-cases.json"
+  ],
+  "preserved_unchanged": [
+    "assets/branding",
+    "now_history",
+    "now_memory",
+    "now_voice",
+    ".github",
+    "requirements-desktop.txt",
+    "packaging"
+  ],
+  "logo_original_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+  "environment": "Linux / Python 3.12.14; standalone venv installed from requirements-brain.txt",
+  "baseline": {
+    "passed": 112,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 26.044
+  },
+  "implementation_suite": {
+    "passed": 129,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 30.208,
+    "new_tests": 17
+  },
+  "test_scope": {
+    "protocol_integration": "Real Uvicorn/HTTP/SSE/sockets against explicitly synthetic Ollama NDJSON fixture; not inference. Cancellation and disconnect verified by upstream socket closure.",
+    "desktop": "Actual Qt offscreen + owned authenticated Engine, six deterministic offline commands; no model replies.",
+    "standalone": "Installed/started in minimal venv without Qt, cryptography or proprietary SDK; pip check passed.",
+    "model_evaluation": "Real API/Ollama preflight; BLOCKED exit 2; zero generations; 20 NOT_RUN cases for each of two requested models.",
+    "windows_validator": "Python CLI executed on Linux blocked path; PowerShell wrapper and Windows 10 execution NOT_RUN. No pwsh or Windows host available."
+  },
+  "network": {
+    "observed_at_utc": "2026-11-17T19:10:41Z",
+    "runtime_mode": "restricted/enforced",
+    "custom_allowed_hosts": [],
+    "checks": [
+      {
+        "url": "https://registry.ollama.ai/v2/library/qwen2.5/manifests/1.5b",
+        "result": "CONNECT tunnel failed, response 403"
+      },
+      {
+        "url": "https://ollama.com/download/ollama-linux-amd64.tar.zst",
+        "result": "CONNECT tunnel failed, response 403"
+      }
+    ],
+    "ollama_executable_present": false,
+    "bypass_attempted": false
+  },
+  "performance_scope": "10 deterministic API samples taken during source suite/GUI validation on this Linux host. Not isolated inference, Athlon performance, throughput under load or SLO.",
+  "public_server_or_tenant_support": false,
+  "gui_migrated_to_sse": false,
+  "new_persistent_memory": false,
+  "training_executed": false,
+  "commercial_ai_used": false,
+  "sg_modified": false,
+  "release_or_production_deploy_executed": false,
+  "remaining_gates": [
+    "Run Windows validator with installed models and review real responses/licensing",
+    "Measure CPU/RAM/FPS and real model latency on Windows 10 Athlon/8 GB",
+    "Migrate GUI to v1 SSE with regression tests in a later increment",
+    "Remote auth, tenants and distributed quotas before any public API"
+  ]
+}

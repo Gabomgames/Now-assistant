@@ -1,5 +1,79 @@
 # NOW Assistant — validação incremental
 
+## NOW Brain API V5 — primeiro incremento local — 17/11/2026
+
+**Código executável:** `e015f349d58ac0c125338e2761ba7b9965c05bf3`, branch `work`.
+Baseline auditada `e80fb8a25d9f4b40c480cdb072880ae3d6f561df`, árvore limpa;
+`201fe4cab058bf7e7da41523b47404ba7c02c76f` e `e80fb8a…` existiam somente
+localmente naquele momento. `git ls-remote origin refs/heads/work` confirmou a
+referência remota inicial `32220c92d22c7eba13f81fb7c1ef47b3b9d54fba`.
+O anexo `NOW_BRAIN_API_SUPERPROMPT_ENTERPRISE_V5.txt` foi lido integralmente antes
+das alterações; hash e inventário de arquivos estão no relatório de auditoria.
+
+A API nova é independente de Qt, dos bancos e de SDKs comerciais. Implementa
+`/api/now/v1/{health,capabilities,models,chat,chat/stream,chat/cancel,openapi.json}`,
+autenticação de processo, schemas estritos, seleção de tag local observada,
+contexto/persona, extensões de 192/512/1024 tokens, SSE incremental, fechamento
+do socket upstream ao cancelar/desconectar, limite de uma geração, quota local
+e métricas sem conteúdo privado. Não é um NOW Server público/multiusuário.
+A GUI continua no `/v2`; seu contrato foi preservado. Foi extraído somente o
+middleware compartilhado de autenticação/limite de corpo, com formato legado
+mantido por default. Novas rotas não acessam cofres nem executam ferramentas.
+
+| Item | Estado e evidência observada |
+| --- | --- |
+| Auditoria/base Linux/Python 3.12.14 | **112 testes aprovados em 26,044 s**, sem falhas/erros/skips. |
+| Suíte no commit de código acima, árvore limpa | **129 aprovados em 30,208 s**, sem falhas/erros/skips; preserva os 112 anteriores. |
+| 17 novos testes | **12 integrações HTTP/SSE/socket reais** com fixture Ollama explícita e cinco testes de cliente/validador/casos. Não são inferência de modelo. |
+| Streaming/cancelamento | Deltas, UTF-8, truncamento, EOF quebrado, timeout e saída inválida testados; cancelamento autenticado e desconexão em JSON/SSE fecham upstream e liberam slot. Não foi medida liberação de CPU/GPU pelo Ollama real. |
+| API mínima independente | Instalada e iniciada em `.venv-brain`, sem Qt/cryptography/google; `pip check` passou. OpenAPI protegida e erros sem echo de inputs testados. |
+| Modelo ausente/segurança | HTTP 503 sem reply fabricado; inventário remoto/cloud recusado, URL externa recusada, Origin/Host/token/payload/esquema/quota testados. |
+| GUI legada | Qt offscreen e HTTP autenticado reais; seis comandos offline PT-BR/EN, marca/ícone oficiais e nenhuma base privada criada no smoke. |
+| Marca/dados/distribuição | `assets/branding`, `now_history`, `now_memory`, `now_voice`, `.github`, `packaging` e dependências desktop sem alterações contra a base. |
+| Inferência real na nuvem | **BLOQUEADA**, exit 2: Ollama ausente; CONNECT 403 no registro e download oficiais. **Zero gerações; 20 casos NOT_RUN para cada uma das tags 0.5B e 1.5B.** |
+| Validador Windows | Entregue Python executável + wrapper PowerShell, sem download/treino/upload; o caminho bloqueado foi executado no Linux. **Windows/PowerShell/qualidade real ainda NOT_RUN.** |
+
+**Métricas disponíveis:** 10 amostras do chat explicitamente **determinístico**
+da API independente: p50 **8,691 ms**, p95/p99 **15,638 ms** (nearest-rank).
+Amostragem executada junto da suíte/GUI nesta máquina Linux, sem isolamento de
+carga. Não é latência de inferência, benchmark do Athlon, throughput ou SLO.
+Tokens/s, TTFT de modelo, uso de RAM/CPU/VRAM e FPS do Windows não foram medidos.
+Qualidade permanece **NOT_SCORED**; nenhuma conversa gerada pode ser apresentada
+como exemplo aprovado. Resultados do usuário sobre Qwen não foram tratados como
+execuções desta instância.
+
+**Arquivos/justificativas:** `now_brain/` separa contratos, transporte Ollama,
+orquestração, API, cliente e ciclo de vida; `now_engine/security.py` evita duplicar
+o guard legado; `requirements-brain.txt` permite instalação mínima; testes novos
+cobrem contratos/erros/streaming; `validation/brain-v5-cases.json` e
+`tools/validate_brain_api.py` executam a avaliação real comparável;
+`tools/validate_brain_windows.ps1` facilita a execução local; `.gitignore` ignora
+apenas o venv novo. README/guia documentam comandos, contrato e limitações.
+Lista completa dos 19 arquivos da implementação em `audit.json`.
+
+Evidências em [brain-api-v5-20261117](validation/brain-api-v5-20261117/audit.json):
+relatórios base/final, log da suíte, OpenAPI obtida por HTTP, avaliação real
+bloqueada e captura/relatório do desktop. Os hashes de arquivos no relatório de
+avaliação identificam o código executado. O snapshot de evidência é do commit de
+implementação acima; o commit posterior altera somente relatórios/documentação.
+
+**Próxima ação útil:** no Windows com Ollama já ativo e as tags instaladas, seguir
+[guia executável](docs/NOW_BRAIN_API_V1.md) e comparar as respostas reais. O
+validador abre/fecha somente sua API filha, usa prompts sintéticos de avaliação,
+registra tag/digest/quantização/licença e mede TTFT/latência/tokens/s observados.
+Não instala modelos, não toca no serviço do usuário, não lê cofres e não envia
+relatórios. Saída 0 ainda requer revisão humana de correção/naturalidade; não
+aprova licença ou qualidade automaticamente.
+
+**Limites/gates:** perfil local funcional/testado no escopo de protocolo;
+inferência comercialmente aceitável ainda não aprovada. Migração visual da GUI
+para SSE, memória de fatos consentida, RAG, providers próprios remotos, tenants,
+OIDC, quotas distribuídas, carga e Windows 10/8 GB são incrementos posteriores.
+Sem treinamento, uso comercial de GPT/Gemini, alteração SG, release ou deploy.
+Rollback por reversão dos commits V5; nenhum banco exige migração. As evidências
+Windows Alpha anteriores abaixo mantêm seu SHA/escopo; não validam este código.
+
+
 ## NOW Brain V4 — incremento 1, aceite generativo BLOQUEADO — 17/11/2026
 
 Ambiente operacional, checkout `Gabomgames/Now-assistant`, branch `work`, base
