@@ -7,8 +7,9 @@ Não há publicação de Release, treinamento ou envio automático de relatório
 
 ## Abrir e escolher modelo sem variáveis de ambiente
 
-1. Baixe o artifact **Prepare Windows Alpha** indicado em `VALIDACAO.md` e extraia
-   a pasta inteira do ZIP. Mantenha `_internal` junto de `NOW-Assistant.exe`.
+1. Baixe o artifact **Prepare Windows Alpha** indicado em `VALIDACAO.md` e
+   extraia-o. Dentro dele, extraia o ZIP `NOW-Assistant-0.3.0-alpha.2-Windows-x64.zip`
+   inteiro numa pasta nova de caminho curto. Mantenha `_internal` junto do EXE.
 2. Com o Ollama já ativo, abra `NOW-Assistant.exe`, depois **Preferências**.
 3. Em **Modelo local**, escolha `qwen2.5:0.5b` ou `qwen2.5:1.5b` se aparecerem.
    **Verificar modelo** consulta o inventário real e filtra entradas cloud/remotas.

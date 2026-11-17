@@ -16,7 +16,19 @@ API local independente em `/api/now/v1`, com inventário, chat, SSE e cancelamen
 A GUI usa v1 por padrão e mantém rollback compatível para `/v2`. [Instalação, contrato e validação real no Windows](docs/NOW_BRAIN_API_V1.md).
 A inferência na nuvem continua bloqueada; a API não foi aprovada como serviço público ou multiusuário.
 
-## Baixar para Windows
+## Baixar para Windows — Fase 6
+
+Candidato **0.3.0-alpha.2** disponível no [build Alpha 44186126526](https://github.com/Gabomgames/Now-assistant/actions/runs/44186126526#artifacts),
+artifact de **51,1 MB** com fonte `dec9540`. Baixe o artifact, extraia-o e depois
+extraia todo o ZIP `NOW-Assistant-0.3.0-alpha.2-Windows-x64.zip` em uma pasta nova.
+Abra `NOW-Assistant.exe`, mantendo `_internal`. Não precisa instalar Python.
+
+Em **Preferências**, selecione o modelo local instalado. `Avaliar-Modelos.cmd`
+compara os modelos com 20 casos por tag e salva relatório local. **Nenhuma GitHub
+Release foi publicada.** Qualidade Qwen e desempenho no Windows 10/Athlon ainda
+precisam da avaliação local. [Guia](docs/PHASE6_WINDOWS.md) e [evidências/hashes](VALIDACAO.md).
+
+### Candidato anterior — 0.3.0-alpha.1
 
 A versão **`0.3.0-alpha.1`** está disponível para revisão nos [Artifacts do build Windows 43969485511](https://github.com/Gabomgames/Now-assistant/actions/runs/43969485511#artifacts), aproximadamente 51 MB. Windows Server 2022/Python 3.12: 101 testes aprovados, um POSIX não aplicável, EXE/GUI/Engine e seis comandos offline reais aprovados. A logo oficial preserva bytes, cores, proporções e fundo preto. [Resultados, hashes e limitações](VALIDACAO.md). **Nenhuma GitHub Release foi publicada.** O download de artifacts pode exigir login no GitHub e tem retenção de 30 dias.
 

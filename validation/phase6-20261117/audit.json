@@ -1,0 +1,118 @@
+{
+  "schema": "now-phase6-audit-v1",
+  "implementation_commits": [
+    "952566c81de3e07934d07d53affadabd6cd2f680",
+    "78cacd42c5c5df2b415eb30a885f1c7af93cf135",
+    "9f05cc6c1283342f768015ad8f8831bde52f7a16",
+    "9a7ca83577ec66ffbc21be598ead3b564c527263",
+    "dec954030215a262ac2f77bcfebffa4b846fafed"
+  ],
+  "base_commit": "6501ffdf8191e4b880da263c92a5a83a5767842e",
+  "initial_branch": "work",
+  "initial_clean": true,
+  "initial_remote_equal_to_local": true,
+  "baseline": {
+    "passed": 129,
+    "skipped": 0,
+    "seconds": 30.399
+  },
+  "final_linux": {
+    "passed": 139,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 37.435
+  },
+  "preserved_unchanged": [
+    "assets/branding",
+    "now_memory",
+    "now_history",
+    "now_voice",
+    ".github",
+    "requirements-desktop.txt",
+    "packaging/desktop/requirements-build.txt"
+  ],
+  "logo_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+  "changed_files": [
+    "README.md",
+    "docs/PHASE6_WINDOWS.md",
+    "now_brain/api.py",
+    "now_desktop/__main__.py",
+    "now_desktop/client_config.py",
+    "now_desktop/dialogs.py",
+    "now_desktop/engine_client.py",
+    "now_desktop/evaluation.py",
+    "now_desktop/i18n.py",
+    "now_desktop/smoke.py",
+    "now_desktop/sse.py",
+    "now_desktop/version.py",
+    "now_desktop/window.py",
+    "now_engine/assistant.py",
+    "now_engine/desktop_api.py",
+    "packaging/releases/0.3.0-alpha.2.md",
+    "packaging/releases/INSTALL-WINDOWS.md",
+    "packaging/releases/alpha-request.json",
+    "tests/test_desktop_streaming.py",
+    "tools/ci_summary.py",
+    "tools/evaluate_brain.py",
+    "tools/validate_brain_api.py",
+    "tools/windows_build.py"
+  ],
+  "streaming_proof": "Real Qt + cohosted FastAPI + actual HTTP/socket fixture, not model inference. First text visible before done, heartbeat responsive, model choice and generation budget reached upstream; cancellation closed upstream.",
+  "gui_protocol": "v1 default; explicit /v2 rollback without process restart; selected model and protocol only in local client.json",
+  "memory_history": "Formats, crypto, paths and explicit consent unchanged; partial text remains outside completed/persisted assistant messages",
+  "model_evaluation": {
+    "status": "BLOCKED",
+    "inference_executed": false,
+    "models_requested": [
+      "qwen2.5:0.5b",
+      "qwen2.5:1.5b"
+    ],
+    "cases_not_run_per_model": 20,
+    "quality": "NOT_SCORED",
+    "reason": "No Ollama executable/service in cloud; official registry CONNECT 403 observed 2026-11-17T21:17:23Z"
+  },
+  "utility": "Source graphical self-check executed; deliberate absent tag, no inference. Frozen Windows self-check is recorded in CI observation separately.",
+  "initial_regression": {
+    "source_sha": "952566c81de3e07934d07d53affadabd6cd2f680",
+    "ci_run": "44181282842",
+    "failure": "Existing test_repeated_render_has_no_old_visible_messages_or_clipped_body: 23 < 38 wrapped height",
+    "resolution_commit": "78cacd42c5c5df2b415eb30a885f1c7af93cf135",
+    "fix": "WrappedBody enforces height-for-width on font/width/show changes; assertions preserved and resize regression added",
+    "superseded_alpha_run": "44181282870"
+  },
+  "release_or_deploy_executed": false,
+  "sg_modified": false,
+  "training_executed": false,
+  "private_conversations_collected": false,
+  "reports_uploaded_by_utility": false,
+  "final_code_commit": "dec954030215a262ac2f77bcfebffa4b846fafed",
+  "visual_review": {
+    "streaming": "Actual themed Qt screenshot against explicit protocol fixture; not Qwen.",
+    "utility": "Source screenshot inspected; missing dark background corrected and contrast >=4.5 test added.",
+    "model_status": "Recomputed from current catalog/selection while refresh is in flight."
+  },
+  "final_windows": {
+    "source_sha": "dec954030215a262ac2f77bcfebffa4b846fafed",
+    "alpha_run": "44186126526",
+    "ci_run": "44186126472",
+    "passed": 138,
+    "tests_run": 139,
+    "expected_posix_skip": 1,
+    "failed": 0,
+    "errors": 0,
+    "native_gui_and_engine": "passed",
+    "api_protocol": "v1",
+    "frozen_evaluator_self_check": "passed_unavailable_model_path",
+    "real_qwen_inference_executed": false
+  },
+  "superseded_alpha_runs": [
+    "44181282870",
+    "44182951800",
+    "44183679878",
+    "44184817429"
+  ],
+  "candidate_version": "0.3.0-alpha.2",
+  "artifact_name": "now-assistant-windows-0.3.0-alpha.2-dec954030215a262ac2f77bcfebffa4b846fafed-attempt-1",
+  "zip_sha256": "955c900c2baa46192270fdb791121cdaaeae6dc9c0a0dc6f7cffff9d3ecc19f1"
+}

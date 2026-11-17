@@ -1,5 +1,107 @@
 # NOW Assistant — validação incremental
 
+## Fase 6 — Brain na GUI / candidato 0.3.0-alpha.2 — 17/11/2026
+
+**Código:** `dec954030215a262ac2f77bcfebffa4b846fafed`, branch `work`, a partir de
+`6501ffdf8191e4b880da263c92a5a83a5767842e`, inicialmente limpa e igual ao remoto.
+A Engine própria agora serve v1 e mantém `/v2`; o desktop usa SSE v1 por padrão.
+Seleção/detecção real de modelos nas Preferências, extensões 192/512/1024,
+Casual PT-BR/EN, texto progressivo, TTFT observado, recepção em caracteres/s e
+velocidade final em tokens/s somente quando o Ollama fornece métricas reais.
+Nenhuma pergunta aberta usa silenciosamente o padrão enquanto a seleção/carregamento
+está pendente. O modelo/conexão escolhidos ficam num arquivo técnico local separado
+dos cofres; o formato de memória/histórico e o consentimento foram preservados.
+
+O texto parcial permanece apenas na janela e não vira mensagem completa no
+histórico. Finalização é validada; cancelamento, erro e EOF abrupto não geram
+resposta de sucesso. A janela atualiza a apresentação no máximo 20 vezes/s,
+sem recriar todos os widgets por delta. Cancelar solicita a parada e fecha o
+socket; a devolução efetiva de CPU/GPU pelo Ollama ainda exige medição com pesos.
+O rollback está nas Preferências ou em `Modo-Legado.cmd`, no mesmo processo.
+
+| Verificação | Resultado real |
+| --- | --- |
+| Baseline antes das alterações | Linux/Python 3.12.14: 129 aprovados em 30,399 s, sem falhas/erros/skips. |
+| Suíte no código acima, árvore limpa | **139 aprovados em 37,435 s**, sem falhas/erros/skips; testes anteriores preservados. |
+| Integração GUI/SSE | Qt, API cohosted e sockets reais contra fixture explícita: texto visível antes do fim, heartbeat da GUI ativo, modelo/orçamento enviados, contexto correlacionado, cancelamento fecha upstream, interrupção falha sem salvar parcial como completo e rollback v2 passa. **Não é inferência.** |
+| Renderização | Recalcula altura para largura/fonte sem cortar texto; teste anterior que falhou permanece intacto. Novo teste de redimensionamento e contraste mínimo 4,5 do utilitário passaram. |
+| Smoke da GUI | v1 confirmada, seis comandos offline PT-BR/EN, logo/ícone oficiais e nenhuma base criada na sessão temporária. |
+| Utilitário em código-fonte | Janela, API filha e worker executados; self-check usa tag deliberadamente ausente e produz relatório BLOCKED/sem gerações. Captura visual revisada. |
+| Windows nativo | **138 aprovados + um POSIX não aplicável (139 casos)**, zero falhas/erros, Python 3.12.10/Windows Server 2022. [Alpha 44186126526](https://github.com/Gabomgames/Now-assistant/actions/runs/44186126526) Success **3m29s**; [CI 44186126472](https://github.com/Gabomgames/Now-assistant/actions/runs/44186126472) Success **3m8s**. EXE/GUI/Engine/logo, v1 e utilitário empacotado passaram. |
+| Qwen 0.5B/1.5B na nuvem | **BLOCKED**, exit 2: Ollama ausente e CONNECT 403 no registro oficial. **0 gerações, 20 NOT_RUN por tag, qualidade NOT_SCORED.** |
+
+### Candidato Windows para baixar
+
+[Abrir Artifacts do build Alpha aprovado](https://github.com/Gabomgames/Now-assistant/actions/runs/44186126526#artifacts)
+e baixar **`now-assistant-windows-0.3.0-alpha.2-dec954030215a262ac2f77bcfebffa4b846fafed-attempt-1`**,
+**51,1 MB**. Pode exigir login GitHub. Extraia o artifact e depois o ZIP portátil
+`NOW-Assistant-0.3.0-alpha.2-Windows-x64.zip`, mantendo a pasta toda e `_internal`.
+SHA-256 observado do ZIP:
+`955c900c2baa46192270fdb791121cdaaeae6dc9c0a0dc6f7cffff9d3ecc19f1`.
+Digest do invólucro artifact:
+`eee31cdf0bfa10dc2bdf76c5c0b93c4ca73e3bdff67eb1ed6308e2c34fdbd052`.
+
+O runner confirmou `frozen_executable:true`, Qt `windows`, seis comandos offline
+pela v1, logo/ícone oficiais e `packaged_evaluator.frozen_executable:true` com
+self-check do caminho indisponível. `release_eligible:true` é resultado estrutural
+da preparação Alpha, **não** autorização de publicação; `release_published:false`
+e `model_inference_tested:false`. A requisição `publish_release:false` foi
+verificada por hash no commit e no Windows. Anotações/metadados observados na
+página pública do run estão em `windows-builds.json`; **ZIP/EXE/capturas Windows
+não foram baixados nem inspecionados localmente**. A inspeção visual local foi das
+capturas Qt/Linux, incluindo o utilitário com tema/contraste corrigidos.
+
+### Testar no Windows sem Python manual
+
+O ZIP do candidato inclui Python/Qt e o avaliador. Extraia a pasta inteira e
+mantenha `_internal`. Abra `NOW-Assistant.exe`, Preferências → escolha o modelo
+instalado e a extensão. Com o Ollama já ativo, perguntas livres usam o modelo
+selecionado, inclusive saudações. Comandos determinísticos seguem identificados
+separadamente. O programa não baixa pesos nem inicia/reinicia o Ollama.
+
+Dê dois cliques em **`Avaliar-Modelos.cmd`**. Selecione as tags detectadas e uma
+pasta de saída; o utilitário executa 20 prompts sintéticos por modelo, gera
+`report.html` legível e `evaluation.json` com respostas, tags/digest/quantização/
+licença observados e latências/TTFT/tokens/s disponíveis. Uma API própria é
+reutilizada durante toda a avaliação. Nada lê chats/cofres ou envia relatórios
+para GitHub. Parar/fechar encerra os processos próprios e marca a avaliação
+parcial. Nenhum vencedor nem aprovação de qualidade/licença é automático.
+Guia completo: [Fase 6 no Windows](docs/PHASE6_WINDOWS.md).
+
+### Evidências, correções e limites
+
+Evidências versionadas em `validation/phase6-20261117/`: baseline/suíte final,
+log, smoke v1, tentativa real de avaliação Qwen, self-check do utilitário,
+captura de streaming explicitamente nomeada **PROTOCOL-FIXTURE** e auditoria.
+A captura de streaming não contém respostas Qwen. A captura do avaliador é do
+caminho indisponível, sem inferência. Métricas de comandos offline ou de fixture
+não são benchmark dos modelos nem do Athlon.
+
+O primeiro CI da fase, [44181282842](https://github.com/Gabomgames/Now-assistant/actions/runs/44181282842),
+falhou no teste existente de altura de mensagem: 23 px disponíveis versus 38 px
+necessários. Foi corrigida a altura mínima dinâmica em `WrappedBody`, sem
+relaxar asserções; foi acrescentado teste de largura/redimensionamento. Os
+candidatos intermediários foram substituídos pelo código final acima. A revisão
+visual também encontrou baixo contraste no utilitário; ele passou a herdar o
+tema escuro existente, agora com teste de contraste. O status de modelo é
+recalculado da seleção/lista atuais, sem mensagem transitória falsa de ausência.
+
+`assets/branding`, `now_memory`, `now_history`, `now_voice`, `.github` e as
+dependências desktop permanecem iguais à base. O original da logo mantém
+SHA-256 `9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc`.
+Só a preparação do candidato, empacotamento e testes foram solicitados; guardas
+de publicação permaneceram intactos. Nenhum SG, treinamento, release ou deploy.
+
+**Ainda não aprovado:** naturalidade/coerência dos Qwen, desempenho de inferência
+no Windows 10/Athlon 3000G/8 GB, CPU/RAM/FPS sob jogo, DPI/acessibilidade/ACLs
+manuais e Authenticode. Streaming antecipa a leitura do texto e não aumenta por
+si só a velocidade real de inferência. A personalidade foi enxugada/localizada,
+com instruções de contexto/domínio e sem frases de jogos pré-fabricadas; sua
+melhoria depende da revisão de respostas reais. Não foram iniciados módulos de
+voz, visão, ações, RAG ou integração SG. Rollback de protocolo não migra cofres;
+rollback de código reverte os commits Fase 6, preservando dados do usuário.
+
+
 ## NOW Brain API V5 — primeiro incremento local — 17/11/2026
 
 **Código executável:** `e015f349d58ac0c125338e2761ba7b9965c05bf3`, branch `work`.

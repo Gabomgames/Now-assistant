@@ -1,5 +1,30 @@
 # Continuar em uma nova tarefa Codex
 
+## Estado atual — Fase 6 / Brain na interface
+
+Código Fase 6 em `dec954030215a262ac2f77bcfebffa4b846fafed`, `work`; usar o HEAD
+mais recente sem resetar. Desktop usa v1/SSE, modelo escolhido nas Preferências,
+TTFT/recepção/tokens/s reportados com origem clara, cancelamento por socket e
+rollback `/v2`. Dados cifrados e logo foram preservados. `Avaliar-Modelos.cmd`
+abre o avaliador empacotado; nenhuma instalação manual de Python ou envio de
+conversas privadas é necessário. Ler `docs/PHASE6_WINDOWS.md` e o topo de
+`VALIDACAO.md` para artefato, hashes, provas e limitações.
+
+Candidato Alpha 0.3.0-alpha.2: run **44186126526**, código `dec9540`, Success,
+51,1 MB. CI **44186126472** também Success. Windows Server 2022: 139 casos,
+138 aprovados e um POSIX não aplicável; EXE, logo, GUI/Engine v1 e avaliador
+empacotado passaram. Não são inferência ou Windows 10 do usuário. Download e
+hashes no topo de `VALIDACAO.md`; nenhum Release publicado.
+
+Linux: 139 aprovados/zero skips. Testes de protocolo e self-check sem modelo não
+são inferência. Nuvem continua sem Ollama/403: 0 gerações Qwen, 20 NOT_RUN por tag.
+Próximo gate: executar o utilitário no Windows 10/Athlon/8 GB com 0.5B e 1.5B já
+instalados, revisar respostas/latência/licença e escolher o próximo incremento
+com esses dados. Não promover modelo nem declarar qualidade por tamanho.
+Não iniciar módulos futuros antes dessa avaliação. Nenhuma GitHub Release,
+deploy ou alteração SG está autorizada. As seções abaixo são históricas.
+
+
 ## Continuação prioritária — NOW Brain API V5, 17/11/2026
 
 Implementação local independente em `e015f349d58ac0c125338e2761ba7b9965c05bf3`

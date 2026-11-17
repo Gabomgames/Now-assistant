@@ -1,0 +1,160 @@
+{
+  "schema": "now-phase6-windows-build-observation-v1",
+  "observed_at_utc": "2026-11-17T22:09:25.013031+00:00",
+  "source_sha": "dec954030215a262ac2f77bcfebffa4b846fafed",
+  "records": [
+    {
+      "kind": "alpha",
+      "run_id": "44186126526",
+      "url": "https://github.com/Gabomgames/Now-assistant/actions/runs/44186126526",
+      "conclusion": "success",
+      "duration": "3m 29s",
+      "artifact": {
+        "name": "now-assistant-windows-0.3.0-alpha.2-dec954030215a262ac2f77bcfebffa4b846fafed-attempt-1",
+        "size_display": "51.1 MB",
+        "digest": "sha256:eee31cdf0bfa10dc2bdf76c5c0b93c4ca73e3bdff67eb1ed6308e2c34fdbd052"
+      },
+      "annotations": [
+        {
+          "packaged_build": "actual_windows_smoke_passed",
+          "release_published": false,
+          "source_sha": "dec954030215a262ac2f77bcfebffa4b846fafed",
+          "unit_tests": {
+            "system": "Windows",
+            "python_version": "3.12.10",
+            "tests_run": 139,
+            "passed": 138,
+            "failures": 0,
+            "errors": 0,
+            "skipped": [
+              {
+                "test": "tests.test_memory.MemoryTests.test_vault_permissions_are_owner_only",
+                "reason": "POSIX permission check"
+              }
+            ],
+            "status": "passed"
+          },
+          "failed_tests": [],
+          "error_tests": [],
+          "version": "0.3.0-alpha.2",
+          "release_eligible": true,
+          "diagnostic_only": false,
+          "branding": {
+            "status": "official_original_verified",
+            "verified": true,
+            "original": "original.png",
+            "original_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+            "icon_sha256": "a6f4af3370d657e14df8b685176c512980a3549640a0408c8542d26a2db73d59",
+            "display_sha256": "1595f76e71f34d786941c04b8271299fa4d35382871c316fa20280b3eca116df"
+          },
+          "executable_sha256": "dbecf5e9aa068efab411d2e9eeafa303a3e663506a841775097be9a72bd3c152",
+          "frozen_executable": true,
+          "qt_platform": "windows",
+          "actual_offline_commands": 6,
+          "weights_included": false,
+          "model_inference_tested": false,
+          "digital_signature": "not_signed",
+          "desktop_api_protocol": "v1",
+          "packaged_evaluator": {
+            "frozen_executable": true,
+            "status": "BLOCKED",
+            "inference_executed": false,
+            "purpose": "unavailable_model_path_only"
+          },
+          "preparation_request": {
+            "request_id": "ef899597-1c71-4309-9df8-67309eefc63f",
+            "sha256": "1d60d0aa7897270c4db7e86ffe9d8fedd6e88016616b99bbc35f217507ffb334",
+            "publication_authorized": false
+          },
+          "zip_sha256": "955c900c2baa46192270fdb791121cdaaeae6dc9c0a0dc6f7cffff9d3ecc19f1 NOW-Assistant-0.3.0-alpha.2-Windows-x64.zip"
+        },
+        {
+          "system": "Windows",
+          "python_version": "3.12.10",
+          "source_sha": "dec954030215a262ac2f77bcfebffa4b846fafed",
+          "tests_run": 139,
+          "passed": 138,
+          "failures": 0,
+          "errors": 0,
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "kind": "ci",
+      "run_id": "44186126472",
+      "url": "https://github.com/Gabomgames/Now-assistant/actions/runs/44186126472",
+      "conclusion": "success",
+      "duration": "3m 8s",
+      "artifact": {
+        "name": "now-assistant-ci-dec954030215a262ac2f77bcfebffa4b846fafed-attempt-1",
+        "size_display": "51.1 MB",
+        "digest": "sha256:3350343aeac29b53883e95b02eba5f18b9b343570828913fb0e128401b4f45bc"
+      },
+      "annotations": [
+        {
+          "packaged_build": "actual_windows_smoke_passed",
+          "release_published": false,
+          "source_sha": "dec954030215a262ac2f77bcfebffa4b846fafed",
+          "unit_tests": {
+            "system": "Windows",
+            "python_version": "3.12.10",
+            "tests_run": 139,
+            "passed": 138,
+            "failures": 0,
+            "errors": 0,
+            "skipped": [
+              {
+                "test": "tests.test_memory.MemoryTests.test_vault_permissions_are_owner_only",
+                "reason": "POSIX permission check"
+              }
+            ],
+            "status": "passed"
+          },
+          "failed_tests": [],
+          "error_tests": [],
+          "version": "0.3.0-alpha.2",
+          "release_eligible": false,
+          "diagnostic_only": true,
+          "branding": {
+            "status": "official_original_verified",
+            "verified": true,
+            "original": "original.png",
+            "original_sha256": "9bf499258d4b298fa410142452ccf0443039e6c76e709c540c6d22db204935dc",
+            "icon_sha256": "a6f4af3370d657e14df8b685176c512980a3549640a0408c8542d26a2db73d59",
+            "display_sha256": "1595f76e71f34d786941c04b8271299fa4d35382871c316fa20280b3eca116df"
+          },
+          "executable_sha256": "a366004e06ff5a604d0dbd906841af3c26f3c46e8f344becd91f05051759ceb7",
+          "frozen_executable": true,
+          "qt_platform": "windows",
+          "actual_offline_commands": 6,
+          "weights_included": false,
+          "model_inference_tested": false,
+          "digital_signature": "not_signed",
+          "desktop_api_protocol": "v1",
+          "packaged_evaluator": {
+            "frozen_executable": true,
+            "status": "BLOCKED",
+            "inference_executed": false,
+            "purpose": "unavailable_model_path_only"
+          },
+          "zip_sha256": "5e2213828428b3dcce8583ef44f4da6e279a2ec1679f780ba48e5dd251990ce3 NOW-Assistant-0.3.0-alpha.2-diagnostic-Windows-x64.zip"
+        },
+        {
+          "system": "Windows",
+          "python_version": "3.12.10",
+          "source_sha": "dec954030215a262ac2f77bcfebffa4b846fafed",
+          "tests_run": 139,
+          "passed": 138,
+          "failures": 0,
+          "errors": 0,
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "evidence_source": "public GitHub run pages and structured runner annotations",
+  "artifact_downloaded_or_inspected_locally": false,
+  "windows_10_athlon_executed": false,
+  "real_qwen_inference_executed": false
+}
